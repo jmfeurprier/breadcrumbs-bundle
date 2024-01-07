@@ -1,0 +1,49 @@
+{% if (grid.rows is not empty) %}
+    <table class="table table-bordered table-striped table-hover _dt">
+        <thead>
+            <tr>
+                {% for column in grid.columns %}
+                    {% set classes = [] %}
+                    {% if (column.align is not null) %}
+                        {% set classes = classes|array_push('text-' ~ column.align) %}
+                    {% endif %}
+                    <th{% if (classes is not empty) %} class="{{ classes|join(' ') }}"{% endif %}>
+                        {% if (column.label is not null) %}{{ column.label }}{% endif %}
+                    </th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in grid.rows %}
+                {% if (row.link is null) %}
+                    <tr>
+                {% else %}
+                    <tr onclick="window.location='{{ row.link }}'" style="cursor:pointer">
+                {% endif %}
+                {% for cell in row.cells %}
+                    {% set classes = [] %}
+                    {% if (cell.parameters.align is not null) %}
+                        {% set classes = classes|array_push('text-' ~ cell.parameters.align) %}
+                    {% endif %}
+                    <td{% if (classes is not empty) %} class="{{ classes|join(' ') }}"{% endif %}>
+                        {{ cell.value|raw }}
+                    </td>
+                {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+        {% if (grid.footer.rows is not empty) %}
+            <tfoot>
+                {% for footerRow in grid.footer.rows %}
+                    <tr>
+                        {% for footerCell in footerRow.cells %}
+                            <td{% for key, value in (footerCell.attributes) %} {{ key }}="{{ value }}"{% endfor %}>
+                                {{ footerCell.value|default('')|raw }}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tfoot>
+        {% endif %}
+    </table>
+{% endif %}

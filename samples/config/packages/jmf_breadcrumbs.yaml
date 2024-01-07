@@ -1,0 +1,139 @@
+jmf_grid:
+
+    breadcrumbs:
+
+        account.create:
+            label: 'Account - Create'
+            parent:
+                route: account.index
+
+        account.index:
+            label: 'Accounts'
+            parent:
+                route: dashboard
+
+        account.read:
+            label: 'Account'
+            parameters:
+                id: account.id
+            parent:
+                route: account.index
+
+        account.update:
+            label: 'Account - Edit'
+            parameters:
+                id: account.id
+            parent:
+                route: account.index
+
+        card.update:
+            label: 'Card - Edit'
+            parameters:
+                id: card.id
+            parent:
+                parameters:
+                    entity: 'entity.account'
+                route: account.read
+
+        card.create:
+            label: 'Card - Create'
+            parameters:
+                accountId: 'card.account.id'
+            parent:
+                parameters:
+                    account: 'card.account'
+                route: account.read
+
+        card.read:
+            label: 'Card'
+            parameters:
+                id: card.id
+            parent:
+                parameters:
+                    account: 'card.account'
+                route: account.read
+
+        category.create:
+            label: 'Category - Create'
+            parent:
+                route: category.index
+
+        category.index:
+            label: 'Categories'
+            parent:
+                route: dashboard
+
+        category.read:
+            label: 'Category'
+            parameters:
+                id: 'category.id'
+            parent:
+                route: category.index
+
+        category.update:
+            label: 'Category - Edit'
+            parameters:
+                id: 'category.id'
+            parent:
+                route: category.read
+
+        dashboard:
+            label: 'Dashboard'
+
+        operation.create:
+            label: 'Operation - Create'
+            parent:
+                route: operation.index
+
+        operation.index:
+            label: 'Operations'
+            parent:
+                route: dashboard
+
+        operation.read:
+            label: 'Operation'
+            parameters:
+                id: 'operation.id'
+            parent:
+                route: operation.index
+
+        operation.update:
+            label: 'Operation - Edit'
+            parameters:
+                id: 'operation.id'
+            parent:
+                route: operation.read
+
+        operation.upload:
+            label: 'Operations - Upload'
+            parent:
+                route: operation.index
+
+        user.create:
+            label: 'User - Create'
+            parent:
+                route: user.index
+
+        user.index:
+            label: 'Users'
+            parent:
+                route: dashboard
+
+        user.read:
+            label: 'User'
+            parameters:
+                id: 'user.id'
+            parent:
+                route: user.index
+
+        user.show_self:
+            label: 'My User Account'
+            parent:
+                route: 'user.index'
+
+        user.update:
+            label: 'User - Edit'
+            parent:
+                route: 'user.read'
+            parameters:
+                id: 'user.id'
