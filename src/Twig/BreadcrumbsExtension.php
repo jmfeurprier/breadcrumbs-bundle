@@ -67,7 +67,7 @@ class BreadcrumbsExtension extends AbstractExtension
         return $this->templateRenderer->renderFromFile(
             $this->templatePath,
             $parameters + [
-                'breadcrumbs' => $this->get($context),
+                'breadcrumbs' => $this->get($context)->getBreadcrumbs(),
             ]
         );
     }
