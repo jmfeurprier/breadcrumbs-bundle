@@ -2,6 +2,7 @@
 
 namespace Jmf\Breadcrumbs\Breadcrumbs;
 
+use Jmf\Breadcrumbs\Configuration\BreadcrumbConfiguration;
 use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationRepository;
 use Jmf\Breadcrumbs\Exception\TemplateRenderingException;
 use Jmf\Breadcrumbs\TemplateRendering\TemplateRenderer;

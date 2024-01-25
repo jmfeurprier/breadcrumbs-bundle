@@ -46,7 +46,8 @@ class BreadcrumbsExtension extends AbstractExtension
                     $method,
                 ],
                 [
-                    'is_safe' => ['html'],
+                    'is_safe'       => ['html'],
+                    'needs_context' => true,
                 ]
             );
         }
@@ -60,12 +61,13 @@ class BreadcrumbsExtension extends AbstractExtension
      * @throws TemplateRenderingException
      */
     public function render(
+        array $context,
         array $parameters = [],
     ): string {
         return $this->templateRenderer->renderFromFile(
             $this->templatePath,
             $parameters + [
-                'breadcrumbs' => $this->get($parameters),
+                'breadcrumbs' => $this->get($context),
             ]
         );
     }
@@ -74,10 +76,10 @@ class BreadcrumbsExtension extends AbstractExtension
      * @throws TemplateRenderingException
      */
     public function get(
-        array $parameters = [],
+        array $context,
     ): CurrentBreadcrumbs {
         return $this->currentBreadcrumbsFetcher->fetch(
-            $parameters
+            $context
         );
     }
 }
