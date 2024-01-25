@@ -3,10 +3,10 @@
 namespace Jmf\Breadcrumbs\DependencyInjection;
 
 use Exception;
-use Jmf\Breadcrumbs\Breadcrumbs\BreadcrumbConfigurationRepository;
-use Jmf\Breadcrumbs\Breadcrumbs\BreadcrumbConfigurationRepositoryFactory;
-use Jmf\Breadcrumbs\Breadcrumbs\BreadcrumbConfigurationRepositoryFactoryInterface;
-use Jmf\Breadcrumbs\Breadcrumbs\CacheableBreadcrumbConfigurationRepositoryFactory;
+use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationRepository;
+use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationRepositoryFactory;
+use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationRepositoryFactoryInterface;
+use Jmf\Breadcrumbs\Configuration\CacheableBreadcrumbConfigurationRepositoryFactory;
 use Override;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
