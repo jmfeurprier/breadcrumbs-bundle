@@ -27,7 +27,7 @@ readonly class ParentBreadcrumbConfigurationLoader
     private function getParameters(array $config): KeyStringCollection
     {
         return new KeyStringCollection(
-            $config['parent']['parameters'],
+            $config['parent']['parameters'] ?? [],
         );
     }
 }

@@ -3,7 +3,7 @@
         <ol class="breadcrumb">
             {% for breadcrumb in breadcrumbs %}
                 <li class="breadcrumb-item{% if (loop.last) %} active{% endif %}"{% if (loop.last) %} aria-current="page"{% endif %}>
-                    {% if (breadcrumb.path is defined) %}
+                    {% if (breadcrumb.path is not null) %}
                         <a href="{{ breadcrumb.path }}">{{ breadcrumb.label }}</a>
                     {% else %}
                         {{ breadcrumb.label }}

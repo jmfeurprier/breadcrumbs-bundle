@@ -32,7 +32,7 @@ readonly class BreadcrumbConfigurationLoader
     private function getParameters(array $config): KeyStringCollection
     {
         return new KeyStringCollection(
-            $config['parameters'],
+            $config['parameters'] ?? [],
         );
     }
 
