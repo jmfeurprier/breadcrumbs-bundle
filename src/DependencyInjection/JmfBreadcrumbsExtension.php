@@ -7,6 +7,7 @@ use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationRepository;
 use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationRepositoryFactory;
 use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationRepositoryFactoryInterface;
 use Jmf\Breadcrumbs\Configuration\CacheableBreadcrumbConfigurationRepositoryFactory;
+use Jmf\Breadcrumbs\Twig\BreadcrumbsExtension;
 use Override;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -63,6 +64,12 @@ class JmfBreadcrumbsExtension extends Extension
                 ->setArgument('$config', $config['breadcrumbs'])
             ;
         }
+
+        $container->autowire(BreadcrumbsExtension::class)
+            ->setArgument('$templatePath', $config['template_path'])
+            ->setArgument('$prefix', $config['twig_functions_prefix'])
+            ->addTag('twig.extension')
+        ;
     }
 
     #[Override]

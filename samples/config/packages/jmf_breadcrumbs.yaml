@@ -1,5 +1,6 @@
 jmf_breadcrumbs:
 
+    template_path:         '@JmfBreadcrumbs/breadcrumbs.html.twig'
     twig_functions_prefix: 'jmf_'
 
     breadcrumbs:
