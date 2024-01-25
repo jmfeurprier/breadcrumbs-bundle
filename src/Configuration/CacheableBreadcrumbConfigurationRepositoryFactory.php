@@ -1,6 +1,6 @@
 <?php
 
-namespace Jmf\Breadcrumbs\Breadcrumbs;
+namespace Jmf\Breadcrumbs\Configuration;
 
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Contracts\Cache\CacheInterface;

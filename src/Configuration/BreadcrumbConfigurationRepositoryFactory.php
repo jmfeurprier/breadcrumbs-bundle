@@ -1,6 +1,6 @@
 <?php
 
-namespace Jmf\Breadcrumbs\Breadcrumbs;
+namespace Jmf\Breadcrumbs\Configuration;
 
 readonly class BreadcrumbConfigurationRepositoryFactory implements BreadcrumbConfigurationRepositoryFactoryInterface
 {
