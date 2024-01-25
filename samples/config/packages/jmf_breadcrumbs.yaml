@@ -1,139 +1,36 @@
-jmf_grid:
+jmf_breadcrumbs:
+
+    twig_functions_prefix: 'jmf_'
 
     breadcrumbs:
+        homepage:
+            label: 'Home'
 
-        account.create:
-            label: 'Account - Create'
+        contact:
+            label: 'Contact Us'
             parent:
-                route: account.index
+                route: 'homepage'
 
-        account.index:
-            label: 'Accounts'
+        terms_and_conditions:
+            label: 'Terms & Conditions'
             parent:
-                route: dashboard
+                route: 'homepage'
 
-        account.read:
-            label: 'Account'
+        article.index:
+            label: 'Articles'
+            parent:
+                route: 'homepage'
+
+        article.read:
+            label: 'Article'
             parameters:
-                id: account.id
+                id: 'article.id'
             parent:
-                route: account.index
+                route: 'article.index'
 
-        account.update:
-            label: 'Account - Edit'
+        article.submit_comment:
+            label: 'Submit comment'
             parameters:
-                id: account.id
+                id: 'article.id'
             parent:
-                route: account.index
-
-        card.update:
-            label: 'Card - Edit'
-            parameters:
-                id: card.id
-            parent:
-                parameters:
-                    entity: 'entity.account'
-                route: account.read
-
-        card.create:
-            label: 'Card - Create'
-            parameters:
-                accountId: 'card.account.id'
-            parent:
-                parameters:
-                    account: 'card.account'
-                route: account.read
-
-        card.read:
-            label: 'Card'
-            parameters:
-                id: card.id
-            parent:
-                parameters:
-                    account: 'card.account'
-                route: account.read
-
-        category.create:
-            label: 'Category - Create'
-            parent:
-                route: category.index
-
-        category.index:
-            label: 'Categories'
-            parent:
-                route: dashboard
-
-        category.read:
-            label: 'Category'
-            parameters:
-                id: 'category.id'
-            parent:
-                route: category.index
-
-        category.update:
-            label: 'Category - Edit'
-            parameters:
-                id: 'category.id'
-            parent:
-                route: category.read
-
-        dashboard:
-            label: 'Dashboard'
-
-        operation.create:
-            label: 'Operation - Create'
-            parent:
-                route: operation.index
-
-        operation.index:
-            label: 'Operations'
-            parent:
-                route: dashboard
-
-        operation.read:
-            label: 'Operation'
-            parameters:
-                id: 'operation.id'
-            parent:
-                route: operation.index
-
-        operation.update:
-            label: 'Operation - Edit'
-            parameters:
-                id: 'operation.id'
-            parent:
-                route: operation.read
-
-        operation.upload:
-            label: 'Operations - Upload'
-            parent:
-                route: operation.index
-
-        user.create:
-            label: 'User - Create'
-            parent:
-                route: user.index
-
-        user.index:
-            label: 'Users'
-            parent:
-                route: dashboard
-
-        user.read:
-            label: 'User'
-            parameters:
-                id: 'user.id'
-            parent:
-                route: user.index
-
-        user.show_self:
-            label: 'My User Account'
-            parent:
-                route: 'user.index'
-
-        user.update:
-            label: 'User - Edit'
-            parent:
-                route: 'user.read'
-            parameters:
-                id: 'user.id'
+                route: 'article.read'

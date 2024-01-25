@@ -2,7 +2,7 @@
 
 namespace Jmf\Breadcrumbs\DependencyInjection;
 
-use Jmf\Grid\Twig\GridExtension;
+use Jmf\Breadcrumbs\Twig\BreadcrumbsExtension;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -10,56 +10,38 @@ class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder('jmf_grid');
+        $treeBuilder = new TreeBuilder('jmf_breadcrumbs');
 
         $treeBuilder->getRootNode()
-            ->fixXmlConfig('macro')
-            ->fixXmlConfig('preset')
             ->children()
-                ->arrayNode('grids')
-                    ->info('Grid definitions.')
-                    ->useAttributeAsKey('gridId')
+                ->arrayNode('breadcrumbs')
+                    ->info('Breadcrumb definitions.')
+                    ->useAttributeAsKey('route')
                     ->arrayPrototype()
                         ->children()
-                            ->arrayNode('grid')
+                            ->scalarNode('label')
+                                ->info('Breadcrumb label.')
+                                ->isRequired()
+                            ->end()
+                            ->arrayNode('parent')
                                 ->children()
-                                    ->arrayNode('variables')
-                                        ->useAttributeAsKey('key')
-                                        ->variablePrototype()->end()
+                                    ->scalarNode('route')
+                                        ->isRequired()
                                     ->end()
                                 ->end()
                             ->end()
-                            ->arrayNode('rows')
-                                ->variablePrototype()->end()
-                            ->end()
-                            ->arrayNode('columns')
-                                ->isRequired()
-                                ->variablePrototype()->end()
-                            ->end()
-                            ->arrayNode('footer')
+                            ->arrayNode('parameters')
+                                ->info('Breadcrumb route parameters.')
+                                ->defaultValue([])
                                 ->variablePrototype()->end()
                             ->end()
                         ->end()
                     ->end()
-//                    ->defaultValue([])
-                ->end()
-                ->scalarNode('template_path')
-                    ->info('Grid template path.')
-                    ->defaultValue('@JmfGrid/grid.html.twig')
-                ->end()
-                ->arrayNode('macros')
-                    ->scalarPrototype()->end()
-                    ->info('Grid macros to import.')
                     ->defaultValue([])
                 ->end()
                 ->scalarNode('twig_functions_prefix')
                     ->info('Twig functions prefix.')
-                    ->defaultValue(GridExtension::PREFIX_DEFAULT)
-                ->end()
-                ->arrayNode('presets')
-                    ->variablePrototype()->end()
-                    ->info('Rendering presets.')
-                    ->defaultValue([])
+                    ->defaultValue(BreadcrumbsExtension::PREFIX_DEFAULT)
                 ->end()
             ->end()
         ;

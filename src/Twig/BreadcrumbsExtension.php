@@ -7,8 +7,6 @@ use Jmf\Breadcrumbs\Breadcrumbs\CurrentBreadcrumbsFetcher;
 use Jmf\Breadcrumbs\Exception\TemplateRenderingException;
 use Jmf\Breadcrumbs\TemplateRendering\TemplateRenderer;
 use Override;
-use Twig\Error\LoaderError;
-use Twig\Error\SyntaxError;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
