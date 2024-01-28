@@ -2,6 +2,9 @@
 
 namespace Jmf\Breadcrumbs\Configuration;
 
+use InvalidArgumentException;
+use Webmozart\Assert\Assert;
+
 readonly class ParentBreadcrumbConfigurationLoader
 {
     /**
@@ -13,21 +16,45 @@ readonly class ParentBreadcrumbConfigurationLoader
             return null;
         }
 
+        $parentConfig = $config['parent'];
+
+        Assert::isMap($parentConfig);
+
         return new ParentBreadcrumbConfiguration(
-            $this->getRouteName($config),
-            $this->getParameters($config),
+            $this->getRouteName($parentConfig),
+            $this->getParameters($parentConfig),
         );
     }
 
-    private function getRouteName(array $config): string
+    /**
+     * @param array<string, mixed> $parentConfig
+     */
+    private function getRouteName(array $parentConfig): string
     {
-        return $config['parent']['route']; // @todo
+        if (!array_key_exists('route', $parentConfig)) {
+            throw new InvalidArgumentException("Missing breadcrumb parent 'route' configuration.");
+        }
+
+        $route = $parentConfig['route'];
+
+        Assert::string($route);
+
+        return $route;
     }
 
-    private function getParameters(array $config): KeyStringCollection
+    /**
+     * @param array<string, mixed> $parentConfig
+     */
+    private function getParameters(array $parentConfig): KeyStringCollection
     {
-        return new KeyStringCollection(
-            $config['parent']['parameters'] ?? [],
-        );
+        if (!array_key_exists('parameters', $parentConfig)) {
+            return KeyStringCollection::createEmpty();
+        }
+
+        $parametersConfig = $parentConfig['parameters'];
+
+        Assert::isArray($parametersConfig);
+
+        return new KeyStringCollection($parametersConfig);
     }
 }

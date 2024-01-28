@@ -8,7 +8,7 @@ readonly class CurrentBreadcrumbs
      * @param Breadcrumb[] $breadcrumbs
      */
     public function __construct(
-        private array $breadcrumbs,
+        private iterable $breadcrumbs,
     ) {
     }
 
@@ -22,8 +22,10 @@ readonly class CurrentBreadcrumbs
 
     public function tryGetCurrentBreadcrumb(): ?Breadcrumb
     {
-        if (count($this->breadcrumbs) >= 1) {
-            return array_slice($this->breadcrumbs, -1, 1)[0];
+        $breadcrumbs = iterator_to_array($this->breadcrumbs);
+
+        if (count($breadcrumbs) >= 1) {
+            return array_slice($breadcrumbs, -1, 1)[0];
         }
 
         return null;
@@ -31,8 +33,10 @@ readonly class CurrentBreadcrumbs
 
     public function tryGetPreviousBreadcrumb(): ?Breadcrumb
     {
-        if (count($this->breadcrumbs) >= 2) {
-            return array_slice($this->breadcrumbs, -2, 1)[0];
+        $breadcrumbs = iterator_to_array($this->breadcrumbs);
+
+        if (count($breadcrumbs) >= 2) {
+            return array_slice($breadcrumbs, -2, 1)[0];
         }
 
         return null;

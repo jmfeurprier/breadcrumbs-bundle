@@ -4,5 +4,5 @@ namespace Jmf\Breadcrumbs\Configuration;
 
 interface BreadcrumbConfigurationRepositoryFactoryInterface
 {
-    public function make(): BreadcrumbConfigurationRepository;
+    public function make(): BreadcrumbConfigurationRepositoryInterface;
 }

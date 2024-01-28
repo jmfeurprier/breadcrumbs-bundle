@@ -5,6 +5,7 @@ parameters:
 		- ../tests
 	ignoreErrors:
 		-
-			message: "|^Call to an undefined method.+fixXmlConfig|"
+			message: "|^Call to an undefined method.+children|"
 			count: 1
 			path: ../src/DependencyInjection/Configuration.php
+	tmpDir: ../var/cache/phpstan

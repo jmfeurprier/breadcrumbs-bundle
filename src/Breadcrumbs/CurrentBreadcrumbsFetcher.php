@@ -3,7 +3,7 @@
 namespace Jmf\Breadcrumbs\Breadcrumbs;
 
 use Jmf\Breadcrumbs\Configuration\BreadcrumbConfiguration;
-use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationRepository;
+use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationRepositoryInterface;
 use Jmf\Breadcrumbs\Exception\TemplateRenderingException;
 use Jmf\Breadcrumbs\TemplateRendering\TemplateRenderer;
 use RuntimeException;
@@ -25,7 +25,7 @@ class CurrentBreadcrumbsFetcher implements CurrentBreadcrumbsFetcherInterface
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly TemplateRenderer $templateRenderer,
         private readonly PropertyAccessorInterface $propertyAccessor,
-        private readonly BreadcrumbConfigurationRepository $breadcrumbConfigurationRepository,
+        private readonly BreadcrumbConfigurationRepositoryInterface $breadcrumbConfigurationRepository,
     ) {
     }
 
@@ -64,9 +64,9 @@ class CurrentBreadcrumbsFetcher implements CurrentBreadcrumbsFetcherInterface
             }
 
             $this->parameters = $context;
+            $parentParameters = $breadcrumbConfiguration->getParentBreadcrumbConfiguration()->getParameters()->all();
 
-            foreach ($breadcrumbConfiguration->getParentBreadcrumbConfiguration()->getParameters()->all(
-            ) as $key => $value) {
+            foreach ($parentParameters as $key => $value) {
                 $this->parameters[$key] = $this->propertyAccessor->getValue((object) $this->parameters, $value);
             }
 

@@ -6,6 +6,7 @@ use Rector\CodeQuality\Rector\Identical\FlipTypeControlToUseExclusiveTypeRector;
 use Rector\CodeQuality\Rector\If_\SimplifyIfElseToTernaryRector;
 use Rector\CodingStyle\Rector\Catch_\CatchExceptionNameMatchingTypeRector;
 use Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector;
+use Rector\CodingStyle\Rector\FuncCall\ArraySpreadInsteadOfArrayMergeRector;
 use Rector\CodingStyle\Rector\FuncCall\CountArrayToEmptyArrayComparisonRector;
 use Rector\Config\RectorConfig;
 use Rector\Set\ValueObject\LevelSetList;
@@ -16,6 +17,9 @@ return static function (
 ): void {
     $rootPath = realpath(__DIR__ . '/..') . '/';
 
+    $rectorConfig->cacheDirectory($rootPath . 'var/cache/rector');
+    $rectorConfig->containerCacheDirectory($rootPath . 'var/cache');
+
     $rectorConfig->paths(
         [
             $rootPath . 'src',
@@ -24,6 +28,7 @@ return static function (
     );
     $rectorConfig->skip(
         [
+            ArraySpreadInsteadOfArrayMergeRector::class,
             CatchExceptionNameMatchingTypeRector::class,
             CountArrayToEmptyArrayComparisonRector::class,
             EncapsedStringsToSprintfRector::class,

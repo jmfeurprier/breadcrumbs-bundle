@@ -3,9 +3,9 @@
 namespace Jmf\Breadcrumbs\DependencyInjection;
 
 use Exception;
-use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationRepository;
 use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationRepositoryFactory;
 use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationRepositoryFactoryInterface;
+use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationRepositoryInterface;
 use Jmf\Breadcrumbs\Configuration\CacheableBreadcrumbConfigurationRepositoryFactory;
 use Jmf\Breadcrumbs\Twig\BreadcrumbsExtension;
 use Override;
@@ -37,7 +37,7 @@ class JmfBreadcrumbsExtension extends Extension
 
         $loader->load('services.yaml');
 
-        $container->autowire(BreadcrumbConfigurationRepository::class)
+        $container->autowire(BreadcrumbConfigurationRepositoryInterface::class)
             ->setFactory(
                 [
                     new Reference(BreadcrumbConfigurationRepositoryFactoryInterface::class),

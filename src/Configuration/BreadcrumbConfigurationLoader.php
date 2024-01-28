@@ -2,6 +2,9 @@
 
 namespace Jmf\Breadcrumbs\Configuration;
 
+use InvalidArgumentException;
+use Webmozart\Assert\Assert;
+
 readonly class BreadcrumbConfigurationLoader
 {
     public function __construct(
@@ -24,18 +27,41 @@ readonly class BreadcrumbConfigurationLoader
         );
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     private function getLabel(array $config): string
     {
-        return $config['label']; // @todo
+        if (!array_key_exists('label', $config)) {
+            throw new InvalidArgumentException("Missing breadcrumb 'label' configuration.");
+        }
+
+        $label = $config['label'];
+
+        Assert::string($label);
+
+        return $label;
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     private function getParameters(array $config): KeyStringCollection
     {
-        return new KeyStringCollection(
-            $config['parameters'] ?? [],
-        );
+        if (!array_key_exists('parameters', $config)) {
+            return KeyStringCollection::createEmpty();
+        }
+
+        $parametersConfig = $config['parameters'];
+
+        Assert::isArray($parametersConfig);
+
+        return new KeyStringCollection($parametersConfig);
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     private function getParentBreadcrumbConfiguration(array $config): ?ParentBreadcrumbConfiguration
     {
         return $this->parentBreadcrumbConfigurationLoader->load($config);

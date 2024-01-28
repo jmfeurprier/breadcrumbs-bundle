@@ -6,7 +6,8 @@ use Psr\Cache\InvalidArgumentException;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
-readonly class CacheableBreadcrumbConfigurationRepositoryFactory implements BreadcrumbConfigurationRepositoryFactoryInterface
+readonly class CacheableBreadcrumbConfigurationRepositoryFactory implements
+    BreadcrumbConfigurationRepositoryFactoryInterface
 {
     public function __construct(
         private CacheInterface $cache,
@@ -17,7 +18,7 @@ readonly class CacheableBreadcrumbConfigurationRepositoryFactory implements Brea
     /**
      * @throws InvalidArgumentException
      */
-    public function make(): BreadcrumbConfigurationRepository
+    public function make(): BreadcrumbConfigurationRepositoryInterface
     {
         return $this->cache->get(
             $this->getCacheKey(),

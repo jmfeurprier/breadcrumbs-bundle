@@ -56,6 +56,7 @@ class BreadcrumbsExtension extends AbstractExtension
     }
 
     /**
+     * @param array<string, mixed> $context
      * @param array<string, mixed> $parameters
      *
      * @throws TemplateRenderingException
@@ -73,6 +74,8 @@ class BreadcrumbsExtension extends AbstractExtension
     }
 
     /**
+     * @param array<string, mixed> $context
+     *
      * @throws TemplateRenderingException
      */
     public function get(

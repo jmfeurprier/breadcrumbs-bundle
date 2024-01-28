@@ -13,7 +13,7 @@ readonly class BreadcrumbConfigurationRepositoryFactory implements BreadcrumbCon
     ) {
     }
 
-    public function make(): BreadcrumbConfigurationRepository
+    public function make(): BreadcrumbConfigurationRepositoryInterface
     {
         return new BreadcrumbConfigurationRepository(
             $this->getBreadcrumbConfigurations(),

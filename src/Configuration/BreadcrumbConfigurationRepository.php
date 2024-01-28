@@ -5,8 +5,11 @@ namespace Jmf\Breadcrumbs\Configuration;
 use DomainException;
 use Webmozart\Assert\Assert;
 
-class BreadcrumbConfigurationRepository
+class BreadcrumbConfigurationRepository implements BreadcrumbConfigurationRepositoryInterface
 {
+    /**
+     * @var array<string, BreadcrumbConfiguration>
+     */
     private array $indexedByRouteName = [];
 
     /**
