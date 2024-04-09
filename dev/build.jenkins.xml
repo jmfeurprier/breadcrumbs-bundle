@@ -62,12 +62,12 @@
 	</target>
 
 	<target name="phpstan">
-		<exec executable="${bindir}/phpstan" logoutput="true" passthru="true">
+		<exec executable="${bindir}phpstan" logoutput="true" passthru="true">
 		</exec>
 	</target>
 
 	<target name="rector">
-		<exec executable="${bindir}/rector" logoutput="true" passthru="true">
+		<exec executable="${bindir}rector" logoutput="true" passthru="true">
 			<arg line="--dry-run"/>
 		</exec>
 	</target>
