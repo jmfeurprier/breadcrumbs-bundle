@@ -2,7 +2,7 @@
     "name": "jmf/breadcrumbs-bundle",
     "description" : "Breadcrumbs bundle for Symfony",
     "license": "mit",
-    "type": "library",
+    "type": "symfony-bundle",
     "require": {
         "php": ">=8.3",
         "symfony/framework-bundle": "^6.0",
