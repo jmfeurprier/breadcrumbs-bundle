@@ -3,24 +3,21 @@
 namespace Jmf\Breadcrumbs\TemplateRendering;
 
 use Jmf\Breadcrumbs\Exception\TemplateRenderingException;
+use Override;
 use Throwable;
 use Twig\Environment as TwigEnvironment;
 
-readonly class TemplateRenderer
+readonly class TemplateRenderer implements TemplateRendererInterface
 {
     public function __construct(
         private TwigEnvironment $twigEnvironment,
     ) {
     }
 
-    /**
-     * @param array<string, mixed> $context
-     *
-     * @throws TemplateRenderingException
-     */
+    #[Override]
     public function renderFromString(
         string $template,
-        array $context = []
+        array $context = [],
     ): string {
         try {
             return $this->twigEnvironment->createTemplate($template)->render($context);
@@ -29,14 +26,10 @@ readonly class TemplateRenderer
         }
     }
 
-    /**
-     * @param array<string, mixed> $context
-     *
-     * @throws TemplateRenderingException
-     */
+    #[Override]
     public function renderFromFile(
         string $name,
-        array $context = []
+        array $context = [],
     ): string {
         try {
             return $this->twigEnvironment->render($name, $context);

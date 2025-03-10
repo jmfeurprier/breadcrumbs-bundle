@@ -1,0 +1,36 @@
+parameters:
+
+    breadcrumbs:
+
+        cost.create:
+            label: 'Cost - Create'
+            parameters:
+                id: cost.task.id
+            parent:
+                route: task.read
+                parameters:
+                    task: cost.task
+
+        dashboard:
+            label: 'Dashboard'
+
+        project.index:
+            label:  'Projects'
+            parent:
+                route: dashboard
+
+        project.read:
+            label:  'Project "{{ project.name|raw }}"'
+            parameters:
+                id: project.id
+            parent:
+                route: project.index
+
+        task.read:
+            label:  'Task "{{ task.name|raw }}"'
+            parameters:
+                id: 'task.id'
+            parent:
+                route: project.read
+                parameters:
+                    project: task.project

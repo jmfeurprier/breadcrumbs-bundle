@@ -2,7 +2,7 @@
     "name": "jmf/breadcrumbs-bundle",
     "description" : "Breadcrumbs bundle for Symfony",
     "license": "mit",
-    "type": "library",
+    "type": "symfony-bundle",
     "require": {
         "php": ">=8.3",
         "symfony/framework-bundle": "^7.0",
@@ -11,12 +11,12 @@
         "webmozart/assert": "^1.0"
     },
     "require-dev": {
-        "phing/phing": "^2.17",
-        "phpmd/phpmd": "^2.10",
-        "phpstan/phpstan": "^1.10",
-        "phpunit/phpunit": "^11.1",
-        "rector/rector": "^1.0",
-        "squizlabs/php_codesniffer": "^3.8"
+        "phpmd/phpmd": "^2.15",
+        "phpstan/phpstan": "^1.12.21",
+        "phpunit/phpunit": "^12.0.7",
+        "rector/rector": "^1.2.10",
+        "squizlabs/php_codesniffer": "^3.11.3",
+        "symfony/yaml": "^7.2.3"
     },
     "config": {
         "audit": {

@@ -111,7 +111,7 @@ class CurrentBreadcrumbsTest extends TestCase
     private function getInstance(): CurrentBreadcrumbs
     {
         return new CurrentBreadcrumbs(
-            $this->breadcrumbs
+            $this->breadcrumbs,
         );
     }
 }

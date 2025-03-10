@@ -1,0 +1,19 @@
+cost.create:
+    route:
+        path: '/tasks/{id}/costs/create'
+
+dashboard:
+    route:
+        path: '/'
+
+project.index:
+    route:
+        path: '/projects'
+
+project.read:
+    route:
+        path: '/projects/{id}'
+
+task.read:
+    route:
+        path: '/tasks/{id}'
