@@ -3,14 +3,15 @@
 namespace Jmf\Breadcrumbs\Configuration;
 
 use DomainException;
+use Override;
 use Webmozart\Assert\Assert;
 
-class BreadcrumbConfigurationRepository implements BreadcrumbConfigurationRepositoryInterface
+readonly class BreadcrumbConfigurationRepository implements BreadcrumbConfigurationRepositoryInterface
 {
     /**
      * @var array<string, BreadcrumbConfiguration>
      */
-    private array $indexedByRouteName = [];
+    private array $indexedByRouteName;
 
     /**
      * @param BreadcrumbConfiguration[] $breadcrumbConfigurations
@@ -20,21 +21,22 @@ class BreadcrumbConfigurationRepository implements BreadcrumbConfigurationReposi
     ) {
         Assert::allIsInstanceOf($breadcrumbConfigurations, BreadcrumbConfiguration::class);
 
+        $indexed = [];
+
         foreach ($breadcrumbConfigurations as $breadcrumbConfiguration) {
-            $this->addConfiguration($breadcrumbConfiguration);
+            $indexed[$breadcrumbConfiguration->getRouteName()] = $breadcrumbConfiguration;
         }
+
+        $this->indexedByRouteName = $indexed;
     }
 
-    private function addConfiguration(BreadcrumbConfiguration $breadcrumbConfiguration): void
-    {
-        $this->indexedByRouteName[$breadcrumbConfiguration->getRouteName()] = $breadcrumbConfiguration;
-    }
-
+    #[Override]
     public function get(string $routeName): BreadcrumbConfiguration
     {
         return $this->tryGet($routeName) ?? throw new DomainException(); // @todo
     }
 
+    #[Override]
     public function tryGet(string $routeName): ?BreadcrumbConfiguration
     {
         return $this->indexedByRouteName[$routeName] ?? null;

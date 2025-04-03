@@ -32,26 +32,29 @@ class JmfBreadcrumbsExtension extends Extension
 
         $loader = new YamlFileLoader(
             $container,
-            new FileLocator(__DIR__ . '/../Resources/config')
+            new FileLocator(__DIR__ . '/../Resources/config'),
         );
 
         $loader->load('services.yaml');
 
-        $container->autowire(BreadcrumbConfigurationRepositoryInterface::class)
+        $container
+            ->autowire(BreadcrumbConfigurationRepositoryInterface::class)
             ->setFactory(
                 [
                     new Reference(BreadcrumbConfigurationRepositoryFactoryInterface::class),
                     'make',
-                ]
+                ],
             )
         ;
 
         if (interface_exists(CacheInterface::class)) {
-            $container->autowire(BreadcrumbConfigurationRepositoryFactory::class)
+            $container
+                ->autowire(BreadcrumbConfigurationRepositoryFactory::class)
                 ->setArgument('$config', $config['breadcrumbs'])
             ;
 
-            $container->autowire(BreadcrumbConfigurationRepositoryFactoryInterface::class)
+            $container
+                ->autowire(BreadcrumbConfigurationRepositoryFactoryInterface::class)
                 ->setClass(CacheableBreadcrumbConfigurationRepositoryFactory::class)
                 ->setArgument(
                     '$breadcrumbConfigurationRepositoryFactory',
@@ -59,13 +62,15 @@ class JmfBreadcrumbsExtension extends Extension
                 )
             ;
         } else {
-            $container->autowire(BreadcrumbConfigurationRepositoryFactoryInterface::class)
+            $container
+                ->autowire(BreadcrumbConfigurationRepositoryFactoryInterface::class)
                 ->setClass(BreadcrumbConfigurationRepositoryFactory::class)
                 ->setArgument('$config', $config['breadcrumbs'])
             ;
         }
 
-        $container->autowire(BreadcrumbsExtension::class)
+        $container
+            ->autowire(BreadcrumbsExtension::class)
             ->setArgument('$templatePath', $config['template_path'])
             ->setArgument('$prefix', $config['twig_functions_prefix'])
             ->addTag('twig.extension')

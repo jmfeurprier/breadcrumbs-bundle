@@ -2,6 +2,8 @@
 
 namespace Jmf\Breadcrumbs\Configuration;
 
+use Override;
+
 readonly class BreadcrumbConfigurationRepositoryFactory implements BreadcrumbConfigurationRepositoryFactoryInterface
 {
     /**
@@ -13,6 +15,7 @@ readonly class BreadcrumbConfigurationRepositoryFactory implements BreadcrumbCon
     ) {
     }
 
+    #[Override]
     public function make(): BreadcrumbConfigurationRepositoryInterface
     {
         return new BreadcrumbConfigurationRepository(

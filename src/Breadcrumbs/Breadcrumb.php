@@ -6,7 +6,7 @@ readonly class Breadcrumb
 {
     public function __construct(
         private string $label,
-        private string $path
+        private string $path,
     ) {
     }
 

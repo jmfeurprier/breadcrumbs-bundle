@@ -13,7 +13,7 @@ interface TemplateRendererInterface
      */
     public function renderFromString(
         string $template,
-        array $context = []
+        array $context = [],
     ): string;
 
     /**
@@ -23,6 +23,6 @@ interface TemplateRendererInterface
      */
     public function renderFromFile(
         string $name,
-        array $context = []
+        array $context = [],
     ): string;
 }

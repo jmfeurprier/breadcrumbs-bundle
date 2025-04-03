@@ -2,6 +2,7 @@
 
 namespace Jmf\Breadcrumbs\Tests\bugs\bug0001;
 
+use Jmf\Breadcrumbs\Breadcrumbs\Breadcrumb;
 use Jmf\Breadcrumbs\Breadcrumbs\CurrentBreadcrumbs;
 use Jmf\Breadcrumbs\Breadcrumbs\CurrentBreadcrumbsFetcher;
 use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationLoader;
@@ -10,6 +11,7 @@ use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationRepositoryInterface;
 use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationsLoader;
 use Jmf\Breadcrumbs\Configuration\ParentBreadcrumbConfigurationLoader;
 use Jmf\Breadcrumbs\TemplateRendering\TemplateRenderer;
+use Override;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -35,6 +37,7 @@ class BugTest extends TestCase
      */
     private array $context = [];
 
+    #[Override]
     protected function setUp(): void
     {
         $this->requestStack = new RequestStack();
@@ -58,6 +61,14 @@ class BugTest extends TestCase
 
     private function getRouteCollection(): RouteCollection
     {
+        /**
+         * @var array<string, array{
+         *     route: array{
+         *         path: string,
+         *         requirements: string[]
+         *     }
+         * }> $routesConfig
+         */
         $routesConfig = (new Parser())->parseFile(__DIR__ . '/routes.yaml');
 
         $routeCollection = new RouteCollection();
@@ -86,6 +97,13 @@ class BugTest extends TestCase
 
     private function getBreadcrumbConfigurationRepository(): BreadcrumbConfigurationRepositoryInterface
     {
+        /**
+         * @var array{
+         *     parameters: array{
+         *         breadcrumbs: array<string, mixed>
+         *     }
+         * } $config
+         */
         $config = (new Parser())->parseFile(__DIR__ . '/breadcrumbs.yaml');
 
         $breadcrumbConfigurationRepositoryFactory = new BreadcrumbConfigurationRepositoryFactory(
@@ -111,7 +129,7 @@ class BugTest extends TestCase
         $this->givenContext(
             [
                 'cost' => $cost,
-            ]
+            ],
         );
 
         $this->whenFetch();
@@ -163,6 +181,7 @@ class BugTest extends TestCase
         foreach ($expected as $label => $path) {
             $breadcrumb = array_shift($breadcrumbs);
 
+            $this->assertInstanceOf(Breadcrumb::class, $breadcrumb);
             $this->assertSame($label, $breadcrumb->getLabel());
             $this->assertSame($path, $breadcrumb->getPath());
         }

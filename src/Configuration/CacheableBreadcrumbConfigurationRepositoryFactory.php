@@ -2,6 +2,7 @@
 
 namespace Jmf\Breadcrumbs\Configuration;
 
+use Override;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
@@ -18,11 +19,12 @@ readonly class CacheableBreadcrumbConfigurationRepositoryFactory implements
     /**
      * @throws InvalidArgumentException
      */
+    #[Override]
     public function make(): BreadcrumbConfigurationRepositoryInterface
     {
         return $this->cache->get(
             $this->getCacheKey(),
-            $this->getCallback(),
+            $this->doMake(...),
         );
     }
 
@@ -32,15 +34,13 @@ readonly class CacheableBreadcrumbConfigurationRepositoryFactory implements
             serialize(
                 [
                     self::class,
-                ]
-            )
+                ],
+            ),
         );
     }
 
-    private function getCallback(): callable
+    private function doMake(ItemInterface $item): BreadcrumbConfigurationRepositoryInterface
     {
-        return fn(
-            ItemInterface $item,
-        ) => $this->breadcrumbConfigurationRepositoryFactory->make();
+        return $this->breadcrumbConfigurationRepositoryFactory->make();
     }
 }

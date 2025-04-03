@@ -47,7 +47,7 @@ readonly class CurrentBreadcrumbsFetcher implements CurrentBreadcrumbsFetcherInt
 
             $breadcrumbs[] = new Breadcrumb(
                 $this->renderBreadcrumbLabel($breadcrumbConfiguration, $params),
-                $this->renderBreadcrumbPath($routeName, $breadcrumbConfiguration, $params)
+                $this->renderBreadcrumbPath($routeName, $breadcrumbConfiguration, $params),
             );
 
             if (null === $breadcrumbConfiguration->getParentBreadcrumbConfiguration()) {

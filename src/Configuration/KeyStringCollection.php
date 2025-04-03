@@ -28,9 +28,4 @@ readonly class KeyStringCollection
     {
         return $this->values;
     }
-
-//    public function tryGet(string $key, string $default): string
-//    {
-//        return $this->values[$key] ?? $default;
-//    }
 }
