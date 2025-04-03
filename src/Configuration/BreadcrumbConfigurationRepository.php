@@ -31,12 +31,6 @@ readonly class BreadcrumbConfigurationRepository implements BreadcrumbConfigurat
     }
 
     #[Override]
-    public function get(string $routeName): BreadcrumbConfiguration
-    {
-        return $this->tryGet($routeName) ?? throw new DomainException(); // @todo
-    }
-
-    #[Override]
     public function tryGet(string $routeName): ?BreadcrumbConfiguration
     {
         return $this->indexedByRouteName[$routeName] ?? null;

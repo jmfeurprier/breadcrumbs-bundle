@@ -4,8 +4,8 @@ namespace Jmf\Breadcrumbs\Breadcrumbs;
 
 use Jmf\Breadcrumbs\Configuration\BreadcrumbConfiguration;
 use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationRepositoryInterface;
-use Jmf\Breadcrumbs\Exception\TemplateRenderingException;
-use Jmf\Breadcrumbs\TemplateRendering\TemplateRendererInterface;
+use Jmf\TemplateRendering\Exception\TemplateRenderingException;
+use Jmf\TemplateRendering\TemplateRendererInterface;
 use Override;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Request;

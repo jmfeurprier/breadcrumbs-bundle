@@ -2,7 +2,7 @@
 
 namespace Jmf\Breadcrumbs\Breadcrumbs;
 
-use Jmf\Breadcrumbs\Exception\TemplateRenderingException;
+use Jmf\TemplateRendering\Exception\TemplateRenderingException;
 
 interface CurrentBreadcrumbsFetcherInterface
 {

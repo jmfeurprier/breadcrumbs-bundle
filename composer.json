@@ -5,6 +5,7 @@
     "type": "symfony-bundle",
     "require": {
         "php": ">=8.3",
+        "jmf/template-rendering": "^1.0",
         "symfony/framework-bundle": "^7.0",
         "symfony/property-access": "^7.0",
         "twig/twig": "^3.0",

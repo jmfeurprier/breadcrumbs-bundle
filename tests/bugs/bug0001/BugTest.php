@@ -10,7 +10,8 @@ use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationRepositoryFactory;
 use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationRepositoryInterface;
 use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationsLoader;
 use Jmf\Breadcrumbs\Configuration\ParentBreadcrumbConfigurationLoader;
-use Jmf\Breadcrumbs\TemplateRendering\TemplateRenderer;
+use Jmf\TemplateRendering\TemplateRenderer;
+use Jmf\TemplateRendering\TemplateRendererInterface;
 use Override;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -86,7 +87,7 @@ class BugTest extends TestCase
         return $routeCollection;
     }
 
-    private function getTemplateRenderer(): TemplateRenderer
+    private function getTemplateRenderer(): TemplateRendererInterface
     {
         return new TemplateRenderer(
             new Environment(

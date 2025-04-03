@@ -6,3 +6,6 @@ services:
 
     Jmf\Breadcrumbs\:
         resource: '../../'
+
+    Jmf\TemplateRendering\TemplateRendererInterface:
+        class: Jmf\TemplateRendering\TemplateRenderer

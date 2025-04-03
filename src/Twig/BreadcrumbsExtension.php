@@ -4,8 +4,8 @@ namespace Jmf\Breadcrumbs\Twig;
 
 use Jmf\Breadcrumbs\Breadcrumbs\CurrentBreadcrumbs;
 use Jmf\Breadcrumbs\Breadcrumbs\CurrentBreadcrumbsFetcher;
-use Jmf\Breadcrumbs\Exception\TemplateRenderingException;
-use Jmf\Breadcrumbs\TemplateRendering\TemplateRenderer;
+use Jmf\TemplateRendering\Exception\TemplateRenderingException;
+use Jmf\TemplateRendering\TemplateRendererInterface;
 use Override;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -24,7 +24,7 @@ class BreadcrumbsExtension extends AbstractExtension
 
     public function __construct(
         private readonly CurrentBreadcrumbsFetcher $currentBreadcrumbsFetcher,
-        private readonly TemplateRenderer $templateRenderer,
+        private readonly TemplateRendererInterface $templateRenderer,
         private readonly string $templatePath,
         private readonly string $prefix = self::PREFIX_DEFAULT,
     ) {
