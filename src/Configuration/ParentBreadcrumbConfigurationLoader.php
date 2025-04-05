@@ -2,13 +2,15 @@
 
 namespace Jmf\Breadcrumbs\Configuration;
 
-use InvalidArgumentException;
+use Jmf\Breadcrumbs\Exception\BreadcrumbConfigurationException;
 use Webmozart\Assert\Assert;
 
 readonly class ParentBreadcrumbConfigurationLoader
 {
     /**
      * @param array<string, mixed> $config
+     *
+     * @throws BreadcrumbConfigurationException
      */
     public function load(array $config): ?ParentBreadcrumbConfiguration
     {
@@ -28,11 +30,13 @@ readonly class ParentBreadcrumbConfigurationLoader
 
     /**
      * @param array<string, mixed> $parentConfig
+     *
+     * @throws BreadcrumbConfigurationException
      */
     private function getRouteName(array $parentConfig): string
     {
         if (!array_key_exists('route', $parentConfig)) {
-            throw new InvalidArgumentException("Missing breadcrumb parent 'route' configuration.");
+            throw new BreadcrumbConfigurationException("Missing breadcrumb parent 'route' configuration.");
         }
 
         $route = $parentConfig['route'];

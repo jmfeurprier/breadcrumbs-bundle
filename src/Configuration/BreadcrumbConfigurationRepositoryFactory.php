@@ -2,6 +2,7 @@
 
 namespace Jmf\Breadcrumbs\Configuration;
 
+use Jmf\Breadcrumbs\Exception\BreadcrumbConfigurationException;
 use Override;
 
 readonly class BreadcrumbConfigurationRepositoryFactory implements BreadcrumbConfigurationRepositoryFactoryInterface
@@ -25,6 +26,8 @@ readonly class BreadcrumbConfigurationRepositoryFactory implements BreadcrumbCon
 
     /**
      * @return BreadcrumbConfiguration[]
+     *
+     * @throws BreadcrumbConfigurationException
      */
     private function getBreadcrumbConfigurations(): iterable
     {

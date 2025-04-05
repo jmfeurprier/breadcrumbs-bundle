@@ -20,14 +20,14 @@ parameters:
                 route: dashboard
 
         project.read:
-            label:  'Project "{{ project.name|raw }}"'
+            label:  'Project "{{ project.name }}"'
             parameters:
                 id: project.id
             parent:
                 route: project.index
 
         task.read:
-            label:  'Task "{{ task.name|raw }}"'
+            label:  'Task "{{ task.name }}"'
             parameters:
                 id: 'task.id'
             parent:

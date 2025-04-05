@@ -4,6 +4,7 @@ namespace Jmf\Breadcrumbs\Twig;
 
 use Jmf\Breadcrumbs\Breadcrumbs\CurrentBreadcrumbs;
 use Jmf\Breadcrumbs\Breadcrumbs\CurrentBreadcrumbsFetcher;
+use Jmf\Breadcrumbs\Exception\BreadcrumbsException;
 use Jmf\TemplateRendering\Exception\TemplateRenderingException;
 use Jmf\TemplateRendering\TemplateRendererInterface;
 use Override;
@@ -12,7 +13,7 @@ use Twig\TwigFunction;
 
 class BreadcrumbsExtension extends AbstractExtension
 {
-    public final const string PREFIX_DEFAULT = 'jmf_';
+    public final const string PREFIX_DEFAULT = '';
 
     /**
      * @var array<string, string>
@@ -57,17 +58,18 @@ class BreadcrumbsExtension extends AbstractExtension
 
     /**
      * @param array<string, mixed> $context
-     * @param array<string, mixed> $parameters
+     * @param array<string, mixed> $templateParameters
      *
+     * @throws BreadcrumbsException
      * @throws TemplateRenderingException
      */
     public function render(
         array $context,
-        array $parameters = [],
+        array $templateParameters = [],
     ): string {
         return $this->templateRenderer->renderFromFile(
             $this->templatePath,
-            $parameters + [
+            $templateParameters + [
                 'breadcrumbs' => $this->get($context)->getBreadcrumbs(),
             ],
         );
@@ -76,7 +78,7 @@ class BreadcrumbsExtension extends AbstractExtension
     /**
      * @param array<string, mixed> $context
      *
-     * @throws TemplateRenderingException
+     * @throws BreadcrumbsException
      */
     public function get(
         array $context,

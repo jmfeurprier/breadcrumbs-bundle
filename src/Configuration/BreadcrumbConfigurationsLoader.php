@@ -2,6 +2,7 @@
 
 namespace Jmf\Breadcrumbs\Configuration;
 
+use Jmf\Breadcrumbs\Exception\BreadcrumbConfigurationException;
 use Webmozart\Assert\Assert;
 
 readonly class BreadcrumbConfigurationsLoader
@@ -15,6 +16,8 @@ readonly class BreadcrumbConfigurationsLoader
      * @param array<string, mixed> $config
      *
      * @return BreadcrumbConfiguration[]
+     *
+     * @throws BreadcrumbConfigurationException
      */
     public function load(
         array $config,

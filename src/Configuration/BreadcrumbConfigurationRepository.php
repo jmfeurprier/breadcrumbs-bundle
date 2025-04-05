@@ -2,7 +2,6 @@
 
 namespace Jmf\Breadcrumbs\Configuration;
 
-use DomainException;
 use Override;
 use Webmozart\Assert\Assert;
 

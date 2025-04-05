@@ -4,34 +4,41 @@ jmf_breadcrumbs:
     twig_functions_prefix: 'jmf_'
 
     breadcrumbs:
-        homepage:
+
+        # "homepage" and other "contact", "article.index", etc. are route names.
+        homepage: # /
             label: 'Home'
 
-        contact:
-            label: 'Contact Us'
-            parent:
-                route: 'homepage'
-
-        terms_and_conditions:
+        terms_and_conditions: # /terms-and-conditions
             label: 'Terms & Conditions'
             parent:
                 route: 'homepage'
 
-        article.index:
+        article.index: # /articles
             label: 'Articles'
             parent:
                 route: 'homepage'
 
-        article.read:
-            label: 'Article'
+        article.read: # /articles/{id}
+            label: 'Article: {{ article.title }}'
+            # These are the parameters required to build the URL for route "article.read".
+            # This implies you have an "article" variable defined in your Twig template.
             parameters:
+                # This will create a new parameter "id", read from $article "id" property.
                 id: 'article.id'
             parent:
                 route: 'article.index'
 
-        article.submit_comment:
-            label: 'Submit comment'
+        comment.read: # /comments/{id}
+            label: 'Comment on Article {{ comment.article.title }}'
+            # These are the parameters required to build the URL for route "comment.read".
+            # This implies you have a "comment" variable defined in your Twig template.
             parameters:
-                id: 'article.id'
+                # This will create a new parameter "id", read from $article "id" property.
+                id: 'comment.id'
             parent:
                 route: 'article.read'
+                parameters:
+                    # As parent "article.read" breadcrumb needs an "article" parameter, we can retrieve it
+                    # from Twig variable "comment" and pass it to the parent.
+                    article: 'comment.article'

@@ -2,14 +2,14 @@
 
 namespace Jmf\Breadcrumbs\Breadcrumbs;
 
-use Jmf\TemplateRendering\Exception\TemplateRenderingException;
+use Jmf\Breadcrumbs\Exception\BreadcrumbsException;
 
 interface CurrentBreadcrumbsFetcherInterface
 {
     /**
      * @param array<string, mixed> $context
      *
-     * @throws TemplateRenderingException
+     * @throws BreadcrumbsException
      */
     public function fetch(array $context): CurrentBreadcrumbs;
 }

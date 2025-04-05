@@ -3,8 +3,13 @@
 namespace Jmf\Breadcrumbs\Tests\bugs\bug0001;
 
 use Jmf\Breadcrumbs\Breadcrumbs\Breadcrumb;
+use Jmf\Breadcrumbs\Breadcrumbs\BreadcrumbCreator;
+use Jmf\Breadcrumbs\Breadcrumbs\BreadcrumbLabelRenderer;
+use Jmf\Breadcrumbs\Breadcrumbs\BreadcrumbUrlRenderer;
 use Jmf\Breadcrumbs\Breadcrumbs\CurrentBreadcrumbs;
 use Jmf\Breadcrumbs\Breadcrumbs\CurrentBreadcrumbsFetcher;
+use Jmf\Breadcrumbs\Breadcrumbs\ContextResolver;
+use Jmf\Breadcrumbs\Breadcrumbs\RouteNameResolver;
 use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationLoader;
 use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationRepositoryFactory;
 use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationRepositoryInterface;
@@ -44,11 +49,22 @@ class BugTest extends TestCase
         $this->requestStack = new RequestStack();
 
         $this->currentBreadcrumbsFetcher = new CurrentBreadcrumbsFetcher(
-            $this->requestStack,
-            $this->getUrlGenerator(),
-            $this->getTemplateRenderer(),
-            new PropertyAccessor(),
+            new RouteNameResolver(
+                $this->requestStack,
+            ),
             $this->getBreadcrumbConfigurationRepository(),
+            new ContextResolver(
+                new PropertyAccessor(),
+            ),
+            new BreadcrumbCreator(
+                new BreadcrumbLabelRenderer(
+                    $this->getTemplateRenderer(),
+                ),
+                new BreadcrumbUrlRenderer(
+                    $this->getUrlGenerator(),
+                    new PropertyAccessor(),
+                ),
+            ),
         );
     }
 

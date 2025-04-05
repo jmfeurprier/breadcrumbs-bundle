@@ -22,7 +22,7 @@ readonly class CurrentBreadcrumbs
 
     public function tryGetCurrentBreadcrumb(): ?Breadcrumb
     {
-        $breadcrumbs = iterator_to_array($this->breadcrumbs);
+        $breadcrumbs = (array) $this->breadcrumbs;
 
         if (count($breadcrumbs) >= 1) {
             return array_slice($breadcrumbs, -1, 1)[0];
@@ -33,7 +33,7 @@ readonly class CurrentBreadcrumbs
 
     public function tryGetPreviousBreadcrumb(): ?Breadcrumb
     {
-        $breadcrumbs = iterator_to_array($this->breadcrumbs);
+        $breadcrumbs = (array) $this->breadcrumbs;
 
         if (count($breadcrumbs) >= 2) {
             return array_slice($breadcrumbs, -2, 1)[0];
