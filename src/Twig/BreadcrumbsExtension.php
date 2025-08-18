@@ -15,14 +15,6 @@ class BreadcrumbsExtension extends AbstractExtension
 {
     public final const string PREFIX_DEFAULT = '';
 
-    /**
-     * @var array<string, string>
-     */
-    private const array FUNCTIONS = [
-        'breadcrumbs_render' => 'render',
-        'breadcrumbs_get'    => 'get',
-    ];
-
     public function __construct(
         private readonly CurrentBreadcrumbsFetcher $currentBreadcrumbsFetcher,
         private readonly TemplateRendererInterface $templateRenderer,
@@ -31,29 +23,27 @@ class BreadcrumbsExtension extends AbstractExtension
     ) {
     }
 
-    /**
-     * @return TwigFunction[]
-     */
     #[Override]
     public function getFunctions(): iterable
     {
-        $functions = [];
-
-        foreach (self::FUNCTIONS as $function => $method) {
-            $functions[] = new TwigFunction(
-                ($this->prefix . $function),
-                [
-                    $this,
-                    $method,
-                ],
+        return [
+            new TwigFunction(
+                "{$this->prefix}breadcrumbs_render",
+                $this->render(...),
                 [
                     'is_safe'       => ['html'],
                     'needs_context' => true,
                 ],
-            );
-        }
-
-        return $functions;
+            ),
+            new TwigFunction(
+                "{$this->prefix}breadcrumbs_get",
+                $this->get(...),
+                [
+                    'is_safe'       => ['html'],
+                    'needs_context' => true,
+                ],
+            ),
+        ];
     }
 
     /**
