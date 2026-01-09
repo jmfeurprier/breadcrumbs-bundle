@@ -1,0 +1,9 @@
+path:
+    - src
+    - tests
+jobs:         128
+extensions:
+    - php
+warning:      true
+memory-limit: -1
+no-cache:     true

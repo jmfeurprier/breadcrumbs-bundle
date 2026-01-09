@@ -58,7 +58,8 @@ readonly class BreadcrumbConfigurationLoader
 
         $parametersConfig = $config['parameters'];
 
-        Assert::isArray($parametersConfig);
+        Assert::isMap($parametersConfig);
+        Assert::allString($parametersConfig);
 
         return new KeyStringCollection($parametersConfig);
     }

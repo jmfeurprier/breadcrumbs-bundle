@@ -5,7 +5,7 @@ services:
         autowire:      true
 
     Jmf\Breadcrumbs\:
-        resource: '../../'
+        resource: '../src/'
 
     Jmf\TemplateRendering\TemplateRendererInterface:
         class: Jmf\TemplateRendering\TemplateRenderer

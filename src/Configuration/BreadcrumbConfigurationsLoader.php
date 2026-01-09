@@ -27,7 +27,7 @@ readonly class BreadcrumbConfigurationsLoader
         $breadcrumbConfigurations = [];
 
         foreach ($config as $routeName => $breadcrumbConfig) {
-            Assert::isArray($breadcrumbConfig);
+            Assert::isMap($breadcrumbConfig);
 
             $breadcrumbConfigurations[] = $this->breadcrumbConfigurationLoader->load($routeName, $breadcrumbConfig);
         }

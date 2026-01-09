@@ -57,7 +57,8 @@ readonly class ParentBreadcrumbConfigurationLoader
 
         $parametersConfig = $parentConfig['parameters'];
 
-        Assert::isArray($parametersConfig);
+        Assert::isMap($parametersConfig);
+        Assert::allString($parametersConfig);
 
         return new KeyStringCollection($parametersConfig);
     }

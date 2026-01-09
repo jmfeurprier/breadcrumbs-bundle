@@ -1,0 +1,51 @@
+<?php
+
+declare(strict_types=1);
+
+use Jmf\Breadcrumbs\Twig\BreadcrumbsExtension;
+use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
+
+return static function (DefinitionConfigurator $definition): void {
+    $definition->rootNode()
+        ->children()
+            ->arrayNode('breadcrumbs')
+                ->info('Breadcrumb definitions.')
+                ->useAttributeAsKey('route')
+                ->arrayPrototype()
+                    ->children()
+                        ->scalarNode('label')
+                            ->info('Breadcrumb label.')
+                            ->isRequired()
+                        ->end()
+                        ->arrayNode('parent')
+                            ->children()
+                                ->scalarNode('route')
+                                    ->isRequired()
+                                ->end()
+                                ->arrayNode('parameters')
+                                    ->info('Breadcrumb route parameters.')
+                                    ->defaultValue([])
+                                    ->variablePrototype()->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('parameters')
+                            ->info('Breadcrumb route parameters.')
+                            ->defaultValue([])
+                            ->variablePrototype()->end()
+                        ->end()
+                    ->end()
+                ->end()
+                ->defaultValue([])
+            ->end()
+            ->scalarNode('template_path')
+                ->info('Breadcrumbs template path.')
+                ->defaultValue('@JmfBreadcrumbs/breadcrumbs.html.twig')
+            ->end()
+            ->scalarNode('twig_functions_prefix')
+                ->info('Twig functions prefix.')
+                ->defaultValue(BreadcrumbsExtension::PREFIX_DEFAULT)
+            ->end()
+        ->end()
+    ;
+};
