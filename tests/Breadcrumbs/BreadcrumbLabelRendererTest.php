@@ -5,6 +5,7 @@ namespace Jmf\Breadcrumbs\Tests\Breadcrumbs;
 use Jmf\Breadcrumbs\Breadcrumbs\BreadcrumbLabelRenderer;
 use Jmf\Breadcrumbs\Configuration\BreadcrumbConfiguration;
 use Jmf\Breadcrumbs\Configuration\KeyStringCollection;
+use Jmf\Breadcrumbs\Exception\BreadcrumbLabelRenderingException;
 use Jmf\TemplateRendering\TemplateRenderer;
 use Jmf\TemplateRendering\TemplateRendererInterface;
 use PHPUnit\Framework\TestCase;

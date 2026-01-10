@@ -1,6 +1,24 @@
 parameters:
+    exceptions:
+        check:
+            missingCheckedExceptionInThrows: true
+            tooWideThrowType: true
+        uncheckedExceptionClasses:
+            - 'Error'
+            - 'LogicException'
+            - 'RuntimeException'
+        uncheckedExceptionRegexes:
+            - '|^PHPUnit\\|'
+    excludePaths:
+        - ../src/JmfBreadcrumbsBundle.php
+    ignoreErrors:
+        -
+            message: '#^Method .+ throws checked exception .+ but it''s missing from the PHPDoc @throws tag\.$#'
+            paths:
+                - '../tests/*'
     level: 10
     paths:
+        - ../bin/
         - ../src/
         - ../tests/
     tmpDir: ../var/cache/phpstan
