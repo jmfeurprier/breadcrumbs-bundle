@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Jmf\Breadcrumbs\Twig;
 
 use Jmf\Breadcrumbs\Breadcrumbs\CurrentBreadcrumbs;
@@ -28,7 +30,7 @@ class BreadcrumbsExtension extends AbstractExtension
     {
         return [
             new TwigFunction(
-                "{$this->prefix}breadcrumbs_render",
+                $this->prefix . 'breadcrumbs_render',
                 $this->render(...),
                 [
                     'is_safe'       => ['html'],
@@ -36,7 +38,7 @@ class BreadcrumbsExtension extends AbstractExtension
                 ],
             ),
             new TwigFunction(
-                "{$this->prefix}breadcrumbs_get",
+                $this->prefix . 'breadcrumbs_get',
                 $this->get(...),
                 [
                     'is_safe'       => ['html'],

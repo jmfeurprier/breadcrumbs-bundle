@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Jmf\Breadcrumbs\Tests\bugs\bug0001;
 
 use Jmf\Breadcrumbs\Breadcrumbs\Breadcrumb;
@@ -30,7 +32,7 @@ use Symfony\Component\Yaml\Parser;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
 
-class BugTest extends TestCase
+final class BugTest extends TestCase
 {
     private RequestStack $requestStack;
 

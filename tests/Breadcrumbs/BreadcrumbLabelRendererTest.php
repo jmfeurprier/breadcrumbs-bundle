@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Jmf\Breadcrumbs\Tests\Breadcrumbs;
 
 use Jmf\Breadcrumbs\Breadcrumbs\BreadcrumbLabelRenderer;
@@ -12,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
 
-class BreadcrumbLabelRendererTest extends TestCase
+final class BreadcrumbLabelRendererTest extends TestCase
 {
     private BreadcrumbLabelRenderer $breadcrumbLabelRenderer;
 
@@ -103,6 +105,6 @@ class BreadcrumbLabelRendererTest extends TestCase
 
     private function thenResult(string $expected): void
     {
-        $this->assertSame($expected, $this->result);
+        self::assertSame($expected, $this->result);
     }
 }

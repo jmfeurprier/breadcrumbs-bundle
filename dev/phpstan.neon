@@ -9,8 +9,6 @@ parameters:
             - 'RuntimeException'
         uncheckedExceptionRegexes:
             - '|^PHPUnit\\|'
-    excludePaths:
-        - ../src/JmfBreadcrumbsBundle.php
     ignoreErrors:
         -
             message: '#^Method .+ throws checked exception .+ but it''s missing from the PHPDoc @throws tag\.$#'
@@ -18,7 +16,7 @@ parameters:
                 - '../tests/*'
     level: 10
     paths:
-        - ../bin/
+        - ../config/
         - ../src/
         - ../tests/
     tmpDir: ../var/cache/phpstan

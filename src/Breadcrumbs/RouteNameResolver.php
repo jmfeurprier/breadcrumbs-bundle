@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Jmf\Breadcrumbs\Breadcrumbs;
 
 use RuntimeException;
@@ -30,10 +32,10 @@ readonly class RouteNameResolver
     {
         $request = $this->requestStack->getMainRequest();
 
-        if (null === $request) {
-            throw new RuntimeException('No main request.');
+        if ($request instanceof Request) {
+            return $request;
         }
 
-        return $request;
+        throw new RuntimeException('No main request.');
     }
 }

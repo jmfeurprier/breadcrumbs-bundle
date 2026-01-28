@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Jmf\Breadcrumbs\Breadcrumbs;
 
 use Jmf\Breadcrumbs\Configuration\BreadcrumbConfiguration;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Jmf\Breadcrumbs\Exception;
 
 use Throwable;
@@ -23,8 +25,15 @@ class BreadcrumbContextResolutionException extends BreadcrumbsException
 
     private function buildMessage(): string
     {
-        return "Failed resolving parameter '{$this->key}': failed reading value '{$this->value}'. " .
-            "Available context entries: " . implode(', ', array_keys($this->context)) . ".";
+        return sprintf(
+            "Failed resolving parameter '%s': failed reading value '%s'. Available context entries: %s.",
+            $this->key,
+            $this->value,
+            implode(
+                ', ',
+                array_keys($this->context),
+            ),
+        );
     }
 
     public function getKey(): string

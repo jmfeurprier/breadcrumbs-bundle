@@ -1,8 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Jmf\Breadcrumbs\Breadcrumbs;
 
+use Jmf\Breadcrumbs\Configuration\BreadcrumbConfiguration;
 use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationRepositoryInterface;
+use Jmf\Breadcrumbs\Configuration\ParentBreadcrumbConfiguration;
 use Override;
 
 readonly class CurrentBreadcrumbsFetcher implements CurrentBreadcrumbsFetcherInterface
@@ -24,7 +28,7 @@ readonly class CurrentBreadcrumbsFetcher implements CurrentBreadcrumbsFetcherInt
         while (true) {
             $breadcrumbConfiguration = $this->breadcrumbConfigurationRepository->tryGet($routeName);
 
-            if (null === $breadcrumbConfiguration) {
+            if (!$breadcrumbConfiguration instanceof BreadcrumbConfiguration) {
                 break;
             }
 
@@ -38,7 +42,9 @@ readonly class CurrentBreadcrumbsFetcher implements CurrentBreadcrumbsFetcherInt
                 $context,
             );
 
-            if (null === $breadcrumbConfiguration->getParentBreadcrumbConfiguration()) {
+            if (
+                !$breadcrumbConfiguration->getParentBreadcrumbConfiguration() instanceof ParentBreadcrumbConfiguration
+            ) {
                 break;
             }
 

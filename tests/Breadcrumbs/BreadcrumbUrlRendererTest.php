@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Jmf\Breadcrumbs\Tests\Breadcrumbs;
 
 use Jmf\Breadcrumbs\Breadcrumbs\BreadcrumbUrlRenderer;
@@ -12,7 +14,7 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
-class BreadcrumbUrlRendererTest extends TestCase
+final class BreadcrumbUrlRendererTest extends TestCase
 {
     private BreadcrumbUrlRenderer $breadcrumbUrlRenderer;
 
@@ -125,6 +127,6 @@ class BreadcrumbUrlRendererTest extends TestCase
 
     private function thenResult(string $expected): void
     {
-        $this->assertSame($expected, $this->result);
+        self::assertSame($expected, $this->result);
     }
 }

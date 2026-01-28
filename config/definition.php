@@ -5,8 +5,8 @@ declare(strict_types=1);
 use Jmf\Breadcrumbs\Twig\BreadcrumbsExtension;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 
-return static function (DefinitionConfigurator $definition): void {
-    $definition->rootNode()
+return static function (DefinitionConfigurator $definitionConfigurator): void {
+    $definitionConfigurator->rootNode()
         ->children()
             ->arrayNode('breadcrumbs')
                 ->info('Breadcrumb definitions.')

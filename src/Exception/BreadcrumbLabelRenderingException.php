@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Jmf\Breadcrumbs\Exception;
 
 use Throwable;
@@ -23,8 +25,15 @@ class BreadcrumbLabelRenderingException extends BreadcrumbsException
 
     private function buildMessage(): string
     {
-        return "Failed rendering breadcrumb label (route: {$this->routeName}, label: {$this->label}). " .
-            "Available context entries: " . implode(', ', array_keys($this->context)) . ".";
+        return sprintf(
+            "Failed rendering breadcrumb label (route: %s, label: %s). Available context entries: %s.",
+            $this->routeName,
+            $this->label,
+            implode(
+                ', ',
+                array_keys($this->context),
+            ),
+        );
     }
 
     public function getRouteName(): string

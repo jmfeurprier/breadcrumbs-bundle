@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Jmf\Breadcrumbs\Tests\Breadcrumbs;
 
 use Jmf\Breadcrumbs\Breadcrumbs\Breadcrumb;
 use Jmf\Breadcrumbs\Breadcrumbs\CurrentBreadcrumbs;
 use PHPUnit\Framework\TestCase;
 
-class CurrentBreadcrumbsTest extends TestCase
+final class CurrentBreadcrumbsTest extends TestCase
 {
     /**
      * @var Breadcrumb[]
@@ -17,7 +19,7 @@ class CurrentBreadcrumbsTest extends TestCase
     {
         $currentBreadcrumbs = $this->getInstance();
 
-        $this->assertEmpty($currentBreadcrumbs->getBreadcrumbs());
+        self::assertEmpty($currentBreadcrumbs->getBreadcrumbs());
     }
 
     public function testGetBreadcrumbsWithOneItem(): void
@@ -26,8 +28,8 @@ class CurrentBreadcrumbsTest extends TestCase
 
         $currentBreadcrumbs = $this->getInstance();
 
-        $this->assertCount(1, $currentBreadcrumbs->getBreadcrumbs());
-        $this->assertContains($breadcrumb, $currentBreadcrumbs->getBreadcrumbs());
+        self::assertCount(1, $currentBreadcrumbs->getBreadcrumbs());
+        self::assertContains($breadcrumb, $currentBreadcrumbs->getBreadcrumbs());
     }
 
     public function testGetBreadcrumbsWithManyItems(): void
@@ -37,16 +39,16 @@ class CurrentBreadcrumbsTest extends TestCase
 
         $currentBreadcrumbs = $this->getInstance();
 
-        $this->assertCount(2, $currentBreadcrumbs->getBreadcrumbs());
-        $this->assertContains($breadcrumbPrimary, $currentBreadcrumbs->getBreadcrumbs());
-        $this->assertContains($breadcrumbSecondary, $currentBreadcrumbs->getBreadcrumbs());
+        self::assertCount(2, $currentBreadcrumbs->getBreadcrumbs());
+        self::assertContains($breadcrumbPrimary, $currentBreadcrumbs->getBreadcrumbs());
+        self::assertContains($breadcrumbSecondary, $currentBreadcrumbs->getBreadcrumbs());
     }
 
     public function testGetCurrentBreadcrumbWithEmptyList(): void
     {
         $currentBreadcrumbs = $this->getInstance();
 
-        $this->assertNull($currentBreadcrumbs->tryGetCurrentBreadcrumb());
+        self::assertNull($currentBreadcrumbs->tryGetCurrentBreadcrumb());
     }
 
     public function testGetCurrentBreadcrumbWithOneItem(): void
@@ -55,7 +57,7 @@ class CurrentBreadcrumbsTest extends TestCase
 
         $currentBreadcrumbs = $this->getInstance();
 
-        $this->assertSame($breadcrumb, $currentBreadcrumbs->tryGetCurrentBreadcrumb());
+        self::assertSame($breadcrumb, $currentBreadcrumbs->tryGetCurrentBreadcrumb());
     }
 
     public function testGetCurrentBreadcrumbWithManyItems(): void
@@ -65,14 +67,14 @@ class CurrentBreadcrumbsTest extends TestCase
 
         $currentBreadcrumbs = $this->getInstance();
 
-        $this->assertSame($breadcrumbSecondary, $currentBreadcrumbs->tryGetCurrentBreadcrumb());
+        self::assertSame($breadcrumbSecondary, $currentBreadcrumbs->tryGetCurrentBreadcrumb());
     }
 
     public function testGetPreviousBreadcrumbWithEmptyList(): void
     {
         $currentBreadcrumbs = $this->getInstance();
 
-        $this->assertNull($currentBreadcrumbs->tryGetPreviousBreadcrumb());
+        self::assertNull($currentBreadcrumbs->tryGetPreviousBreadcrumb());
     }
 
     public function testGetPreviousBreadcrumbWithOneItem(): void
@@ -81,7 +83,7 @@ class CurrentBreadcrumbsTest extends TestCase
 
         $currentBreadcrumbs = $this->getInstance();
 
-        $this->assertNull($currentBreadcrumbs->tryGetPreviousBreadcrumb());
+        self::assertNull($currentBreadcrumbs->tryGetPreviousBreadcrumb());
     }
 
     public function testGetPreviousBreadcrumbWithManyItems(): void
@@ -91,7 +93,7 @@ class CurrentBreadcrumbsTest extends TestCase
 
         $currentBreadcrumbs = $this->getInstance();
 
-        $this->assertSame($breadcrumbPrimary, $currentBreadcrumbs->tryGetPreviousBreadcrumb());
+        self::assertSame($breadcrumbPrimary, $currentBreadcrumbs->tryGetPreviousBreadcrumb());
     }
 
     private function givenBreadcrumb(
