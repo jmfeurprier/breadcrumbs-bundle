@@ -6,13 +6,13 @@ namespace Jmf\Breadcrumbs\Breadcrumbs;
 
 use Jmf\Breadcrumbs\Configuration\BreadcrumbConfiguration;
 use Jmf\Breadcrumbs\Exception\BreadcrumbLabelRenderingException;
-use Jmf\Breadcrumbs\Exception\BreadcrumbUrlRenderingException;
+use Jmf\Breadcrumbs\Exception\BreadcrumbRouteParametersResolutionException;
 
 readonly class BreadcrumbCreator
 {
     public function __construct(
         private BreadcrumbLabelRenderer $breadcrumbLabelRenderer,
-        private BreadcrumbUrlRenderer $breadcrumbUrlRenderer,
+        private BreadcrumbRouteParametersResolver $breadcrumbRouteParametersResolver,
     ) {
     }
 
@@ -20,22 +20,22 @@ readonly class BreadcrumbCreator
      * @param array<string, mixed> $context
      *
      * @throws BreadcrumbLabelRenderingException
-     * @throws BreadcrumbUrlRenderingException
+     * @throws BreadcrumbRouteParametersResolutionException
      */
     public function create(
         BreadcrumbConfiguration $breadcrumbConfiguration,
         array $context,
     ): Breadcrumb {
         return new Breadcrumb(
-            label:     $this->breadcrumbLabelRenderer->render(
-                           $breadcrumbConfiguration,
-                           $context,
-                       ),
-            path:      $this->breadcrumbUrlRenderer->render(
-                           $breadcrumbConfiguration,
-                           $context,
-                       ),
-            routeName: $breadcrumbConfiguration->getRouteName(),
+            label:           $this->breadcrumbLabelRenderer->render(
+                                 $breadcrumbConfiguration,
+                                 $context,
+                             ),
+            routeName:       $breadcrumbConfiguration->getRouteName(),
+            routeParameters: $this->breadcrumbRouteParametersResolver->resolve(
+                                 $breadcrumbConfiguration,
+                                 $context,
+                             ),
         );
     }
 }

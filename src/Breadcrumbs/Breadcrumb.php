@@ -6,10 +6,13 @@ namespace Jmf\Breadcrumbs\Breadcrumbs;
 
 readonly class Breadcrumb
 {
+    /**
+     * @param array<string, mixed> $routeParameters
+     */
     public function __construct(
         private string $label,
-        private string $path,
         private string $routeName,
+        private array $routeParameters,
     ) {
     }
 
@@ -18,13 +21,16 @@ readonly class Breadcrumb
         return $this->label;
     }
 
-    public function getPath(): string
-    {
-        return $this->path;
-    }
-
     public function getRouteName(): string
     {
         return $this->routeName;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getRouteParameters(): array
+    {
+        return $this->routeParameters;
     }
 }

@@ -7,10 +7,10 @@ namespace Jmf\Breadcrumbs\Tests\bugs\bug0001;
 use Jmf\Breadcrumbs\Breadcrumbs\Breadcrumb;
 use Jmf\Breadcrumbs\Breadcrumbs\BreadcrumbCreator;
 use Jmf\Breadcrumbs\Breadcrumbs\BreadcrumbLabelRenderer;
-use Jmf\Breadcrumbs\Breadcrumbs\BreadcrumbUrlRenderer;
+use Jmf\Breadcrumbs\Breadcrumbs\BreadcrumbRouteParametersResolver;
+use Jmf\Breadcrumbs\Breadcrumbs\ContextResolver;
 use Jmf\Breadcrumbs\Breadcrumbs\CurrentBreadcrumbs;
 use Jmf\Breadcrumbs\Breadcrumbs\CurrentBreadcrumbsFetcher;
-use Jmf\Breadcrumbs\Breadcrumbs\ContextResolver;
 use Jmf\Breadcrumbs\Breadcrumbs\RouteNameResolver;
 use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationLoader;
 use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationRepositoryFactory;
@@ -24,10 +24,6 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
-use Symfony\Component\Routing\Generator\UrlGenerator;
-use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Yaml\Parser;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
@@ -62,47 +58,11 @@ final class BugTest extends TestCase
                 new BreadcrumbLabelRenderer(
                     $this->getTemplateRenderer(),
                 ),
-                new BreadcrumbUrlRenderer(
-                    $this->getUrlGenerator(),
+                new BreadcrumbRouteParametersResolver(
                     new PropertyAccessor(),
                 ),
             ),
         );
-    }
-
-    private function getUrlGenerator(): UrlGenerator
-    {
-        return new UrlGenerator(
-            $this->getRouteCollection(),
-            new RequestContext(),
-        );
-    }
-
-    private function getRouteCollection(): RouteCollection
-    {
-        /**
-         * @var array<string, array{
-         *     route: array{
-         *         path: string,
-         *         requirements: string[]
-         *     }
-         * }> $routesConfig
-         */
-        $routesConfig = (new Parser())->parseFile(__DIR__ . '/routes.yaml');
-
-        $routeCollection = new RouteCollection();
-
-        foreach ($routesConfig as $routeName => $routeConfig) {
-            $routeCollection->add(
-                $routeName,
-                new Route(
-                    path:         $routeConfig['route']['path'],
-                    requirements: $routeConfig['route']['requirements'] ?? [],
-                ),
-            );
-        }
-
-        return $routeCollection;
     }
 
     private function getTemplateRenderer(): TemplateRendererInterface
@@ -155,11 +115,11 @@ final class BugTest extends TestCase
 
         $this->thenBreadcrumbs(
             [
-                'Dashboard'              => '/',
-                'Projects'               => '/projects',
-                'Project "Project Name"' => '/projects/project-id',
-                'Task "Task Name"'       => '/tasks/task-id',
-                'Cost - Create'          => '/tasks/task-id/costs/create',
+                'Dashboard'              => 'dashboard',
+                'Projects'               => 'project.index',
+                'Project "Project Name"' => 'project.read',
+                'Task "Task Name"'       => 'task.read',
+                'Cost - Create'          => 'cost.create',
             ],
         );
     }
@@ -197,12 +157,12 @@ final class BugTest extends TestCase
 
         $this->assertCount(count($expected), $breadcrumbs);
 
-        foreach ($expected as $label => $path) {
+        foreach ($expected as $label => $routeName) {
             $breadcrumb = array_shift($breadcrumbs);
 
             $this->assertInstanceOf(Breadcrumb::class, $breadcrumb);
             $this->assertSame($label, $breadcrumb->getLabel());
-            $this->assertSame($path, $breadcrumb->getPath());
+            $this->assertSame($routeName, $breadcrumb->getRouteName());
         }
     }
 }

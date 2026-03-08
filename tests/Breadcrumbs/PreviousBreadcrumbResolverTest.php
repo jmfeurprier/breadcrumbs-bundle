@@ -45,13 +45,13 @@ final class PreviousBreadcrumbResolverTest extends TestCase
 
     public function testResolveReturnsPreviousBreadcrumbWhenAvailable(): void
     {
-        $previousBreadcrumb = $this->createBreadcrumb('Previous', '/previous', 'route_previous');
+        $previousBreadcrumb = $this->createBreadcrumb('Previous', 'route_previous');
 
         $this->givenContext(['key' => 'value']);
         $this->givenBreadcrumbs(
             [
                 $previousBreadcrumb,
-                $this->createBreadcrumb('Current', '/current', 'route_current'),
+                $this->createBreadcrumb('Current', 'route_current'),
             ],
         );
 
@@ -65,7 +65,7 @@ final class PreviousBreadcrumbResolverTest extends TestCase
         $this->givenContext(['key' => 'value']);
         $this->givenBreadcrumbs(
             [
-                $this->createBreadcrumb('Current', '/current', 'route_current'),
+                $this->createBreadcrumb('Current', 'route_current'),
             ],
         );
 
@@ -94,7 +94,7 @@ final class PreviousBreadcrumbResolverTest extends TestCase
         $this->givenCurrentBreadcrumbsFetcherException($fetcherException);
 
         $this->expectException(PreviousBreadcrumbResolutionException::class);
-        $this->expectExceptionMessage('Failed resolving back URL: failed fetching current Breadcrumbs.');
+        $this->expectExceptionMessage('Failed resolving previous Breadcrumb: failed fetching current Breadcrumbs.');
 
         try {
             $this->whenResolve();
@@ -120,10 +120,13 @@ final class PreviousBreadcrumbResolverTest extends TestCase
 
     private function createBreadcrumb(
         string $label,
-        string $path,
         string $routeName,
     ): Breadcrumb {
-        return new Breadcrumb($label, $path, $routeName);
+        return new Breadcrumb(
+            label:           $label,
+            routeName:       $routeName,
+            routeParameters: [],
+        );
     }
 
     /**

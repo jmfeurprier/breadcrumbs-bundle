@@ -5,7 +5,7 @@ jmf_breadcrumbs:
 
     breadcrumbs:
 
-        # "homepage" and other "contact", "article.index", etc. are route names.
+        # "homepage" and other "terms_and_conditions", "article.index", etc. are route names.
         homepage: # /
             label: 'Home'
 
@@ -34,7 +34,7 @@ jmf_breadcrumbs:
             # These are the parameters required to build the URL for route "comment.read".
             # This implies you have a "comment" variable defined in your Twig template.
             parameters:
-                # This will create a new parameter "id", read from $article "id" property.
+                # This will create a new parameter "id", read from $comment "id" property.
                 id: 'comment.id'
             parent:
                 route: 'article.read'

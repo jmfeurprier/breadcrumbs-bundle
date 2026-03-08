@@ -5,15 +5,13 @@ declare(strict_types=1);
 namespace Jmf\Breadcrumbs\Breadcrumbs;
 
 use Jmf\Breadcrumbs\Configuration\BreadcrumbConfiguration;
-use Jmf\Breadcrumbs\Exception\BreadcrumbUrlRenderingException;
+use Jmf\Breadcrumbs\Exception\BreadcrumbRouteParametersResolutionException;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Throwable;
 
-readonly class BreadcrumbUrlRenderer
+readonly class BreadcrumbRouteParametersResolver
 {
     public function __construct(
-        private UrlGeneratorInterface $urlGenerator,
         private PropertyAccessorInterface $propertyAccessor,
     ) {
     }
@@ -21,30 +19,32 @@ readonly class BreadcrumbUrlRenderer
     /**
      * @param array<string, mixed> $context
      *
-     * @throws BreadcrumbUrlRenderingException
+     * @return array<string, mixed>
+     *
+     * @throws BreadcrumbRouteParametersResolutionException
      */
-    public function render(
+    public function resolve(
         BreadcrumbConfiguration $breadcrumbConfiguration,
         array $context,
-    ): string {
+    ): array {
         $routeParameters = [];
 
         try {
             foreach ($breadcrumbConfiguration->getParameters()->all() as $key => $value) {
-                $routeParameters[$key] = $this->propertyAccessor->getValue((object) $context, $value);
+                $routeParameters[$key] = $this->propertyAccessor->getValue(
+                    (object) $context,
+                    $value,
+                );
             }
-
-            return $this->urlGenerator->generate(
-                $breadcrumbConfiguration->getRouteName(),
-                $routeParameters,
-            );
         } catch (Throwable $e) {
-            throw new BreadcrumbUrlRenderingException(
+            throw new BreadcrumbRouteParametersResolutionException(
                 routeName: $breadcrumbConfiguration->getRouteName(),
                 label:     $breadcrumbConfiguration->getLabel(),
                 context:   $context,
                 previous:  $e,
             );
         }
+
+        return $routeParameters;
     }
 }

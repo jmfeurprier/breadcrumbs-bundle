@@ -22,7 +22,7 @@ readonly class PreviousBreadcrumbResolver implements PreviousBreadcrumbResolverI
             $currentBreadcrumbs = $this->currentBreadcrumbsFetcher->fetch($context);
         } catch (Throwable $e) {
             throw new PreviousBreadcrumbResolutionException(
-                message:  'Failed resolving back URL: failed fetching current Breadcrumbs.',
+                message:  'Failed resolving previous Breadcrumb: failed fetching current Breadcrumbs.',
                 previous: $e,
             );
         }
