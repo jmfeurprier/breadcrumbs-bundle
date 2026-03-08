@@ -1,0 +1,12 @@
+services:
+
+    php:
+        build:
+            context:    .
+            dockerfile: 'docker/Dockerfile'
+        volumes:
+            - .:/app
+            - ./docker/php.ini:/usr/local/etc/php/php.ini
+        working_dir: '/app'
+        stdin_open: true
+        tty: true

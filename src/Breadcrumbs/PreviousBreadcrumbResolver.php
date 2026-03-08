@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs\Breadcrumbs;
 
-use Jmf\Breadcrumbs\Exception\BackUrlResolutionException;
+use Jmf\Breadcrumbs\Exception\PreviousBreadcrumbResolutionException;
 use Override;
 use Throwable;
 
-readonly class BackUrlResolver implements BackUrlResolverInterface
+readonly class PreviousBreadcrumbResolver implements PreviousBreadcrumbResolverInterface
 {
     public function __construct(
         private CurrentBreadcrumbsFetcherInterface $currentBreadcrumbsFetcher,
@@ -16,12 +16,12 @@ readonly class BackUrlResolver implements BackUrlResolverInterface
     }
 
     #[Override]
-    public function resolve(array $context): string
+    public function resolve(array $context): Breadcrumb
     {
         try {
             $currentBreadcrumbs = $this->currentBreadcrumbsFetcher->fetch($context);
         } catch (Throwable $e) {
-            throw new BackUrlResolutionException(
+            throw new PreviousBreadcrumbResolutionException(
                 message:  'Failed resolving back URL: failed fetching current Breadcrumbs.',
                 previous: $e,
             );
@@ -30,11 +30,11 @@ readonly class BackUrlResolver implements BackUrlResolverInterface
         $previousBreadcrumb = $currentBreadcrumbs->tryGetPreviousBreadcrumb();
 
         if ($previousBreadcrumb instanceof Breadcrumb) {
-            return $previousBreadcrumb->getPath();
+            return $previousBreadcrumb;
         }
 
-        throw new BackUrlResolutionException(
-            message: 'Failed resolving back URL: no previous Breadcrumb.',
+        throw new PreviousBreadcrumbResolutionException(
+            message: 'Failed resolving previous Breadcrumb.',
         );
     }
 }

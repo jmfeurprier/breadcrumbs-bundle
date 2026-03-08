@@ -27,14 +27,15 @@ readonly class BreadcrumbCreator
         array $context,
     ): Breadcrumb {
         return new Breadcrumb(
-            $this->breadcrumbLabelRenderer->render(
-                $breadcrumbConfiguration,
-                $context,
-            ),
-            $this->breadcrumbUrlRenderer->render(
-                $breadcrumbConfiguration,
-                $context,
-            ),
+            label:     $this->breadcrumbLabelRenderer->render(
+                           $breadcrumbConfiguration,
+                           $context,
+                       ),
+            path:      $this->breadcrumbUrlRenderer->render(
+                           $breadcrumbConfiguration,
+                           $context,
+                       ),
+            routeName: $breadcrumbConfiguration->getRouteName(),
         );
     }
 }

@@ -9,6 +9,7 @@ readonly class Breadcrumb
     public function __construct(
         private string $label,
         private string $path,
+        private string $routeName,
     ) {
     }
 
@@ -20,5 +21,10 @@ readonly class Breadcrumb
     public function getPath(): string
     {
         return $this->path;
+    }
+
+    public function getRouteName(): string
+    {
+        return $this->routeName;
     }
 }

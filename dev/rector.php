@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Rector\CodingStyle\Rector\Catch_\CatchExceptionNameMatchingTypeRector;
 use Rector\Config\RectorConfig;
 use Rector\Naming\Rector\Class_\RenamePropertyToMatchTypeRector;
+use Rector\Naming\Rector\ClassMethod\RenameParamToMatchTypeRector;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitThisCallRector;
 
 $rootPath = realpath(__DIR__ . '/..') . '/';
@@ -23,6 +24,7 @@ return RectorConfig::configure()
         [
             CatchExceptionNameMatchingTypeRector::class,
             PreferPHPUnitThisCallRector::class,
+            RenameParamToMatchTypeRector::class,
             RenamePropertyToMatchTypeRector::class,
         ],
     )

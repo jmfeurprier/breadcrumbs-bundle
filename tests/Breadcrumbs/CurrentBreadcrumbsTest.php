@@ -24,7 +24,7 @@ final class CurrentBreadcrumbsTest extends TestCase
 
     public function testGetBreadcrumbsWithOneItem(): void
     {
-        $breadcrumb = $this->givenBreadcrumb('label', 'path');
+        $breadcrumb = $this->givenBreadcrumb('label', 'path', 'route_name');
 
         $currentBreadcrumbs = $this->getInstance();
 
@@ -34,8 +34,8 @@ final class CurrentBreadcrumbsTest extends TestCase
 
     public function testGetBreadcrumbsWithManyItems(): void
     {
-        $breadcrumbPrimary   = $this->givenBreadcrumb('label_1', 'path_1');
-        $breadcrumbSecondary = $this->givenBreadcrumb('label_2', 'path_2');
+        $breadcrumbPrimary   = $this->givenBreadcrumb('label_1', 'path_1', 'route_name_1');
+        $breadcrumbSecondary = $this->givenBreadcrumb('label_2', 'path_2', 'route_name_2');
 
         $currentBreadcrumbs = $this->getInstance();
 
@@ -53,7 +53,7 @@ final class CurrentBreadcrumbsTest extends TestCase
 
     public function testGetCurrentBreadcrumbWithOneItem(): void
     {
-        $breadcrumb = $this->givenBreadcrumb('label', 'path');
+        $breadcrumb = $this->givenBreadcrumb('label', 'path', 'route_name');
 
         $currentBreadcrumbs = $this->getInstance();
 
@@ -62,8 +62,8 @@ final class CurrentBreadcrumbsTest extends TestCase
 
     public function testGetCurrentBreadcrumbWithManyItems(): void
     {
-        $this->givenBreadcrumb('label_1', 'path_1');
-        $breadcrumbSecondary = $this->givenBreadcrumb('label_2', 'path_2');
+        $this->givenBreadcrumb('label_1', 'path_1', 'route_name_1');
+        $breadcrumbSecondary = $this->givenBreadcrumb('label_2', 'path_2', 'route_name_2');
 
         $currentBreadcrumbs = $this->getInstance();
 
@@ -79,7 +79,7 @@ final class CurrentBreadcrumbsTest extends TestCase
 
     public function testGetPreviousBreadcrumbWithOneItem(): void
     {
-        $this->givenBreadcrumb('label', 'path');
+        $this->givenBreadcrumb('label', 'path', 'route_name');
 
         $currentBreadcrumbs = $this->getInstance();
 
@@ -88,8 +88,8 @@ final class CurrentBreadcrumbsTest extends TestCase
 
     public function testGetPreviousBreadcrumbWithManyItems(): void
     {
-        $breadcrumbPrimary = $this->givenBreadcrumb('label_1', 'path_1');
-        $this->givenBreadcrumb('label_2', 'path_2');
+        $breadcrumbPrimary = $this->givenBreadcrumb('label_1', 'path_1', 'route_name_1');
+        $this->givenBreadcrumb('label_2', 'path_2', 'route_name_2');
 
         $currentBreadcrumbs = $this->getInstance();
 
@@ -99,10 +99,12 @@ final class CurrentBreadcrumbsTest extends TestCase
     private function givenBreadcrumb(
         string $label,
         string $path,
+        string $routeName,
     ): Breadcrumb {
         $breadcrumb = new Breadcrumb(
             $label,
             $path,
+            $routeName,
         );
 
         $this->breadcrumbs[] = $breadcrumb;
