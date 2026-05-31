@@ -1,12 +1,26 @@
+x-php: &php
+  stdin_open: true
+  tty:        true
+  volumes:
+    - .:/app
+    - ./docker/php.ini:/usr/local/etc/php/php.ini
+
 services:
 
-    php:
-        build:
-            context:    .
-            dockerfile: 'docker/Dockerfile'
-        volumes:
-            - .:/app
-            - ./docker/php.ini:/usr/local/etc/php/php.ini
-        working_dir: '/app'
-        stdin_open: true
-        tty: true
+  php83:
+    <<: *php
+    build:
+      args:
+        PHP_VERSION: '8.3'
+
+  php84:
+    <<: *php
+    build:
+      args:
+        PHP_VERSION: '8.4'
+
+  php85:
+    <<: *php
+    build:
+      args:
+        PHP_VERSION: '8.5'
