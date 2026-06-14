@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs\Model;
 
+use Webmozart\Assert\Assert;
+
 readonly class CurrentBreadcrumbs
 {
     /**
@@ -12,6 +14,7 @@ readonly class CurrentBreadcrumbs
     public function __construct(
         private iterable $breadcrumbs,
     ) {
+        Assert::allIsInstanceOf($this->breadcrumbs, Breadcrumb::class);
     }
 
     /**

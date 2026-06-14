@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs\Tests\Resolution;
 
-use Jmf\Breadcrumbs\Definition\BreadcrumbConfiguration;
+use Jmf\Breadcrumbs\Definition\BreadcrumbDefinition;
 use Jmf\Breadcrumbs\Definition\StringMap;
 use Jmf\Breadcrumbs\Exception\BreadcrumbLabelRenderingException;
 use Jmf\Breadcrumbs\Resolution\BreadcrumbLabelRenderer;
@@ -90,15 +90,15 @@ final class BreadcrumbLabelRendererTest extends TestCase
 
     private function whenRender(): void
     {
-        $breadcrumbConfiguration = new BreadcrumbConfiguration(
-            routeName:                     'route.name',
-            label:                         $this->label,
-            parameters:                    StringMap::createEmpty(),
-            parentBreadcrumbConfiguration: null,
+        $breadcrumbDefinition = new BreadcrumbDefinition(
+            routeName:                  'route.name',
+            label:                      $this->label,
+            parameters:                 StringMap::createEmpty(),
+            parentBreadcrumbDefinition: null,
         );
 
         $this->result = $this->breadcrumbLabelRenderer->render(
-            $breadcrumbConfiguration,
+            $breadcrumbDefinition,
             $this->parameters,
         );
     }

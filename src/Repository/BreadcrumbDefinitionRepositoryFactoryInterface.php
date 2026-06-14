@@ -6,10 +6,10 @@ namespace Jmf\Breadcrumbs\Repository;
 
 use Jmf\Breadcrumbs\Exception\BreadcrumbConfigurationException;
 
-interface BreadcrumbConfigurationRepositoryFactoryInterface
+interface BreadcrumbDefinitionRepositoryFactoryInterface
 {
     /**
      * @throws BreadcrumbConfigurationException
      */
-    public function create(): BreadcrumbConfigurationRepositoryInterface;
+    public function create(): BreadcrumbDefinitionRepositoryInterface;
 }

@@ -2,35 +2,36 @@
 
 declare(strict_types=1);
 
-namespace Jmf\Breadcrumbs\Configuration;
+namespace Jmf\Breadcrumbs\Compilation;
 
-use Jmf\Breadcrumbs\Definition\BreadcrumbConfiguration;
+use Jmf\Breadcrumbs\Definition\BreadcrumbDefinition;
+use Jmf\Breadcrumbs\Definition\ParentBreadcrumbDefinition;
 use Jmf\Breadcrumbs\Definition\StringMap;
-use Jmf\Breadcrumbs\Definition\ParentBreadcrumbConfiguration;
 use Jmf\Breadcrumbs\Exception\BreadcrumbConfigurationException;
 use Webmozart\Assert\Assert;
 
-readonly class BreadcrumbConfigurationLoader
+readonly class BreadcrumbDefinitionCompiler
 {
     public function __construct(
-        private ParentBreadcrumbConfigurationLoader $parentBreadcrumbConfigurationLoader,
+        private ParentBreadcrumbDefinitionCompiler $parentBreadcrumbDefinitionCompiler,
     ) {
     }
 
     /**
+     * @param non-empty-string     $routeName
      * @param array<string, mixed> $config
      *
      * @throws BreadcrumbConfigurationException
      */
-    public function load(
+    public function compile(
         string $routeName,
         array $config,
-    ): BreadcrumbConfiguration {
-        return new BreadcrumbConfiguration(
+    ): BreadcrumbDefinition {
+        return new BreadcrumbDefinition(
             $routeName,
             $this->getLabel($config),
             $this->getParameters($config),
-            $this->getParentBreadcrumbConfiguration($config),
+            $this->getParentBreadcrumbDefinition($config),
         );
     }
 
@@ -74,8 +75,8 @@ readonly class BreadcrumbConfigurationLoader
      *
      * @throws BreadcrumbConfigurationException
      */
-    private function getParentBreadcrumbConfiguration(array $config): ?ParentBreadcrumbConfiguration
+    private function getParentBreadcrumbDefinition(array $config): ?ParentBreadcrumbDefinition
     {
-        return $this->parentBreadcrumbConfigurationLoader->load($config);
+        return $this->parentBreadcrumbDefinitionCompiler->compile($config);
     }
 }

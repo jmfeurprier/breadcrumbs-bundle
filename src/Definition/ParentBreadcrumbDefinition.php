@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs\Definition;
 
-readonly class ParentBreadcrumbConfiguration
+readonly class ParentBreadcrumbDefinition
 {
     public function __construct(
         private string $routeName,

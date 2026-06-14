@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Jmf\Breadcrumbs\Configuration;
+namespace Jmf\Breadcrumbs\Compilation;
 
+use Jmf\Breadcrumbs\Definition\ParentBreadcrumbDefinition;
 use Jmf\Breadcrumbs\Definition\StringMap;
-use Jmf\Breadcrumbs\Definition\ParentBreadcrumbConfiguration;
 use Jmf\Breadcrumbs\Exception\BreadcrumbConfigurationException;
 use Webmozart\Assert\Assert;
 
-readonly class ParentBreadcrumbConfigurationLoader
+readonly class ParentBreadcrumbDefinitionCompiler
 {
     /**
      * @param array<string, mixed> $config
      *
      * @throws BreadcrumbConfigurationException
      */
-    public function load(array $config): ?ParentBreadcrumbConfiguration
+    public function compile(array $config): ?ParentBreadcrumbDefinition
     {
         if (!array_key_exists('parent', $config)) {
             return null;
@@ -26,7 +26,7 @@ readonly class ParentBreadcrumbConfigurationLoader
 
         Assert::isMap($parentConfig);
 
-        return new ParentBreadcrumbConfiguration(
+        return new ParentBreadcrumbDefinition(
             $this->getRouteName($parentConfig),
             $this->getParameters($parentConfig),
         );

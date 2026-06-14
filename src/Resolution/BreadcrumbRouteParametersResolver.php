@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs\Resolution;
 
-use Jmf\Breadcrumbs\Definition\BreadcrumbConfiguration;
+use Jmf\Breadcrumbs\Definition\BreadcrumbDefinition;
 use Jmf\Breadcrumbs\Exception\BreadcrumbRouteParametersResolutionException;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Throwable;
@@ -24,13 +24,13 @@ readonly class BreadcrumbRouteParametersResolver
      * @throws BreadcrumbRouteParametersResolutionException
      */
     public function resolve(
-        BreadcrumbConfiguration $breadcrumbConfiguration,
+        BreadcrumbDefinition $breadcrumbDefinition,
         array $context,
     ): array {
         $routeParameters = [];
 
         try {
-            foreach ($breadcrumbConfiguration->getParameters()->all() as $key => $value) {
+            foreach ($breadcrumbDefinition->getParameters()->all() as $key => $value) {
                 $routeParameters[$key] = $this->propertyAccessor->getValue(
                     (object) $context,
                     $value,
@@ -38,8 +38,8 @@ readonly class BreadcrumbRouteParametersResolver
             }
         } catch (Throwable $e) {
             throw new BreadcrumbRouteParametersResolutionException(
-                routeName: $breadcrumbConfiguration->getRouteName(),
-                label:     $breadcrumbConfiguration->getLabel(),
+                routeName: $breadcrumbDefinition->getRouteName(),
+                label:     $breadcrumbDefinition->getLabel(),
                 context:   $context,
                 previous:  $e,
             );

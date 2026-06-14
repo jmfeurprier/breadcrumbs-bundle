@@ -4,16 +4,22 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs\Definition;
 
-readonly class BreadcrumbConfiguration
+readonly class BreadcrumbDefinition
 {
+    /**
+     * @param non-empty-string $routeName
+     */
     public function __construct(
         private string $routeName,
         private string $label,
         private StringMap $parameters,
-        private ?ParentBreadcrumbConfiguration $parentBreadcrumbConfiguration,
+        private ?ParentBreadcrumbDefinition $parentBreadcrumbDefinition,
     ) {
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function getRouteName(): string
     {
         return $this->routeName;
@@ -29,8 +35,8 @@ readonly class BreadcrumbConfiguration
         return $this->parameters;
     }
 
-    public function getParentBreadcrumbConfiguration(): ?ParentBreadcrumbConfiguration
+    public function getParentBreadcrumbDefinition(): ?ParentBreadcrumbDefinition
     {
-        return $this->parentBreadcrumbConfiguration;
+        return $this->parentBreadcrumbDefinition;
     }
 }

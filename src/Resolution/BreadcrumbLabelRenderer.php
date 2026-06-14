@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs\Resolution;
 
-use Jmf\Breadcrumbs\Definition\BreadcrumbConfiguration;
+use Jmf\Breadcrumbs\Definition\BreadcrumbDefinition;
 use Jmf\Breadcrumbs\Exception\BreadcrumbLabelRenderingException;
 use Jmf\TemplateRendering\TemplateRendererInterface;
 use Throwable;
@@ -22,18 +22,18 @@ readonly class BreadcrumbLabelRenderer
      * @throws BreadcrumbLabelRenderingException
      */
     public function render(
-        BreadcrumbConfiguration $breadcrumbConfiguration,
+        BreadcrumbDefinition $breadcrumbDefinition,
         array $context,
     ): string {
         try {
             return $this->templateRenderer->renderFromString(
-                '{% autoescape false %}' . $breadcrumbConfiguration->getLabel() . '{% endautoescape %}',
+                '{% autoescape false %}' . $breadcrumbDefinition->getLabel() . '{% endautoescape %}',
                 $context,
             );
         } catch (Throwable $e) {
             throw new BreadcrumbLabelRenderingException(
-                routeName: $breadcrumbConfiguration->getRouteName(),
-                label:     $breadcrumbConfiguration->getLabel(),
+                routeName: $breadcrumbDefinition->getRouteName(),
+                label:     $breadcrumbDefinition->getLabel(),
                 context:   $context,
                 previous:  $e,
             );

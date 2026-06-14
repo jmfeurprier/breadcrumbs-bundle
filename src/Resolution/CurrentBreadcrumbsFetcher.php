@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs\Resolution;
 
-use Jmf\Breadcrumbs\Definition\BreadcrumbConfiguration;
-use Jmf\Breadcrumbs\Definition\ParentBreadcrumbConfiguration;
+use Jmf\Breadcrumbs\Definition\BreadcrumbDefinition;
+use Jmf\Breadcrumbs\Definition\ParentBreadcrumbDefinition;
 use Jmf\Breadcrumbs\Model\CurrentBreadcrumbs;
-use Jmf\Breadcrumbs\Repository\BreadcrumbConfigurationRepositoryInterface;
+use Jmf\Breadcrumbs\Repository\BreadcrumbDefinitionRepositoryInterface;
 use Override;
 
 readonly class CurrentBreadcrumbsFetcher implements CurrentBreadcrumbsFetcherInterface
 {
     public function __construct(
         private RouteNameResolver $routeNameResolver,
-        private BreadcrumbConfigurationRepositoryInterface $breadcrumbConfigurationRepository,
+        private BreadcrumbDefinitionRepositoryInterface $breadcrumbDefinitionRepository,
         private ContextResolver $contextResolver,
         private BreadcrumbCreator $breadcrumbCreator,
     ) {
@@ -27,33 +27,33 @@ readonly class CurrentBreadcrumbsFetcher implements CurrentBreadcrumbsFetcherInt
         $routeName   = $this->getRouteName();
 
         while (true) {
-            $breadcrumbConfiguration = $this->breadcrumbConfigurationRepository->tryGet($routeName);
+            $breadcrumbDefinition = $this->breadcrumbDefinitionRepository->tryGet($routeName);
 
-            if (!$breadcrumbConfiguration instanceof BreadcrumbConfiguration) {
+            if (!$breadcrumbDefinition instanceof BreadcrumbDefinition) {
                 break;
             }
 
             $context = $this->contextResolver->resolve(
                 $context,
-                $breadcrumbConfiguration->getParameters()->all(),
+                $breadcrumbDefinition->getParameters()->all(),
             );
 
             $breadcrumbs[] = $this->breadcrumbCreator->create(
-                $breadcrumbConfiguration,
+                $breadcrumbDefinition,
                 $context,
             );
 
             if (
-                !$breadcrumbConfiguration->getParentBreadcrumbConfiguration() instanceof ParentBreadcrumbConfiguration
+                !$breadcrumbDefinition->getParentBreadcrumbDefinition() instanceof ParentBreadcrumbDefinition
             ) {
                 break;
             }
 
-            $routeName = $breadcrumbConfiguration->getParentBreadcrumbConfiguration()->getRouteName();
+            $routeName = $breadcrumbDefinition->getParentBreadcrumbDefinition()->getRouteName();
 
             $context = $this->contextResolver->resolve(
                 $context,
-                $breadcrumbConfiguration->getParentBreadcrumbConfiguration()->getParameters()->all(),
+                $breadcrumbDefinition->getParentBreadcrumbDefinition()->getParameters()->all(),
             );
         }
 

@@ -22,12 +22,10 @@ class JmfBreadcrumbsBundle extends AbstractBundle
         'twig_functions_prefix' => 'twig_functions_prefix',
     ];
 
-    private readonly BreadcrumbsConfigurationLoader $breadcrumbsConfigurationLoader;
-
-    public function __construct(?BreadcrumbsConfigurationLoader $breadcrumbsConfigurationLoader = null)
-    {
-        $this->breadcrumbsConfigurationLoader = $breadcrumbsConfigurationLoader
-            ?? new BreadcrumbsConfigurationLoader();
+    public function __construct(
+        private readonly BreadcrumbsConfigurationLoader $breadcrumbsConfigurationLoader = new BreadcrumbsConfigurationLoader(
+        ),
+    ) {
     }
 
     #[Override]
@@ -44,23 +42,32 @@ class JmfBreadcrumbsBundle extends AbstractBundle
     #[Override]
     public function loadExtension(
         array $config,
-        ContainerConfigurator $container,
-        ContainerBuilder $builder,
+        ContainerConfigurator $configurator,
+        ContainerBuilder $container,
     ): void {
-        $container->import('../config/services.yaml');
+        $configurator->import('../config/services.yaml');
 
-        $config['breadcrumbs'] = $this->breadcrumbsConfigurationLoader->load($config, $builder, $this->extensionAlias);
+        $config['breadcrumbs'] = $this->breadcrumbsConfigurationLoader->load(
+            $config,
+            $container,
+            $this->extensionAlias,
+        );
 
-        $this->loadParameters($config, $container);
+        $this->loadParameters($config, $configurator);
     }
 
     /**
      * @param array<string, mixed> $config
      */
-    private function loadParameters(array $config, ContainerConfigurator $container): void
-    {
+    private function loadParameters(
+        array $config,
+        ContainerConfigurator $containerConfigurator,
+    ): void {
         foreach (self::PARAMETERS_MAPPING as $configKey => $parameterSuffix) {
-            $container->parameters()->set("{$this->extensionAlias}.{$parameterSuffix}", $config[$configKey]);
+            $containerConfigurator->parameters()->set(
+                "{$this->extensionAlias}.{$parameterSuffix}",
+                $config[$configKey],
+            );
         }
     }
 }

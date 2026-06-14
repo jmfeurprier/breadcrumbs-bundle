@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs\Tests\bugs\bug0001;
 
+use Jmf\Breadcrumbs\Compilation\BreadcrumbDefinitionCompiler;
+use Jmf\Breadcrumbs\Compilation\BreadcrumbDefinitionsCompiler;
+use Jmf\Breadcrumbs\Compilation\ParentBreadcrumbDefinitionCompiler;
 use Jmf\Breadcrumbs\Model\Breadcrumb;
 use Jmf\Breadcrumbs\Model\CurrentBreadcrumbs;
 use Jmf\Breadcrumbs\Resolution\BreadcrumbCreator;
@@ -12,11 +15,11 @@ use Jmf\Breadcrumbs\Resolution\BreadcrumbRouteParametersResolver;
 use Jmf\Breadcrumbs\Resolution\ContextResolver;
 use Jmf\Breadcrumbs\Resolution\CurrentBreadcrumbsFetcher;
 use Jmf\Breadcrumbs\Resolution\RouteNameResolver;
-use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationLoader;
-use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationsLoader;
-use Jmf\Breadcrumbs\Configuration\ParentBreadcrumbConfigurationLoader;
-use Jmf\Breadcrumbs\Repository\BreadcrumbConfigurationRepositoryFactory;
-use Jmf\Breadcrumbs\Repository\BreadcrumbConfigurationRepositoryInterface;
+use Jmf\Breadcrumbs\Repository\BreadcrumbDefinitionRepositoryFactory;
+use Jmf\Breadcrumbs\Repository\BreadcrumbDefinitionRepositoryInterface;
+use Jmf\Breadcrumbs\Tests\bugs\bug0001\fixtures\Cost;
+use Jmf\Breadcrumbs\Tests\bugs\bug0001\fixtures\Project;
+use Jmf\Breadcrumbs\Tests\bugs\bug0001\fixtures\Task;
 use Jmf\TemplateRendering\TemplateRenderer;
 use Jmf\TemplateRendering\TemplateRendererInterface;
 use Override;
@@ -74,27 +77,27 @@ final class BugTest extends TestCase
         );
     }
 
-    private function getBreadcrumbConfigurationRepository(): BreadcrumbConfigurationRepositoryInterface
+    private function getBreadcrumbConfigurationRepository(): BreadcrumbDefinitionRepositoryInterface
     {
         /**
          * @var array{
          *     parameters: array{
-         *         breadcrumbs: array<string, mixed>
+         *         breadcrumbs: array<non-empty-string, mixed>
          *     }
          * } $config
          */
-        $config = (new Parser())->parseFile(__DIR__ . '/breadcrumbs.yaml');
+        $config = (new Parser())->parseFile(__DIR__ . '/fixtures/breadcrumbs.yaml');
 
-        $breadcrumbConfigurationRepositoryFactory = new BreadcrumbConfigurationRepositoryFactory(
-            new BreadcrumbConfigurationsLoader(
-                new BreadcrumbConfigurationLoader(
-                    new ParentBreadcrumbConfigurationLoader(),
+        $breadcrumbDefinitionRepositoryFactory = new BreadcrumbDefinitionRepositoryFactory(
+            new BreadcrumbDefinitionsCompiler(
+                new BreadcrumbDefinitionCompiler(
+                    new ParentBreadcrumbDefinitionCompiler(),
                 ),
             ),
             $config['parameters']['breadcrumbs'],
         );
 
-        return $breadcrumbConfigurationRepositoryFactory->create();
+        return $breadcrumbDefinitionRepositoryFactory->create();
     }
 
     public function testBug(): void
