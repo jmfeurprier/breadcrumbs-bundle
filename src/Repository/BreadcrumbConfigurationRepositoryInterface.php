@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Jmf\Breadcrumbs\Configuration;
+namespace Jmf\Breadcrumbs\Repository;
+
+use Jmf\Breadcrumbs\Definition\BreadcrumbConfiguration;
 
 interface BreadcrumbConfigurationRepositoryInterface
 {

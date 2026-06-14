@@ -12,6 +12,14 @@ parameters:
             paths:
                 - '../tests/*'
             reportUnmatched: false
+        -
+            identifier: 'method.childParameterType'
+            paths:
+                - '../src/JmfBreadcrumbsBundle.php'
+        -
+            identifier: 'staticMethod.dynamicCall'
+            paths:
+                - '../tests/*'
     level: 10
     paths:
         - ../config/

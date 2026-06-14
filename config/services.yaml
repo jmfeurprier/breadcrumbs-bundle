@@ -6,6 +6,11 @@ services:
 
     Jmf\Breadcrumbs\:
         resource: '../src/'
+        exclude:
+            - '../src/Definition/'
+            - '../src/Exception/'
+            - '../src/Repository/'
+            - '../src/JmfBreadcrumbsBundle.php'
 
     Jmf\TemplateRendering\TemplateRendererInterface:
         class: Jmf\TemplateRendering\TemplateRenderer

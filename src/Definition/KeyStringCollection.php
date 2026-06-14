@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Jmf\Breadcrumbs\Configuration;
+namespace Jmf\Breadcrumbs\Definition;
 
 use Webmozart\Assert\Assert;
 

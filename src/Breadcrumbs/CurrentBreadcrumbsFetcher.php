@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs\Breadcrumbs;
 
-use Jmf\Breadcrumbs\Configuration\BreadcrumbConfiguration;
-use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationRepositoryInterface;
-use Jmf\Breadcrumbs\Configuration\ParentBreadcrumbConfiguration;
+use Jmf\Breadcrumbs\Definition\BreadcrumbConfiguration;
+use Jmf\Breadcrumbs\Definition\ParentBreadcrumbConfiguration;
+use Jmf\Breadcrumbs\Repository\BreadcrumbConfigurationRepositoryInterface;
 use Override;
 
 readonly class CurrentBreadcrumbsFetcher implements CurrentBreadcrumbsFetcherInterface

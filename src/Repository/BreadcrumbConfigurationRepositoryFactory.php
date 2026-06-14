@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Jmf\Breadcrumbs\Configuration;
+namespace Jmf\Breadcrumbs\Repository;
 
+use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationsLoader;
+use Jmf\Breadcrumbs\Definition\BreadcrumbConfiguration;
 use Jmf\Breadcrumbs\Exception\BreadcrumbConfigurationException;
 use Override;
 

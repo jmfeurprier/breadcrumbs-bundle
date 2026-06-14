@@ -7,6 +7,7 @@ namespace Jmf\Breadcrumbs\Twig;
 use Jmf\Breadcrumbs\Breadcrumbs\CurrentBreadcrumbs;
 use Jmf\Breadcrumbs\Breadcrumbs\CurrentBreadcrumbsFetcher;
 use Jmf\Breadcrumbs\Exception\BreadcrumbsException;
+use Jmf\Breadcrumbs\Exception\BreadcrumbsRenderingException;
 use Jmf\TemplateRendering\Exception\TemplateRenderingException;
 use Jmf\TemplateRendering\TemplateRendererInterface;
 use Override;
@@ -26,7 +27,7 @@ class BreadcrumbsExtension extends AbstractExtension
     }
 
     #[Override]
-    public function getFunctions(): iterable
+    public function getFunctions(): array
     {
         return [
             new TwigFunction(
@@ -53,18 +54,25 @@ class BreadcrumbsExtension extends AbstractExtension
      * @param array<string, mixed> $templateParameters
      *
      * @throws BreadcrumbsException
-     * @throws TemplateRenderingException
+     * @throws BreadcrumbsRenderingException
      */
     public function render(
         array $context,
         array $templateParameters = [],
     ): string {
-        return $this->templateRenderer->renderFromFile(
-            $this->templatePath,
-            $templateParameters + [
-                'breadcrumbs' => $this->get($context)->getBreadcrumbs(),
-            ],
-        );
+        try {
+            return $this->templateRenderer->renderFromFile(
+                $this->templatePath,
+                $templateParameters + [
+                    'breadcrumbs' => $this->get($context)->getBreadcrumbs(),
+                ],
+            );
+        } catch (TemplateRenderingException $e) {
+            throw new BreadcrumbsRenderingException(
+                templatePath: $this->templatePath,
+                previous:     $e,
+            );
+        }
     }
 
     /**

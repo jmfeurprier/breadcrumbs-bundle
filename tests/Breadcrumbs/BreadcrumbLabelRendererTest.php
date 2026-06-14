@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Jmf\Breadcrumbs\Tests\Breadcrumbs;
 
 use Jmf\Breadcrumbs\Breadcrumbs\BreadcrumbLabelRenderer;
-use Jmf\Breadcrumbs\Configuration\BreadcrumbConfiguration;
-use Jmf\Breadcrumbs\Configuration\KeyStringCollection;
+use Jmf\Breadcrumbs\Definition\BreadcrumbConfiguration;
+use Jmf\Breadcrumbs\Definition\KeyStringCollection;
 use Jmf\Breadcrumbs\Exception\BreadcrumbLabelRenderingException;
 use Jmf\TemplateRendering\TemplateRenderer;
 use Jmf\TemplateRendering\TemplateRendererInterface;

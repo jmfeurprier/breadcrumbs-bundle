@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs\Configuration;
 
+use Jmf\Breadcrumbs\Definition\KeyStringCollection;
+use Jmf\Breadcrumbs\Definition\ParentBreadcrumbConfiguration;
 use Jmf\Breadcrumbs\Exception\BreadcrumbConfigurationException;
 use Webmozart\Assert\Assert;
 

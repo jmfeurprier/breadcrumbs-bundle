@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs\Breadcrumbs;
 
-use Jmf\Breadcrumbs\Configuration\BreadcrumbConfiguration;
+use Jmf\Breadcrumbs\Definition\BreadcrumbConfiguration;
 use Jmf\Breadcrumbs\Exception\BreadcrumbLabelRenderingException;
 use Jmf\Breadcrumbs\Exception\BreadcrumbRouteParametersResolutionException;
 
@@ -28,14 +28,14 @@ readonly class BreadcrumbCreator
     ): Breadcrumb {
         return new Breadcrumb(
             label:           $this->breadcrumbLabelRenderer->render(
-                                 $breadcrumbConfiguration,
-                                 $context,
-                             ),
+                $breadcrumbConfiguration,
+                $context,
+            ),
             routeName:       $breadcrumbConfiguration->getRouteName(),
             routeParameters: $this->breadcrumbRouteParametersResolver->resolve(
-                                 $breadcrumbConfiguration,
-                                 $context,
-                             ),
+                $breadcrumbConfiguration,
+                $context,
+            ),
         );
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs\Breadcrumbs;
 
-use Jmf\Breadcrumbs\Configuration\BreadcrumbConfiguration;
+use Jmf\Breadcrumbs\Definition\BreadcrumbConfiguration;
 use Jmf\Breadcrumbs\Exception\BreadcrumbRouteParametersResolutionException;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Throwable;

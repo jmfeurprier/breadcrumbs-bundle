@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs;
 
-use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationRepositoryFactory;
-use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationRepositoryFactoryInterface;
-use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationRepositoryInterface;
-use Jmf\Breadcrumbs\Configuration\CacheableBreadcrumbConfigurationRepositoryFactory;
+use Jmf\Breadcrumbs\Repository\BreadcrumbConfigurationRepositoryFactory;
+use Jmf\Breadcrumbs\Repository\BreadcrumbConfigurationRepositoryFactoryInterface;
+use Jmf\Breadcrumbs\Repository\BreadcrumbConfigurationRepositoryInterface;
 use Jmf\Breadcrumbs\Twig\BreadcrumbsExtension;
 use Override;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
@@ -15,7 +14,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
-use Symfony\Contracts\Cache\CacheInterface;
 
 class JmfBreadcrumbsBundle extends AbstractBundle
 {
@@ -49,30 +47,12 @@ class JmfBreadcrumbsBundle extends AbstractBundle
             )
         ;
 
-        if (interface_exists(CacheInterface::class)) {
-            $container->services()
-                ->set(BreadcrumbConfigurationRepositoryFactory::class)
-                ->autowire()
-                ->arg('$config', $config['breadcrumbs'])
-            ;
-
-            $container->services()
-                ->set(BreadcrumbConfigurationRepositoryFactoryInterface::class)
-                ->autowire()
-                ->class(CacheableBreadcrumbConfigurationRepositoryFactory::class)
-                ->arg(
-                    '$breadcrumbConfigurationRepositoryFactory',
-                    new Reference(BreadcrumbConfigurationRepositoryFactory::class),
-                )
-            ;
-        } else {
-            $container->services()
-                ->set(BreadcrumbConfigurationRepositoryFactoryInterface::class)
-                ->autowire()
-                ->class(BreadcrumbConfigurationRepositoryFactory::class)
-                ->arg('$config', $config['breadcrumbs'])
-            ;
-        }
+        $container->services()
+            ->set(BreadcrumbConfigurationRepositoryFactoryInterface::class)
+            ->autowire()
+            ->class(BreadcrumbConfigurationRepositoryFactory::class)
+            ->arg('$config', $config['breadcrumbs'])
+        ;
 
         $container->services()
             ->set(BreadcrumbsExtension::class)
