@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Jmf\Breadcrumbs\Tests\Breadcrumbs;
+namespace Jmf\Breadcrumbs\Tests\Model;
 
-use Jmf\Breadcrumbs\Breadcrumbs\Breadcrumb;
-use Jmf\Breadcrumbs\Breadcrumbs\CurrentBreadcrumbs;
+use Jmf\Breadcrumbs\Model\Breadcrumb;
+use Jmf\Breadcrumbs\Model\CurrentBreadcrumbs;
 use PHPUnit\Framework\TestCase;
 
 final class CurrentBreadcrumbsTest extends TestCase

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Jmf\Breadcrumbs\Tests\Breadcrumbs;
+namespace Jmf\Breadcrumbs\Tests\Resolution;
 
-use Jmf\Breadcrumbs\Breadcrumbs\BreadcrumbLabelRenderer;
 use Jmf\Breadcrumbs\Definition\BreadcrumbConfiguration;
 use Jmf\Breadcrumbs\Definition\KeyStringCollection;
 use Jmf\Breadcrumbs\Exception\BreadcrumbLabelRenderingException;
+use Jmf\Breadcrumbs\Resolution\BreadcrumbLabelRenderer;
 use Jmf\TemplateRendering\TemplateRenderer;
 use Jmf\TemplateRendering\TemplateRendererInterface;
 use PHPUnit\Framework\TestCase;

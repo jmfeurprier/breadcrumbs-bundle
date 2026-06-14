@@ -10,6 +10,7 @@ services:
             - '../src/Configuration/BreadcrumbsConfigurationLoader.php'
             - '../src/Definition/'
             - '../src/Exception/'
+            - '../src/Model/'
             - '../src/Repository/'
             - '../src/JmfBreadcrumbsBundle.php'
 

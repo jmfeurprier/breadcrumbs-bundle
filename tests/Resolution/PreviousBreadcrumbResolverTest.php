@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Jmf\Breadcrumbs\Tests\Breadcrumbs;
+namespace Jmf\Breadcrumbs\Tests\Resolution;
 
 use Exception;
-use Jmf\Breadcrumbs\Breadcrumbs\Breadcrumb;
-use Jmf\Breadcrumbs\Breadcrumbs\CurrentBreadcrumbs;
-use Jmf\Breadcrumbs\Breadcrumbs\CurrentBreadcrumbsFetcherInterface;
-use Jmf\Breadcrumbs\Breadcrumbs\PreviousBreadcrumbResolver;
 use Jmf\Breadcrumbs\Exception\PreviousBreadcrumbResolutionException;
+use Jmf\Breadcrumbs\Model\Breadcrumb;
+use Jmf\Breadcrumbs\Model\CurrentBreadcrumbs;
+use Jmf\Breadcrumbs\Resolution\CurrentBreadcrumbsFetcherInterface;
+use Jmf\Breadcrumbs\Resolution\PreviousBreadcrumbResolver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Throwable;

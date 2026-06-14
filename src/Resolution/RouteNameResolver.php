@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Jmf\Breadcrumbs\Breadcrumbs;
+namespace Jmf\Breadcrumbs\Resolution;
 
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Request;

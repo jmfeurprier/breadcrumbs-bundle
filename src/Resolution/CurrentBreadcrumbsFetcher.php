@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Jmf\Breadcrumbs\Breadcrumbs;
+namespace Jmf\Breadcrumbs\Resolution;
 
 use Jmf\Breadcrumbs\Definition\BreadcrumbConfiguration;
 use Jmf\Breadcrumbs\Definition\ParentBreadcrumbConfiguration;
+use Jmf\Breadcrumbs\Model\CurrentBreadcrumbs;
 use Jmf\Breadcrumbs\Repository\BreadcrumbConfigurationRepositoryInterface;
 use Override;
 

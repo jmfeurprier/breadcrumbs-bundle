@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs\Tests\bugs\bug0001;
 
-use Jmf\Breadcrumbs\Breadcrumbs\Breadcrumb;
-use Jmf\Breadcrumbs\Breadcrumbs\BreadcrumbCreator;
-use Jmf\Breadcrumbs\Breadcrumbs\BreadcrumbLabelRenderer;
-use Jmf\Breadcrumbs\Breadcrumbs\BreadcrumbRouteParametersResolver;
-use Jmf\Breadcrumbs\Breadcrumbs\ContextResolver;
-use Jmf\Breadcrumbs\Breadcrumbs\CurrentBreadcrumbs;
-use Jmf\Breadcrumbs\Breadcrumbs\CurrentBreadcrumbsFetcher;
-use Jmf\Breadcrumbs\Breadcrumbs\RouteNameResolver;
+use Jmf\Breadcrumbs\Model\Breadcrumb;
+use Jmf\Breadcrumbs\Model\CurrentBreadcrumbs;
+use Jmf\Breadcrumbs\Resolution\BreadcrumbCreator;
+use Jmf\Breadcrumbs\Resolution\BreadcrumbLabelRenderer;
+use Jmf\Breadcrumbs\Resolution\BreadcrumbRouteParametersResolver;
+use Jmf\Breadcrumbs\Resolution\ContextResolver;
+use Jmf\Breadcrumbs\Resolution\CurrentBreadcrumbsFetcher;
+use Jmf\Breadcrumbs\Resolution\RouteNameResolver;
 use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationLoader;
 use Jmf\Breadcrumbs\Configuration\BreadcrumbConfigurationsLoader;
 use Jmf\Breadcrumbs\Configuration\ParentBreadcrumbConfigurationLoader;

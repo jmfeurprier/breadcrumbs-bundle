@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs\Twig;
 
-use Jmf\Breadcrumbs\Breadcrumbs\CurrentBreadcrumbs;
-use Jmf\Breadcrumbs\Breadcrumbs\CurrentBreadcrumbsFetcher;
+use Jmf\Breadcrumbs\Model\CurrentBreadcrumbs;
+use Jmf\Breadcrumbs\Resolution\CurrentBreadcrumbsFetcher;
 use Jmf\Breadcrumbs\Exception\BreadcrumbsException;
 use Jmf\Breadcrumbs\Exception\BreadcrumbsRenderingException;
 use Jmf\TemplateRendering\Exception\TemplateRenderingException;
