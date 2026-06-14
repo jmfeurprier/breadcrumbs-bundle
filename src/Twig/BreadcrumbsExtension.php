@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs\Twig;
 
-use Jmf\Breadcrumbs\Model\CurrentBreadcrumbs;
-use Jmf\Breadcrumbs\Resolution\CurrentBreadcrumbsFetcher;
 use Jmf\Breadcrumbs\Exception\BreadcrumbsException;
 use Jmf\Breadcrumbs\Exception\BreadcrumbsRenderingException;
+use Jmf\Breadcrumbs\Model\CurrentBreadcrumbs;
+use Jmf\Breadcrumbs\Resolution\CurrentBreadcrumbsFetcherInterface;
 use Jmf\TemplateRendering\Exception\TemplateRenderingException;
 use Jmf\TemplateRendering\TemplateRendererInterface;
 use Override;
@@ -19,7 +19,7 @@ class BreadcrumbsExtension extends AbstractExtension
     public final const string PREFIX_DEFAULT = '';
 
     public function __construct(
-        private readonly CurrentBreadcrumbsFetcher $currentBreadcrumbsFetcher,
+        private readonly CurrentBreadcrumbsFetcherInterface $currentBreadcrumbsFetcher,
         private readonly TemplateRendererInterface $templateRenderer,
         private readonly string $templatePath,
         private readonly string $prefix = self::PREFIX_DEFAULT,
