@@ -13,5 +13,18 @@ services:
             - '../src/Repository/'
             - '../src/JmfBreadcrumbsBundle.php'
 
+    Jmf\Breadcrumbs\Repository\BreadcrumbConfigurationRepositoryInterface:
+        factory: ['@Jmf\Breadcrumbs\Repository\BreadcrumbConfigurationRepositoryFactoryInterface', 'create']
+
+    Jmf\Breadcrumbs\Repository\BreadcrumbConfigurationRepositoryFactoryInterface:
+        class:   Jmf\Breadcrumbs\Repository\BreadcrumbConfigurationRepositoryFactory
+        arguments:
+            $config: '%jmf_breadcrumbs.breadcrumbs_config%'
+
+    Jmf\Breadcrumbs\Twig\BreadcrumbsExtension:
+        arguments:
+            $templatePath: '%jmf_breadcrumbs.template_path%'
+            $prefix:       '%jmf_breadcrumbs.twig_functions_prefix%'
+
     Jmf\TemplateRendering\TemplateRendererInterface:
         class: Jmf\TemplateRendering\TemplateRenderer

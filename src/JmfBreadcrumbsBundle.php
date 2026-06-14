@@ -6,24 +6,28 @@ namespace Jmf\Breadcrumbs;
 
 use Jmf\Breadcrumbs\Configuration\BreadcrumbsConfigurationLoader;
 use Jmf\Breadcrumbs\Exception\BreadcrumbConfigurationException;
-use Jmf\Breadcrumbs\Repository\BreadcrumbConfigurationRepositoryFactory;
-use Jmf\Breadcrumbs\Repository\BreadcrumbConfigurationRepositoryFactoryInterface;
-use Jmf\Breadcrumbs\Repository\BreadcrumbConfigurationRepositoryInterface;
-use Jmf\Breadcrumbs\Twig\BreadcrumbsExtension;
 use Override;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 class JmfBreadcrumbsBundle extends AbstractBundle
 {
     protected string $extensionAlias = 'jmf_breadcrumbs';
 
-    public function __construct(
-        private readonly BreadcrumbsConfigurationLoader $breadcrumbsConfigurationLoader = new BreadcrumbsConfigurationLoader(),
-    ) {
+    private const array PARAMETERS_MAPPING = [
+        'breadcrumbs'           => 'breadcrumbs_config',
+        'template_path'         => 'template_path',
+        'twig_functions_prefix' => 'twig_functions_prefix',
+    ];
+
+    private readonly BreadcrumbsConfigurationLoader $breadcrumbsConfigurationLoader;
+
+    public function __construct(?BreadcrumbsConfigurationLoader $breadcrumbsConfigurationLoader = null)
+    {
+        $this->breadcrumbsConfigurationLoader = $breadcrumbsConfigurationLoader
+            ?? new BreadcrumbsConfigurationLoader();
     }
 
     #[Override]
@@ -47,30 +51,16 @@ class JmfBreadcrumbsBundle extends AbstractBundle
 
         $config['breadcrumbs'] = $this->breadcrumbsConfigurationLoader->load($config, $builder, $this->extensionAlias);
 
-        $container->services()
-            ->set(BreadcrumbConfigurationRepositoryInterface::class)
-            ->autowire()
-            ->factory(
-                [
-                    new Reference(BreadcrumbConfigurationRepositoryFactoryInterface::class),
-                    'create',
-                ],
-            )
-        ;
+        $this->loadParameters($config, $container);
+    }
 
-        $container->services()
-            ->set(BreadcrumbConfigurationRepositoryFactoryInterface::class)
-            ->autowire()
-            ->class(BreadcrumbConfigurationRepositoryFactory::class)
-            ->arg('$config', $config['breadcrumbs'])
-        ;
-
-        $container->services()
-            ->set(BreadcrumbsExtension::class)
-            ->autowire()
-            ->arg('$templatePath', $config['template_path'])
-            ->arg('$prefix', $config['twig_functions_prefix'])
-            ->tag('twig.extension')
-        ;
+    /**
+     * @param array<string, mixed> $config
+     */
+    private function loadParameters(array $config, ContainerConfigurator $container): void
+    {
+        foreach (self::PARAMETERS_MAPPING as $configKey => $parameterSuffix) {
+            $container->parameters()->set("{$this->extensionAlias}.{$parameterSuffix}", $config[$configKey]);
+        }
     }
 }
