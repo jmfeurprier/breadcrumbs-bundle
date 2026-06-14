@@ -7,7 +7,7 @@ namespace Jmf\Breadcrumbs\Definition;
 use Webmozart\Assert\Assert;
 
 // @todo Rename into StringMap
-readonly class KeyStringCollection
+readonly class StringMap
 {
     public static function createEmpty(): self
     {

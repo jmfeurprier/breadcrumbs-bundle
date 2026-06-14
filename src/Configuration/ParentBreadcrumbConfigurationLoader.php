@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs\Configuration;
 
-use Jmf\Breadcrumbs\Definition\KeyStringCollection;
+use Jmf\Breadcrumbs\Definition\StringMap;
 use Jmf\Breadcrumbs\Definition\ParentBreadcrumbConfiguration;
 use Jmf\Breadcrumbs\Exception\BreadcrumbConfigurationException;
 use Webmozart\Assert\Assert;
@@ -53,10 +53,10 @@ readonly class ParentBreadcrumbConfigurationLoader
     /**
      * @param array<string, mixed> $parentConfig
      */
-    private function getParameters(array $parentConfig): KeyStringCollection
+    private function getParameters(array $parentConfig): StringMap
     {
         if (!array_key_exists('parameters', $parentConfig)) {
-            return KeyStringCollection::createEmpty();
+            return StringMap::createEmpty();
         }
 
         $parametersConfig = $parentConfig['parameters'];
@@ -64,6 +64,6 @@ readonly class ParentBreadcrumbConfigurationLoader
         Assert::isMap($parametersConfig);
         Assert::allString($parametersConfig);
 
-        return new KeyStringCollection($parametersConfig);
+        return new StringMap($parametersConfig);
     }
 }

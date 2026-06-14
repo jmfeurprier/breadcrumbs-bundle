@@ -9,7 +9,7 @@ readonly class BreadcrumbConfiguration
     public function __construct(
         private string $routeName,
         private string $label,
-        private KeyStringCollection $parameters,
+        private StringMap $parameters,
         private ?ParentBreadcrumbConfiguration $parentBreadcrumbConfiguration,
     ) {
     }
@@ -24,7 +24,7 @@ readonly class BreadcrumbConfiguration
         return $this->label;
     }
 
-    public function getParameters(): KeyStringCollection
+    public function getParameters(): StringMap
     {
         return $this->parameters;
     }

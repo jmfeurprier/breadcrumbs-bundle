@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Jmf\Breadcrumbs\Tests\Resolution;
 
 use Jmf\Breadcrumbs\Definition\BreadcrumbConfiguration;
-use Jmf\Breadcrumbs\Definition\KeyStringCollection;
+use Jmf\Breadcrumbs\Definition\StringMap;
 use Jmf\Breadcrumbs\Exception\BreadcrumbLabelRenderingException;
 use Jmf\Breadcrumbs\Resolution\BreadcrumbLabelRenderer;
 use Jmf\TemplateRendering\TemplateRenderer;
@@ -93,7 +93,7 @@ final class BreadcrumbLabelRendererTest extends TestCase
         $breadcrumbConfiguration = new BreadcrumbConfiguration(
             routeName:                     'route.name',
             label:                         $this->label,
-            parameters:                    KeyStringCollection::createEmpty(),
+            parameters:                    StringMap::createEmpty(),
             parentBreadcrumbConfiguration: null,
         );
 
