@@ -8,7 +8,7 @@ use Exception;
 use Jmf\Breadcrumbs\Exception\PreviousBreadcrumbResolutionException;
 use Jmf\Breadcrumbs\Model\Breadcrumb;
 use Jmf\Breadcrumbs\Model\CurrentBreadcrumbs;
-use Jmf\Breadcrumbs\Resolution\CurrentBreadcrumbsFetcherInterface;
+use Jmf\Breadcrumbs\Resolution\CurrentBreadcrumbsResolverInterface;
 use Jmf\Breadcrumbs\Resolution\PreviousBreadcrumbResolver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -28,7 +28,7 @@ final class PreviousBreadcrumbResolverTest extends TestCase
 
     private PreviousBreadcrumbResolver $previousBreadcrumbResolver;
 
-    private CurrentBreadcrumbsFetcherInterface & MockObject $currentBreadcrumbsFetcher;
+    private CurrentBreadcrumbsResolverInterface & MockObject $currentBreadcrumbsResolver;
 
     private ?Throwable $currentBreadcrumbsFetcherException = null;
 
@@ -36,10 +36,10 @@ final class PreviousBreadcrumbResolverTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->currentBreadcrumbsFetcher = $this->createMock(CurrentBreadcrumbsFetcherInterface::class);
+        $this->currentBreadcrumbsResolver = $this->createMock(CurrentBreadcrumbsResolverInterface::class);
 
         $this->previousBreadcrumbResolver = new PreviousBreadcrumbResolver(
-            $this->currentBreadcrumbsFetcher,
+            $this->currentBreadcrumbsResolver,
         );
     }
 
@@ -143,14 +143,14 @@ final class PreviousBreadcrumbResolverTest extends TestCase
     private function whenResolve(): void
     {
         if ($this->currentBreadcrumbsFetcherException instanceof Throwable) {
-            $this->currentBreadcrumbsFetcher->expects(self::once())
-                ->method('fetch')
+            $this->currentBreadcrumbsResolver->expects(self::once())
+                ->method('resolve')
                 ->with($this->context)
                 ->willThrowException($this->currentBreadcrumbsFetcherException)
             ;
         } else {
-            $this->currentBreadcrumbsFetcher->expects(self::once())
-                ->method('fetch')
+            $this->currentBreadcrumbsResolver->expects(self::once())
+                ->method('resolve')
                 ->with($this->context)
                 ->willReturn(
                     new CurrentBreadcrumbs(

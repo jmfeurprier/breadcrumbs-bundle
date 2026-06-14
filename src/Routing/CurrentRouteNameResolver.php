@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Jmf\Breadcrumbs\Resolution;
+namespace Jmf\Breadcrumbs\Routing;
 
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Webmozart\Assert\Assert;
 
-readonly class RouteNameResolver
+readonly class CurrentRouteNameResolver
 {
     public function __construct(
         private RequestStack $requestStack,

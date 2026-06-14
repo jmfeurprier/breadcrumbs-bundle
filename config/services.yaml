@@ -11,14 +11,14 @@ services:
             - '../src/Definition/'
             - '../src/Exception/'
             - '../src/Model/'
-            - '../src/Repository/'
+            - '../src/Registry/'
             - '../src/JmfBreadcrumbsBundle.php'
 
-    Jmf\Breadcrumbs\Repository\BreadcrumbConfigurationRepositoryInterface:
-        factory: ['@Jmf\Breadcrumbs\Repository\BreadcrumbConfigurationRepositoryFactoryInterface', 'create']
+    Jmf\Breadcrumbs\Registry\BreadcrumbDefinitionRegistryInterface:
+        factory: ['@Jmf\Breadcrumbs\Registry\BreadcrumbDefinitionRegistryFactoryInterface', 'create']
 
-    Jmf\Breadcrumbs\Repository\BreadcrumbConfigurationRepositoryFactoryInterface:
-        class:   Jmf\Breadcrumbs\Repository\BreadcrumbConfigurationRepositoryFactory
+    Jmf\Breadcrumbs\Registry\BreadcrumbDefinitionRegistryFactoryInterface:
+        class:   Jmf\Breadcrumbs\Registry\BreadcrumbDefinitionRegistryFactory
         arguments:
             $config: '%jmf_breadcrumbs.breadcrumbs_config%'
 

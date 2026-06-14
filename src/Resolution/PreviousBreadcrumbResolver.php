@@ -12,7 +12,7 @@ use Throwable;
 readonly class PreviousBreadcrumbResolver implements PreviousBreadcrumbResolverInterface
 {
     public function __construct(
-        private CurrentBreadcrumbsFetcherInterface $currentBreadcrumbsFetcher,
+        private CurrentBreadcrumbsResolverInterface $currentBreadcrumbsFetcher,
     ) {
     }
 
@@ -20,7 +20,7 @@ readonly class PreviousBreadcrumbResolver implements PreviousBreadcrumbResolverI
     public function resolve(array $context): Breadcrumb
     {
         try {
-            $currentBreadcrumbs = $this->currentBreadcrumbsFetcher->fetch($context);
+            $currentBreadcrumbs = $this->currentBreadcrumbsFetcher->resolve($context);
         } catch (Throwable $e) {
             throw new PreviousBreadcrumbResolutionException(
                 message:  'Failed resolving previous Breadcrumb: failed fetching current Breadcrumbs.',

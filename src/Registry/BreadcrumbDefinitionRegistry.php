@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Jmf\Breadcrumbs\Repository;
+namespace Jmf\Breadcrumbs\Registry;
 
 use Jmf\Breadcrumbs\Definition\BreadcrumbDefinition;
 use Override;
 use Webmozart\Assert\Assert;
 
-readonly class BreadcrumbDefinitionRepository implements BreadcrumbDefinitionRepositoryInterface
+readonly class BreadcrumbDefinitionRegistry implements BreadcrumbDefinitionRegistryInterface
 {
     /**
      * @var array<non-empty-string, BreadcrumbDefinition>

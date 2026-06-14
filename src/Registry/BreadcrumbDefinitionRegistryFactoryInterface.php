@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Jmf\Breadcrumbs\Repository;
+namespace Jmf\Breadcrumbs\Registry;
 
 use Jmf\Breadcrumbs\Exception\BreadcrumbConfigurationException;
 
-interface BreadcrumbDefinitionRepositoryFactoryInterface
+interface BreadcrumbDefinitionRegistryFactoryInterface
 {
     /**
      * @throws BreadcrumbConfigurationException
      */
-    public function create(): BreadcrumbDefinitionRepositoryInterface;
+    public function create(): BreadcrumbDefinitionRegistryInterface;
 }

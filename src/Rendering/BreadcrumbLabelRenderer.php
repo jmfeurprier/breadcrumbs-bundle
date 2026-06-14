@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Jmf\Breadcrumbs\Resolution;
+namespace Jmf\Breadcrumbs\Rendering;
 
 use Jmf\Breadcrumbs\Definition\BreadcrumbDefinition;
 use Jmf\Breadcrumbs\Exception\BreadcrumbLabelRenderingException;

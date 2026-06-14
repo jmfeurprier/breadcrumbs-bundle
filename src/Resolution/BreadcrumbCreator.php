@@ -8,6 +8,7 @@ use Jmf\Breadcrumbs\Definition\BreadcrumbDefinition;
 use Jmf\Breadcrumbs\Exception\BreadcrumbLabelRenderingException;
 use Jmf\Breadcrumbs\Exception\BreadcrumbRouteParametersResolutionException;
 use Jmf\Breadcrumbs\Model\Breadcrumb;
+use Jmf\Breadcrumbs\Rendering\BreadcrumbLabelRenderer;
 
 readonly class BreadcrumbCreator
 {
@@ -31,12 +32,12 @@ readonly class BreadcrumbCreator
             label:           $this->breadcrumbLabelRenderer->render(
                      $breadcrumbDefinition,
                      $context,
-            ),
+                 ),
             routeName:       $breadcrumbDefinition->getRouteName(),
             routeParameters: $this->breadcrumbRouteParametersResolver->resolve(
                                  $breadcrumbDefinition,
                                  $context,
-            ),
+                             ),
         );
     }
 }

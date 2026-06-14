@@ -7,27 +7,28 @@ namespace Jmf\Breadcrumbs\Resolution;
 use Jmf\Breadcrumbs\Definition\BreadcrumbDefinition;
 use Jmf\Breadcrumbs\Definition\ParentBreadcrumbDefinition;
 use Jmf\Breadcrumbs\Model\CurrentBreadcrumbs;
-use Jmf\Breadcrumbs\Repository\BreadcrumbDefinitionRepositoryInterface;
+use Jmf\Breadcrumbs\Registry\BreadcrumbDefinitionRegistryInterface;
+use Jmf\Breadcrumbs\Routing\CurrentRouteNameResolver;
 use Override;
 
-readonly class CurrentBreadcrumbsFetcher implements CurrentBreadcrumbsFetcherInterface
+readonly class CurrentBreadcrumbsResolver implements CurrentBreadcrumbsResolverInterface
 {
     public function __construct(
-        private RouteNameResolver $routeNameResolver,
-        private BreadcrumbDefinitionRepositoryInterface $breadcrumbDefinitionRepository,
+        private CurrentRouteNameResolver $currentRouteNameResolver,
+        private BreadcrumbDefinitionRegistryInterface $breadcrumbDefinitionRegistry,
         private ContextResolver $contextResolver,
         private BreadcrumbCreator $breadcrumbCreator,
     ) {
     }
 
     #[Override]
-    public function fetch(array $context): CurrentBreadcrumbs
+    public function resolve(array $context): CurrentBreadcrumbs
     {
         $breadcrumbs = [];
         $routeName   = $this->getRouteName();
 
         while (true) {
-            $breadcrumbDefinition = $this->breadcrumbDefinitionRepository->tryGet($routeName);
+            $breadcrumbDefinition = $this->breadcrumbDefinitionRegistry->tryGet($routeName);
 
             if (!$breadcrumbDefinition instanceof BreadcrumbDefinition) {
                 break;
@@ -65,6 +66,6 @@ readonly class CurrentBreadcrumbsFetcher implements CurrentBreadcrumbsFetcherInt
      */
     private function getRouteName(): string
     {
-        return $this->routeNameResolver->resolve();
+        return $this->currentRouteNameResolver->resolve();
     }
 }

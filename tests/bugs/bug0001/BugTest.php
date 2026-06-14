@@ -9,14 +9,14 @@ use Jmf\Breadcrumbs\Compilation\BreadcrumbDefinitionsCompiler;
 use Jmf\Breadcrumbs\Compilation\ParentBreadcrumbDefinitionCompiler;
 use Jmf\Breadcrumbs\Model\Breadcrumb;
 use Jmf\Breadcrumbs\Model\CurrentBreadcrumbs;
+use Jmf\Breadcrumbs\Registry\BreadcrumbDefinitionRegistryFactory;
+use Jmf\Breadcrumbs\Registry\BreadcrumbDefinitionRegistryInterface;
+use Jmf\Breadcrumbs\Rendering\BreadcrumbLabelRenderer;
 use Jmf\Breadcrumbs\Resolution\BreadcrumbCreator;
-use Jmf\Breadcrumbs\Resolution\BreadcrumbLabelRenderer;
 use Jmf\Breadcrumbs\Resolution\BreadcrumbRouteParametersResolver;
 use Jmf\Breadcrumbs\Resolution\ContextResolver;
-use Jmf\Breadcrumbs\Resolution\CurrentBreadcrumbsFetcher;
-use Jmf\Breadcrumbs\Resolution\RouteNameResolver;
-use Jmf\Breadcrumbs\Repository\BreadcrumbDefinitionRepositoryFactory;
-use Jmf\Breadcrumbs\Repository\BreadcrumbDefinitionRepositoryInterface;
+use Jmf\Breadcrumbs\Resolution\CurrentBreadcrumbsResolver;
+use Jmf\Breadcrumbs\Routing\CurrentRouteNameResolver;
 use Jmf\Breadcrumbs\Tests\bugs\bug0001\fixtures\Cost;
 use Jmf\Breadcrumbs\Tests\bugs\bug0001\fixtures\Project;
 use Jmf\Breadcrumbs\Tests\bugs\bug0001\fixtures\Task;
@@ -35,7 +35,7 @@ final class BugTest extends TestCase
 {
     private RequestStack $requestStack;
 
-    private CurrentBreadcrumbsFetcher $currentBreadcrumbsFetcher;
+    private CurrentBreadcrumbsResolver $currentBreadcrumbsFetcher;
 
     private CurrentBreadcrumbs $result;
 
@@ -49,11 +49,11 @@ final class BugTest extends TestCase
     {
         $this->requestStack = new RequestStack();
 
-        $this->currentBreadcrumbsFetcher = new CurrentBreadcrumbsFetcher(
-            new RouteNameResolver(
+        $this->currentBreadcrumbsFetcher = new CurrentBreadcrumbsResolver(
+            new CurrentRouteNameResolver(
                 $this->requestStack,
             ),
-            $this->getBreadcrumbConfigurationRepository(),
+            $this->getBreadcrumbConfigurationRegistry(),
             new ContextResolver(
                 new PropertyAccessor(),
             ),
@@ -77,7 +77,7 @@ final class BugTest extends TestCase
         );
     }
 
-    private function getBreadcrumbConfigurationRepository(): BreadcrumbDefinitionRepositoryInterface
+    private function getBreadcrumbConfigurationRegistry(): BreadcrumbDefinitionRegistryInterface
     {
         /**
          * @var array{
@@ -88,7 +88,7 @@ final class BugTest extends TestCase
          */
         $config = (new Parser())->parseFile(__DIR__ . '/fixtures/breadcrumbs.yaml');
 
-        $breadcrumbDefinitionRepositoryFactory = new BreadcrumbDefinitionRepositoryFactory(
+        $breadcrumbDefinitionRegistryFactory = new BreadcrumbDefinitionRegistryFactory(
             new BreadcrumbDefinitionsCompiler(
                 new BreadcrumbDefinitionCompiler(
                     new ParentBreadcrumbDefinitionCompiler(),
@@ -97,7 +97,7 @@ final class BugTest extends TestCase
             $config['parameters']['breadcrumbs'],
         );
 
-        return $breadcrumbDefinitionRepositoryFactory->create();
+        return $breadcrumbDefinitionRegistryFactory->create();
     }
 
     public function testBug(): void
@@ -148,7 +148,7 @@ final class BugTest extends TestCase
 
     private function whenFetch(): void
     {
-        $this->result = $this->currentBreadcrumbsFetcher->fetch($this->context);
+        $this->result = $this->currentBreadcrumbsFetcher->resolve($this->context);
     }
 
     /**
