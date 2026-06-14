@@ -65,7 +65,11 @@ class JmfBreadcrumbsBundle extends AbstractBundle
     ): void {
         foreach (self::PARAMETERS_MAPPING as $configKey => $parameterSuffix) {
             $containerConfigurator->parameters()->set(
-                "{$this->extensionAlias}.{$parameterSuffix}",
+                sprintf(
+                    "%s.%s",
+                    $this->extensionAlias,
+                    $parameterSuffix,
+                ),
                 $config[$configKey],
             );
         }

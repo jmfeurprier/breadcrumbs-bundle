@@ -7,6 +7,7 @@ use Rector\Config\RectorConfig;
 use Rector\Naming\Rector\Class_\RenamePropertyToMatchTypeRector;
 use Rector\Naming\Rector\ClassMethod\RenameParamToMatchTypeRector;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitThisCallRector;
+use Rector\TypeDeclarationDocblocks\Rector\ClassMethod\AddReturnDocblockForCommonObjectDenominatorRector;
 
 $rootPath = realpath(__DIR__ . '/..') . '/';
 
@@ -22,6 +23,7 @@ return RectorConfig::configure()
     ->withPhpSets()
     ->withSkip(
         [
+            AddReturnDocblockForCommonObjectDenominatorRector::class,
             CatchExceptionNameMatchingTypeRector::class,
             PreferPHPUnitThisCallRector::class,
             RenameParamToMatchTypeRector::class,
