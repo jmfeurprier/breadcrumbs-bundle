@@ -45,7 +45,7 @@ return static function (DefinitionConfigurator $definitionConfigurator): void {
             ->end()
             ->scalarNode('template_path')
                 ->info('Breadcrumbs template path.')
-                ->defaultValue('@JmfBreadcrumbs/breadcrumbs.html.twig')
+                ->defaultValue('@JmfBreadcrumbs/bootstrap/breadcrumbs.html.twig')
             ->end()
             ->scalarNode('twig_functions_prefix')
                 ->info('Twig functions prefix.')
