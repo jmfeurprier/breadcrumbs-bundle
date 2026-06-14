@@ -8,6 +8,11 @@ use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 return static function (DefinitionConfigurator $definitionConfigurator): void {
     $definitionConfigurator->rootNode()
         ->children()
+            ->arrayNode('paths')
+                ->info('Directories of per-route breadcrumb files; filename (without .yaml) = route name. Defaults to config/packages/jmf_breadcrumbs/.')
+                ->defaultValue([])
+                ->scalarPrototype()->end()
+            ->end()
             ->arrayNode('breadcrumbs')
                 ->info('Breadcrumb definitions.')
                 ->useAttributeAsKey('route')

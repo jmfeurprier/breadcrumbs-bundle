@@ -11,5 +11,5 @@ interface BreadcrumbConfigurationRepositoryFactoryInterface
     /**
      * @throws BreadcrumbConfigurationException
      */
-    public function make(): BreadcrumbConfigurationRepositoryInterface;
+    public function create(): BreadcrumbConfigurationRepositoryInterface;
 }

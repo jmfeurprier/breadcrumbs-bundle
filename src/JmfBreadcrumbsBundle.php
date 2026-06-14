@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs;
 
+use Jmf\Breadcrumbs\Configuration\BreadcrumbsConfigurationLoader;
+use Jmf\Breadcrumbs\Exception\BreadcrumbConfigurationException;
 use Jmf\Breadcrumbs\Repository\BreadcrumbConfigurationRepositoryFactory;
 use Jmf\Breadcrumbs\Repository\BreadcrumbConfigurationRepositoryFactoryInterface;
 use Jmf\Breadcrumbs\Repository\BreadcrumbConfigurationRepositoryInterface;
@@ -19,6 +21,11 @@ class JmfBreadcrumbsBundle extends AbstractBundle
 {
     protected string $extensionAlias = 'jmf_breadcrumbs';
 
+    public function __construct(
+        private readonly BreadcrumbsConfigurationLoader $breadcrumbsConfigurationLoader = new BreadcrumbsConfigurationLoader(),
+    ) {
+    }
+
     #[Override]
     public function configure(DefinitionConfigurator $definition): void
     {
@@ -27,6 +34,8 @@ class JmfBreadcrumbsBundle extends AbstractBundle
 
     /**
      * @param array<string, mixed> $config
+     *
+     * @throws BreadcrumbConfigurationException
      */
     #[Override]
     public function loadExtension(
@@ -36,13 +45,15 @@ class JmfBreadcrumbsBundle extends AbstractBundle
     ): void {
         $container->import('../config/services.yaml');
 
+        $config['breadcrumbs'] = $this->breadcrumbsConfigurationLoader->load($config, $builder, $this->extensionAlias);
+
         $container->services()
             ->set(BreadcrumbConfigurationRepositoryInterface::class)
             ->autowire()
             ->factory(
                 [
                     new Reference(BreadcrumbConfigurationRepositoryFactoryInterface::class),
-                    'make',
+                    'create',
                 ],
             )
         ;

@@ -94,7 +94,7 @@ final class BugTest extends TestCase
             $config['parameters']['breadcrumbs'],
         );
 
-        return $breadcrumbConfigurationRepositoryFactory->make();
+        return $breadcrumbConfigurationRepositoryFactory->create();
     }
 
     public function testBug(): void

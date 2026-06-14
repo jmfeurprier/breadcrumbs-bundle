@@ -21,7 +21,7 @@ readonly class BreadcrumbConfigurationRepositoryFactory implements BreadcrumbCon
     }
 
     #[Override]
-    public function make(): BreadcrumbConfigurationRepositoryInterface
+    public function create(): BreadcrumbConfigurationRepositoryInterface
     {
         return new BreadcrumbConfigurationRepository(
             $this->getBreadcrumbConfigurations(),
