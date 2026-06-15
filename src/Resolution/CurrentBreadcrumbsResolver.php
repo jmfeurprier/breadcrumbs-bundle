@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs\Resolution;
 
-use Jmf\Breadcrumbs\Definition\BreadcrumbDefinition;
-use Jmf\Breadcrumbs\Definition\ParentBreadcrumbDefinition;
-use Jmf\Breadcrumbs\Model\CurrentBreadcrumbs;
+use Jmf\Breadcrumbs\Exception\BreadcrumbContextResolutionException;
+use Jmf\Breadcrumbs\Exception\BreadcrumbLabelRenderingException;
+use Jmf\Breadcrumbs\Exception\BreadcrumbRouteParametersResolutionException;
 use Jmf\Breadcrumbs\Exception\NoMainRequestException;
+use Jmf\Breadcrumbs\Model\Breadcrumb;
+use Jmf\Breadcrumbs\Model\CurrentBreadcrumbs;
 use Jmf\Breadcrumbs\Registry\BreadcrumbDefinitionRegistryInterface;
 use Jmf\Breadcrumbs\Routing\CurrentRouteNameResolver;
 use Override;
@@ -25,41 +27,58 @@ readonly class CurrentBreadcrumbsResolver implements CurrentBreadcrumbsResolverI
     #[Override]
     public function resolve(array $context): CurrentBreadcrumbs
     {
-        $breadcrumbs = [];
-        $routeName   = $this->getRouteName();
+        return new CurrentBreadcrumbs(
+            $this->resolveChain($this->getRouteName(), $context),
+        );
+    }
 
-        while (true) {
-            $breadcrumbDefinition = $this->breadcrumbDefinitionRegistry->tryGet($routeName);
+    /**
+     * @param array<string, mixed> $context
+     *
+     * @return Breadcrumb[]
+     *
+     * @throws BreadcrumbContextResolutionException
+     * @throws BreadcrumbLabelRenderingException
+     * @throws BreadcrumbRouteParametersResolutionException
+     */
+    private function resolveChain(
+        string $routeName,
+        array $context,
+    ): array {
+        $breadcrumbDefinition = $this->breadcrumbDefinitionRegistry->tryGet($routeName);
 
-            if (!$breadcrumbDefinition instanceof BreadcrumbDefinition) {
-                break;
-            }
-
-            $context = $this->contextResolver->resolve(
-                $context,
-                $breadcrumbDefinition->getParameters()->all(),
-            );
-
-            $breadcrumbs[] = $this->breadcrumbCreator->create(
-                $breadcrumbDefinition,
-                $context,
-            );
-
-            $parentBreadcrumbDefinition = $breadcrumbDefinition->getParentBreadcrumbDefinition();
-
-            if (!$parentBreadcrumbDefinition instanceof ParentBreadcrumbDefinition) {
-                break;
-            }
-
-            $routeName = $parentBreadcrumbDefinition->getRouteName();
-
-            $context = $this->contextResolver->resolve(
-                $context,
-                $parentBreadcrumbDefinition->getParameters()->all(),
-            );
+        if ($breadcrumbDefinition === null) {
+            return [];
         }
 
-        return new CurrentBreadcrumbs(array_reverse($breadcrumbs));
+        $context = $this->contextResolver->resolve(
+            $context,
+            $breadcrumbDefinition->getParameters()->all(),
+        );
+
+        $breadcrumb = $this->breadcrumbCreator->create(
+            $breadcrumbDefinition,
+            $context,
+        );
+
+        $parentBreadcrumbDefinition = $breadcrumbDefinition->getParentBreadcrumbDefinition();
+
+        if ($parentBreadcrumbDefinition === null) {
+            return [$breadcrumb];
+        }
+
+        $context = $this->contextResolver->resolve(
+            $context,
+            $parentBreadcrumbDefinition->getParameters()->all(),
+        );
+
+        return [
+            ...$this->resolveChain(
+                $parentBreadcrumbDefinition->getRouteName(),
+                $context,
+            ),
+            $breadcrumb,
+        ];
     }
 
     /**
