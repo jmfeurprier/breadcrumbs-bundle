@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Jmf\Breadcrumbs\Tests\bugs\bug0001;
 
 use Jmf\Breadcrumbs\Compilation\BreadcrumbDefinitionCompiler;
-use Jmf\Breadcrumbs\Compilation\BreadcrumbDefinitionsCompiler;
+use Jmf\Breadcrumbs\Compilation\BreadcrumbDefinitionCollectionCompiler;
 use Jmf\Breadcrumbs\Compilation\ParentBreadcrumbDefinitionCompiler;
 use Jmf\Breadcrumbs\Model\Breadcrumb;
 use Jmf\Breadcrumbs\Model\CurrentBreadcrumbs;
@@ -89,7 +89,7 @@ final class BugTest extends TestCase
         $config = (new Parser())->parseFile(__DIR__ . '/fixtures/breadcrumbs.yaml');
 
         $breadcrumbDefinitionRegistryFactory = new BreadcrumbDefinitionRegistryFactory(
-            new BreadcrumbDefinitionsCompiler(
+            new BreadcrumbDefinitionCollectionCompiler(
                 new BreadcrumbDefinitionCompiler(
                     new ParentBreadcrumbDefinitionCompiler(),
                 ),
@@ -156,7 +156,7 @@ final class BugTest extends TestCase
      */
     private function thenBreadcrumbs(array $expected): void
     {
-        $breadcrumbs = (array) $this->result->getBreadcrumbs();
+        $breadcrumbs = iterator_to_array($this->result->getBreadcrumbs());
 
         $this->assertCount(count($expected), $breadcrumbs);
 

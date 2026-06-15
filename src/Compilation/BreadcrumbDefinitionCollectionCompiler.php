@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs\Compilation;
 
-use Jmf\Breadcrumbs\Definition\BreadcrumbDefinition;
+use Jmf\Breadcrumbs\Definition\BreadcrumbDefinitionCollection;
 use Jmf\Breadcrumbs\Exception\BreadcrumbConfigurationException;
 use Webmozart\Assert\Assert;
 
-readonly class BreadcrumbDefinitionsCompiler
+readonly class BreadcrumbDefinitionCollectionCompiler
 {
     public function __construct(
         private BreadcrumbDefinitionCompiler $breadcrumbDefinitionCompiler,
@@ -18,13 +18,11 @@ readonly class BreadcrumbDefinitionsCompiler
     /**
      * @param array<non-empty-string, mixed> $config
      *
-     * @return BreadcrumbDefinition[]
-     *
      * @throws BreadcrumbConfigurationException
      */
     public function compile(
         array $config,
-    ): iterable {
+    ): BreadcrumbDefinitionCollection {
         Assert::isMap($config);
 
         $breadcrumbDefinitions = [];
@@ -38,6 +36,6 @@ readonly class BreadcrumbDefinitionsCompiler
             );
         }
 
-        return $breadcrumbDefinitions;
+        return new BreadcrumbDefinitionCollection($breadcrumbDefinitions);
     }
 }

@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs\Registry;
 
-use Jmf\Breadcrumbs\Compilation\BreadcrumbDefinitionsCompiler;
-use Jmf\Breadcrumbs\Definition\BreadcrumbDefinition;
-use Jmf\Breadcrumbs\Exception\BreadcrumbConfigurationException;
+use Jmf\Breadcrumbs\Compilation\BreadcrumbDefinitionCollectionCompiler;
 use Override;
 
 readonly class BreadcrumbDefinitionRegistryFactory implements BreadcrumbDefinitionRegistryFactoryInterface
@@ -15,7 +13,7 @@ readonly class BreadcrumbDefinitionRegistryFactory implements BreadcrumbDefiniti
      * @param array<non-empty-string, mixed> $config
      */
     public function __construct(
-        private BreadcrumbDefinitionsCompiler $breadcrumbDefinitionsCompiler,
+        private BreadcrumbDefinitionCollectionCompiler $breadcrumbDefinitionCollectionCompiler,
         private array $config,
     ) {
     }
@@ -24,17 +22,9 @@ readonly class BreadcrumbDefinitionRegistryFactory implements BreadcrumbDefiniti
     public function create(): BreadcrumbDefinitionRegistryInterface
     {
         return new BreadcrumbDefinitionRegistry(
-            $this->getBreadcrumbDefinitions(),
+            $this->breadcrumbDefinitionCollectionCompiler->compile(
+                $this->config,
+            ),
         );
-    }
-
-    /**
-     * @return BreadcrumbDefinition[]
-     *
-     * @throws BreadcrumbConfigurationException
-     */
-    private function getBreadcrumbDefinitions(): iterable
-    {
-        return $this->breadcrumbDefinitionsCompiler->compile($this->config);
     }
 }

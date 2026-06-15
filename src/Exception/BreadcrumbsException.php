@@ -9,7 +9,7 @@ use Throwable;
 
 abstract class BreadcrumbsException extends Exception
 {
-    public function __construct(
+    protected function __construct(
         string $message,
         ?Throwable $previous = null,
     ) {

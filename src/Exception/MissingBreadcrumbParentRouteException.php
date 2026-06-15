@@ -6,10 +6,22 @@ namespace Jmf\Breadcrumbs\Exception;
 
 class MissingBreadcrumbParentRouteException extends BreadcrumbConfigurationException
 {
-    public function __construct()
-    {
+    /**
+     * @param non-empty-string $routeName
+     */
+    public function __construct(
+        private readonly string $routeName,
+    ) {
         parent::__construct(
-            message: "Missing 'route' configuration for breadcrumb parent.",
+            message: sprintf("Missing 'route' configuration for breadcrumb '%s' parent.", $this->routeName),
         );
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    public function getRouteName(): string
+    {
+        return $this->routeName;
     }
 }

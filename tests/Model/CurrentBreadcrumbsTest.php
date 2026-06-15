@@ -19,7 +19,7 @@ final class CurrentBreadcrumbsTest extends TestCase
     {
         $currentBreadcrumbs = $this->getInstance();
 
-        self::assertEmpty($currentBreadcrumbs->getBreadcrumbs());
+        self::assertEmpty(iterator_to_array($currentBreadcrumbs->getBreadcrumbs()));
     }
 
     public function testGetBreadcrumbsWithOneItem(): void
@@ -28,8 +28,8 @@ final class CurrentBreadcrumbsTest extends TestCase
 
         $currentBreadcrumbs = $this->getInstance();
 
-        self::assertCount(1, $currentBreadcrumbs->getBreadcrumbs());
-        self::assertContains($breadcrumb, $currentBreadcrumbs->getBreadcrumbs());
+        self::assertCount(1, iterator_to_array($currentBreadcrumbs->getBreadcrumbs()));
+        self::assertContains($breadcrumb, iterator_to_array($currentBreadcrumbs->getBreadcrumbs()));
     }
 
     public function testGetBreadcrumbsWithManyItems(): void
@@ -39,9 +39,9 @@ final class CurrentBreadcrumbsTest extends TestCase
 
         $currentBreadcrumbs = $this->getInstance();
 
-        self::assertCount(2, $currentBreadcrumbs->getBreadcrumbs());
-        self::assertContains($breadcrumbPrimary, $currentBreadcrumbs->getBreadcrumbs());
-        self::assertContains($breadcrumbSecondary, $currentBreadcrumbs->getBreadcrumbs());
+        self::assertCount(2, iterator_to_array($currentBreadcrumbs->getBreadcrumbs()));
+        self::assertContains($breadcrumbPrimary, iterator_to_array($currentBreadcrumbs->getBreadcrumbs()));
+        self::assertContains($breadcrumbSecondary, iterator_to_array($currentBreadcrumbs->getBreadcrumbs()));
     }
 
     public function testGetCurrentBreadcrumbWithEmptyList(): void

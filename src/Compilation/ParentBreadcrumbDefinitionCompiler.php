@@ -13,12 +13,15 @@ use Webmozart\Assert\Assert;
 readonly class ParentBreadcrumbDefinitionCompiler
 {
     /**
+     * @param non-empty-string     $routeName
      * @param array<string, mixed> $config
      *
      * @throws BreadcrumbConfigurationException
      */
-    public function compile(array $config): ?ParentBreadcrumbDefinition
-    {
+    public function compile(
+        string $routeName,
+        array $config,
+    ): ?ParentBreadcrumbDefinition {
         if (!array_key_exists('parent', $config)) {
             return null;
         }
@@ -28,22 +31,32 @@ readonly class ParentBreadcrumbDefinitionCompiler
         Assert::isMap($parentConfig);
 
         return new ParentBreadcrumbDefinition(
-            $this->getRouteName($parentConfig),
-            $this->getParameters($parentConfig),
+            $this->getRouteName(
+                $routeName,
+                $parentConfig,
+            ),
+            $this->getParameters(
+                $parentConfig,
+            ),
         );
     }
 
     /**
+     * @param non-empty-string     $routeName
      * @param array<string, mixed> $parentConfig
      *
      * @return non-empty-string
      *
-     * @throws BreadcrumbConfigurationException
+     * @throws MissingBreadcrumbParentRouteException
      */
-    private function getRouteName(array $parentConfig): string
-    {
+    private function getRouteName(
+        string $routeName,
+        array $parentConfig,
+    ): string {
         if (!array_key_exists('route', $parentConfig)) {
-            throw new MissingBreadcrumbParentRouteException();
+            throw new MissingBreadcrumbParentRouteException(
+                routeName: $routeName,
+            );
         }
 
         $route = $parentConfig['route'];

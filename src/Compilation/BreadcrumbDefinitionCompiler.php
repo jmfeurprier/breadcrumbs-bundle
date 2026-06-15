@@ -29,10 +29,18 @@ readonly class BreadcrumbDefinitionCompiler
         array $config,
     ): BreadcrumbDefinition {
         return new BreadcrumbDefinition(
-            $routeName,
-            $this->getLabel($routeName, $config),
-            $this->getParameters($config),
-            $this->getParentBreadcrumbDefinition($config),
+            routeName:                  $routeName,
+            label:                      $this->getLabel(
+                                            $routeName,
+                                            $config,
+                                        ),
+            parameters:                 $this->getParameters(
+                                            $config,
+                                        ),
+            parentBreadcrumbDefinition: $this->getParentBreadcrumbDefinition(
+                                            $routeName,
+                                            $config,
+                                        ),
         );
     }
 
@@ -42,8 +50,10 @@ readonly class BreadcrumbDefinitionCompiler
      *
      * @throws MissingBreadcrumbLabelException
      */
-    private function getLabel(string $routeName, array $config): string
-    {
+    private function getLabel(
+        string $routeName,
+        array $config,
+    ): string {
         if (!array_key_exists('label', $config)) {
             throw new MissingBreadcrumbLabelException(routeName: $routeName);
         }
@@ -73,12 +83,18 @@ readonly class BreadcrumbDefinitionCompiler
     }
 
     /**
+     * @param non-empty-string     $routeName
      * @param array<string, mixed> $config
      *
      * @throws BreadcrumbConfigurationException
      */
-    private function getParentBreadcrumbDefinition(array $config): ?ParentBreadcrumbDefinition
-    {
-        return $this->parentBreadcrumbDefinitionCompiler->compile($config);
+    private function getParentBreadcrumbDefinition(
+        string $routeName,
+        array $config,
+    ): ?ParentBreadcrumbDefinition {
+        return $this->parentBreadcrumbDefinitionCompiler->compile(
+            $routeName,
+            $config,
+        );
     }
 }

@@ -45,17 +45,17 @@ readonly class CurrentBreadcrumbsResolver implements CurrentBreadcrumbsResolverI
                 $context,
             );
 
-            if (
-                !$breadcrumbDefinition->getParentBreadcrumbDefinition() instanceof ParentBreadcrumbDefinition
-            ) {
+            $parentBreadcrumbDefinition = $breadcrumbDefinition->getParentBreadcrumbDefinition();
+
+            if (!$parentBreadcrumbDefinition instanceof ParentBreadcrumbDefinition) {
                 break;
             }
 
-            $routeName = $breadcrumbDefinition->getParentBreadcrumbDefinition()->getRouteName();
+            $routeName = $parentBreadcrumbDefinition->getRouteName();
 
             $context = $this->contextResolver->resolve(
                 $context,
-                $breadcrumbDefinition->getParentBreadcrumbDefinition()->getParameters()->all(),
+                $parentBreadcrumbDefinition->getParameters()->all(),
             );
         }
 

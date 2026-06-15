@@ -12,7 +12,7 @@ readonly class CurrentBreadcrumbs
      * @param Breadcrumb[] $breadcrumbs
      */
     public function __construct(
-        private iterable $breadcrumbs,
+        private array $breadcrumbs,
     ) {
         Assert::allIsInstanceOf($this->breadcrumbs, Breadcrumb::class);
     }
@@ -22,7 +22,7 @@ readonly class CurrentBreadcrumbs
      */
     public function getBreadcrumbs(): iterable
     {
-        return $this->breadcrumbs;
+        yield from $this->breadcrumbs;
     }
 
     public function tryGetCurrentBreadcrumb(): ?Breadcrumb

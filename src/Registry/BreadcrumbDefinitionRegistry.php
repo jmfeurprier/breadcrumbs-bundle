@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Jmf\Breadcrumbs\Registry;
 
 use Jmf\Breadcrumbs\Definition\BreadcrumbDefinition;
+use Jmf\Breadcrumbs\Definition\BreadcrumbDefinitionCollection;
 use Override;
-use Webmozart\Assert\Assert;
 
 readonly class BreadcrumbDefinitionRegistry implements BreadcrumbDefinitionRegistryInterface
 {
@@ -15,17 +15,12 @@ readonly class BreadcrumbDefinitionRegistry implements BreadcrumbDefinitionRegis
      */
     private array $indexedByRouteName;
 
-    /**
-     * @param BreadcrumbDefinition[] $breadcrumbDefinitions
-     */
     public function __construct(
-        iterable $breadcrumbDefinitions,
+        BreadcrumbDefinitionCollection $breadcrumbDefinitionCollection,
     ) {
-        Assert::allIsInstanceOf($breadcrumbDefinitions, BreadcrumbDefinition::class);
-
         $indexed = [];
 
-        foreach ($breadcrumbDefinitions as $breadcrumbDefinition) {
+        foreach ($breadcrumbDefinitionCollection->all() as $breadcrumbDefinition) {
             $indexed[$breadcrumbDefinition->getRouteName()] = $breadcrumbDefinition;
         }
 

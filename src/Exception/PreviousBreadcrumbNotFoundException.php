@@ -9,7 +9,7 @@ class PreviousBreadcrumbNotFoundException extends PreviousBreadcrumbResolutionEx
     public function __construct()
     {
         parent::__construct(
-            message: 'Failed resolving previous Breadcrumb.',
+            message: 'Previous breadcrumb not found.',
         );
     }
 }

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Jmf\Breadcrumbs\Tests\Resolution;
 
 use Exception;
+use Jmf\Breadcrumbs\Exception\PreviousBreadcrumbNotFoundException;
 use Jmf\Breadcrumbs\Exception\PreviousBreadcrumbResolutionException;
+use Jmf\Breadcrumbs\Exception\PreviousBreadcrumbResolutionFailedException;
 use Jmf\Breadcrumbs\Model\Breadcrumb;
 use Jmf\Breadcrumbs\Model\CurrentBreadcrumbs;
 use Jmf\Breadcrumbs\Resolution\CurrentBreadcrumbsResolverInterface;
@@ -24,13 +26,13 @@ final class PreviousBreadcrumbResolverTest extends TestCase
     /**
      * @var Breadcrumb[]
      */
-    private iterable $currentBreadcrumbs = [];
+    private array $currentBreadcrumbs = [];
 
     private PreviousBreadcrumbResolver $previousBreadcrumbResolver;
 
     private CurrentBreadcrumbsResolverInterface & MockObject $currentBreadcrumbsResolver;
 
-    private ?Throwable $currentBreadcrumbsFetcherException = null;
+    private ?Throwable $currentBreadcrumbsResolverException = null;
 
     private Breadcrumb $result;
 
@@ -69,8 +71,7 @@ final class PreviousBreadcrumbResolverTest extends TestCase
             ],
         );
 
-        $this->expectException(PreviousBreadcrumbResolutionException::class);
-        $this->expectExceptionMessage('Failed resolving previous Breadcrumb.');
+        $this->expectException(PreviousBreadcrumbNotFoundException::class);
 
         $this->whenResolve();
     }
@@ -80,26 +81,24 @@ final class PreviousBreadcrumbResolverTest extends TestCase
         $this->givenContext(['key' => 'value']);
         $this->givenBreadcrumbs([]);
 
-        $this->expectException(PreviousBreadcrumbResolutionException::class);
-        $this->expectExceptionMessage('Failed resolving previous Breadcrumb.');
+        $this->expectException(PreviousBreadcrumbNotFoundException::class);
 
         $this->whenResolve();
     }
 
-    public function testResolveThrowsExceptionWhenFetcherFails(): void
+    public function testResolveThrowsExceptionWhenResolverFails(): void
     {
-        $fetcherException = new Exception('Fetcher error');
+        $resolverException = new Exception('Resolver error');
 
         $this->givenContext(['key' => 'value']);
-        $this->givenCurrentBreadcrumbsFetcherException($fetcherException);
+        $this->givenCurrentBreadcrumbCollectionResolverException($resolverException);
 
         $this->expectException(PreviousBreadcrumbResolutionException::class);
-        $this->expectExceptionMessage('Failed resolving previous Breadcrumb: failed fetching current Breadcrumbs.');
 
         try {
             $this->whenResolve();
         } catch (PreviousBreadcrumbResolutionException $e) {
-            self::assertSame($fetcherException, $e->getPrevious());
+            self::assertSame($resolverException, $e->getPrevious());
 
             throw $e;
         }
@@ -113,9 +112,9 @@ final class PreviousBreadcrumbResolverTest extends TestCase
         $this->context = $context;
     }
 
-    private function givenCurrentBreadcrumbsFetcherException(Throwable $exception): void
+    private function givenCurrentBreadcrumbCollectionResolverException(Throwable $exception): void
     {
-        $this->currentBreadcrumbsFetcherException = $exception;
+        $this->currentBreadcrumbsResolverException = $exception;
     }
 
     private function createBreadcrumb(
@@ -132,7 +131,7 @@ final class PreviousBreadcrumbResolverTest extends TestCase
     /**
      * @param Breadcrumb[] $breadcrumbs
      */
-    private function givenBreadcrumbs(iterable $breadcrumbs): void
+    private function givenBreadcrumbs(array $breadcrumbs): void
     {
         $this->currentBreadcrumbs = $breadcrumbs;
     }
@@ -142,11 +141,11 @@ final class PreviousBreadcrumbResolverTest extends TestCase
      */
     private function whenResolve(): void
     {
-        if ($this->currentBreadcrumbsFetcherException instanceof Throwable) {
+        if ($this->currentBreadcrumbsResolverException instanceof Throwable) {
             $this->currentBreadcrumbsResolver->expects(self::once())
                 ->method('resolve')
                 ->with($this->context)
-                ->willThrowException($this->currentBreadcrumbsFetcherException)
+                ->willThrowException($this->currentBreadcrumbsResolverException)
             ;
         } else {
             $this->currentBreadcrumbsResolver->expects(self::once())
