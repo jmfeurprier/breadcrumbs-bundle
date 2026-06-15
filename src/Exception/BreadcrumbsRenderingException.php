@@ -6,15 +6,20 @@ namespace Jmf\Breadcrumbs\Exception;
 
 use Throwable;
 
-final class BreadcrumbsRenderingException extends BreadcrumbsException
+final class BreadcrumbsRenderingException extends BreadcrumbsRuntimeException
 {
     public function __construct(
-        string $templatePath,
+        private readonly string $templatePath,
         ?Throwable $previous = null,
     ) {
         parent::__construct(
-            message:  sprintf("Failed rendering breadcrumbs template '%s'.", $templatePath),
+            message:  sprintf("Failed rendering breadcrumbs template '%s'.", $this->templatePath),
             previous: $previous,
         );
+    }
+
+    public function getTemplatePath(): string
+    {
+        return $this->templatePath;
     }
 }

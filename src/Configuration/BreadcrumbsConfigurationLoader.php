@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Jmf\Breadcrumbs\Configuration;
 
 use Jmf\Breadcrumbs\Exception\BreadcrumbConfigurationException;
+use Jmf\Breadcrumbs\Exception\ConflictingBreadcrumbRouteDefinitionException;
+use Jmf\Breadcrumbs\Exception\DuplicateBreadcrumbRouteDefinitionException;
 use Symfony\Component\Config\Resource\DirectoryResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Finder\Finder;
@@ -110,8 +112,8 @@ final readonly class BreadcrumbsConfigurationLoader
                 Assert::stringNotEmpty($routeName);
 
                 if (isset($breadcrumbs[$routeName])) {
-                    throw new BreadcrumbConfigurationException(
-                        sprintf("Breadcrumb route '%s' is defined more than once across path files.", $routeName),
+                    throw new DuplicateBreadcrumbRouteDefinitionException(
+                        routeName: $routeName,
                     );
                 }
 
@@ -136,11 +138,8 @@ final readonly class BreadcrumbsConfigurationLoader
         $duplicates = array_intersect_key($fromPaths, $inline);
 
         if ([] !== $duplicates) {
-            throw new BreadcrumbConfigurationException(
-                sprintf(
-                    "Breadcrumb route(s) defined in both path files and inline configuration: %s.",
-                    implode(', ', array_keys($duplicates)),
-                ),
+            throw new ConflictingBreadcrumbRouteDefinitionException(
+                routeNames: array_keys($duplicates),
             );
         }
     }

@@ -7,6 +7,7 @@ namespace Jmf\Breadcrumbs\Resolution;
 use Jmf\Breadcrumbs\Definition\BreadcrumbDefinition;
 use Jmf\Breadcrumbs\Definition\ParentBreadcrumbDefinition;
 use Jmf\Breadcrumbs\Model\CurrentBreadcrumbs;
+use Jmf\Breadcrumbs\Exception\NoMainRequestException;
 use Jmf\Breadcrumbs\Registry\BreadcrumbDefinitionRegistryInterface;
 use Jmf\Breadcrumbs\Routing\CurrentRouteNameResolver;
 use Override;
@@ -63,6 +64,8 @@ readonly class CurrentBreadcrumbsResolver implements CurrentBreadcrumbsResolverI
 
     /**
      * @return non-empty-string
+     *
+     * @throws NoMainRequestException
      */
     private function getRouteName(): string
     {

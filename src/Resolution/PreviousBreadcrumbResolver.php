@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs\Resolution;
 
-use Jmf\Breadcrumbs\Exception\PreviousBreadcrumbResolutionException;
+use Jmf\Breadcrumbs\Exception\PreviousBreadcrumbFetchingFailedException;
+use Jmf\Breadcrumbs\Exception\PreviousBreadcrumbNotFoundException;
 use Jmf\Breadcrumbs\Model\Breadcrumb;
 use Override;
 use Throwable;
@@ -22,10 +23,7 @@ readonly class PreviousBreadcrumbResolver implements PreviousBreadcrumbResolverI
         try {
             $currentBreadcrumbs = $this->currentBreadcrumbsFetcher->resolve($context);
         } catch (Throwable $e) {
-            throw new PreviousBreadcrumbResolutionException(
-                message:  'Failed resolving previous Breadcrumb: failed fetching current Breadcrumbs.',
-                previous: $e,
-            );
+            throw new PreviousBreadcrumbFetchingFailedException(previous: $e);
         }
 
         $previousBreadcrumb = $currentBreadcrumbs->tryGetPreviousBreadcrumb();
@@ -34,8 +32,6 @@ readonly class PreviousBreadcrumbResolver implements PreviousBreadcrumbResolverI
             return $previousBreadcrumb;
         }
 
-        throw new PreviousBreadcrumbResolutionException(
-            message: 'Failed resolving previous Breadcrumb.',
-        );
+        throw new PreviousBreadcrumbNotFoundException();
     }
 }

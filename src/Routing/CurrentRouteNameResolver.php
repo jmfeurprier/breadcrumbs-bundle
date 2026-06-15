@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs\Routing;
 
-use RuntimeException;
+use Jmf\Breadcrumbs\Exception\NoMainRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Webmozart\Assert\Assert;
@@ -18,6 +18,8 @@ readonly class CurrentRouteNameResolver
 
     /**
      * @return non-empty-string
+     *
+     * @throws NoMainRequestException
      */
     public function resolve(): string
     {
@@ -28,6 +30,9 @@ readonly class CurrentRouteNameResolver
         return $routeName;
     }
 
+    /**
+     * @throws NoMainRequestException
+     */
     private function getRequest(): Request
     {
         $request = $this->requestStack->getMainRequest();
@@ -36,6 +41,6 @@ readonly class CurrentRouteNameResolver
             return $request;
         }
 
-        throw new RuntimeException('No main request.');
+        throw new NoMainRequestException();
     }
 }

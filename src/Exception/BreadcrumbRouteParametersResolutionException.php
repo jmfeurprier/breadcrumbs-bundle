@@ -6,7 +6,7 @@ namespace Jmf\Breadcrumbs\Exception;
 
 use Throwable;
 
-class BreadcrumbRouteParametersResolutionException extends BreadcrumbsException
+class BreadcrumbRouteParametersResolutionException extends BreadcrumbsRuntimeException
 {
     /**
      * @param array<string, mixed> $context

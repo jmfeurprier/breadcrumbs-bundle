@@ -8,6 +8,7 @@ use Jmf\Breadcrumbs\Definition\BreadcrumbDefinition;
 use Jmf\Breadcrumbs\Definition\ParentBreadcrumbDefinition;
 use Jmf\Breadcrumbs\Definition\StringMap;
 use Jmf\Breadcrumbs\Exception\BreadcrumbConfigurationException;
+use Jmf\Breadcrumbs\Exception\MissingBreadcrumbLabelException;
 use Webmozart\Assert\Assert;
 
 readonly class BreadcrumbDefinitionCompiler
@@ -29,21 +30,22 @@ readonly class BreadcrumbDefinitionCompiler
     ): BreadcrumbDefinition {
         return new BreadcrumbDefinition(
             $routeName,
-            $this->getLabel($config),
+            $this->getLabel($routeName, $config),
             $this->getParameters($config),
             $this->getParentBreadcrumbDefinition($config),
         );
     }
 
     /**
+     * @param non-empty-string     $routeName
      * @param array<string, mixed> $config
      *
-     * @throws BreadcrumbConfigurationException
+     * @throws MissingBreadcrumbLabelException
      */
-    private function getLabel(array $config): string
+    private function getLabel(string $routeName, array $config): string
     {
         if (!array_key_exists('label', $config)) {
-            throw new BreadcrumbConfigurationException("Missing breadcrumb 'label' configuration.");
+            throw new MissingBreadcrumbLabelException(routeName: $routeName);
         }
 
         $label = $config['label'];

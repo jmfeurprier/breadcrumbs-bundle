@@ -6,7 +6,7 @@ namespace Jmf\Breadcrumbs\Exception;
 
 use Throwable;
 
-class BreadcrumbLabelRenderingException extends BreadcrumbsException
+class BreadcrumbLabelRenderingException extends BreadcrumbsRuntimeException
 {
     /**
      * @param array<string, mixed> $context

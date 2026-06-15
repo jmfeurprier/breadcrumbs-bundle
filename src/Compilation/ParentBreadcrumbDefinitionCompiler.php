@@ -7,6 +7,7 @@ namespace Jmf\Breadcrumbs\Compilation;
 use Jmf\Breadcrumbs\Definition\ParentBreadcrumbDefinition;
 use Jmf\Breadcrumbs\Definition\StringMap;
 use Jmf\Breadcrumbs\Exception\BreadcrumbConfigurationException;
+use Jmf\Breadcrumbs\Exception\MissingBreadcrumbParentRouteException;
 use Webmozart\Assert\Assert;
 
 readonly class ParentBreadcrumbDefinitionCompiler
@@ -42,9 +43,7 @@ readonly class ParentBreadcrumbDefinitionCompiler
     private function getRouteName(array $parentConfig): string
     {
         if (!array_key_exists('route', $parentConfig)) {
-            throw new BreadcrumbConfigurationException(
-                "Missing breadcrumb parent 'route' configuration.",
-            );
+            throw new MissingBreadcrumbParentRouteException();
         }
 
         $route = $parentConfig['route'];

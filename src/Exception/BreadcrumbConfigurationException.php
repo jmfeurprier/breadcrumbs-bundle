@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs\Exception;
 
-class BreadcrumbConfigurationException extends BreadcrumbsException
+abstract class BreadcrumbConfigurationException extends BreadcrumbsException
 {
 }
