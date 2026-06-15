@@ -7,6 +7,7 @@ namespace Jmf\Breadcrumbs\Resolution;
 use Jmf\Breadcrumbs\Exception\BreadcrumbContextResolutionException;
 use Jmf\Breadcrumbs\Exception\BreadcrumbLabelRenderingException;
 use Jmf\Breadcrumbs\Exception\BreadcrumbRouteParametersResolutionException;
+use Jmf\Breadcrumbs\Exception\BreadcrumbCircularReferenceException;
 use Jmf\Breadcrumbs\Exception\NoMainRequestException;
 use Jmf\Breadcrumbs\Model\Breadcrumb;
 use Jmf\Breadcrumbs\Model\CurrentBreadcrumbs;
@@ -33,18 +34,27 @@ readonly class CurrentBreadcrumbsResolver implements CurrentBreadcrumbsResolverI
     }
 
     /**
-     * @param array<string, mixed> $context
+     * @param array<string, mixed>  $context
+     * @param array<string, true>   $visitedRouteNames
      *
      * @return Breadcrumb[]
      *
      * @throws BreadcrumbContextResolutionException
      * @throws BreadcrumbLabelRenderingException
      * @throws BreadcrumbRouteParametersResolutionException
+     * @throws BreadcrumbCircularReferenceException
      */
     private function resolveChain(
         string $routeName,
         array $context,
+        array $visitedRouteNames = [],
     ): array {
+        if (isset($visitedRouteNames[$routeName])) {
+            throw new BreadcrumbCircularReferenceException(routeName: $routeName);
+        }
+
+        $visitedRouteNames[$routeName] = true;
+
         $breadcrumbDefinition = $this->breadcrumbDefinitionRegistry->tryGet($routeName);
 
         if ($breadcrumbDefinition === null) {
@@ -76,6 +86,7 @@ readonly class CurrentBreadcrumbsResolver implements CurrentBreadcrumbsResolverI
             ...$this->resolveChain(
                 $parentBreadcrumbDefinition->getRouteName(),
                 $context,
+                $visitedRouteNames,
             ),
             $breadcrumb,
         ];
