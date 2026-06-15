@@ -13,7 +13,10 @@ final class BreadcrumbsRenderingException extends BreadcrumbsRuntimeException
         ?Throwable $previous = null,
     ) {
         parent::__construct(
-            message:  sprintf("Failed rendering breadcrumbs template '%s'.", $this->templatePath),
+            message:  sprintf(
+                          "Failed rendering breadcrumbs template '%s'.",
+                          $this->templatePath,
+                      ),
             previous: $previous,
         );
     }

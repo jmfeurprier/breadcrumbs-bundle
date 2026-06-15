@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Jmf\Breadcrumbs\Exception;
 
 use Throwable;
+use function array_keys;
+use function implode;
+use function sprintf;
 
 class BreadcrumbRouteParametersResolutionException extends BreadcrumbsRuntimeException
 {
@@ -18,21 +21,16 @@ class BreadcrumbRouteParametersResolutionException extends BreadcrumbsRuntimeExc
         ?Throwable $previous = null,
     ) {
         parent::__construct(
-            message:  $this->buildMessage(),
+            message:  sprintf(
+                          'Failed resolving breadcrumb route parameters (route: %s, label: %s). Available context entries: %s.',
+                          $this->routeName,
+                          $this->label,
+                          implode(
+                              ', ',
+                              array_keys($this->context),
+                          ),
+                      ),
             previous: $previous,
-        );
-    }
-
-    private function buildMessage(): string
-    {
-        return sprintf(
-            'Failed resolving breadcrumb route parameters (route: %s, label: %s). Available context entries: %s.',
-            $this->routeName,
-            $this->label,
-            implode(
-                ', ',
-                array_keys($this->context),
-            ),
         );
     }
 

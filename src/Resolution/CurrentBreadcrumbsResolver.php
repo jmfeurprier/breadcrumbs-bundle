@@ -50,7 +50,7 @@ readonly class CurrentBreadcrumbsResolver implements CurrentBreadcrumbsResolverI
         array $visitedRouteNames = [],
     ): array {
         if (isset($visitedRouteNames[$routeName])) {
-            throw new BreadcrumbCircularReferenceException(routeName: $routeName);
+            throw new BreadcrumbCircularReferenceException(routeName: $routeName, context: $context);
         }
 
         $visitedRouteNames[$routeName] = true;

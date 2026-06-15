@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs\Exception;
 
-class ConflictingBreadcrumbRouteDefinitionException extends BreadcrumbConfigurationException
+class BreadcrumbRouteDefinitionConflictException extends BreadcrumbConfigurationException
 {
     /**
      * @param string[] $routeNames
@@ -14,7 +14,7 @@ class ConflictingBreadcrumbRouteDefinitionException extends BreadcrumbConfigurat
     ) {
         parent::__construct(
             message: sprintf(
-                "Breadcrumb route(s) defined in both path files and inline configuration: %s.",
+                "Breadcrumb route(s) defined more than once in configuration: %s.",
                 implode(', ', $this->routeNames),
             ),
         );

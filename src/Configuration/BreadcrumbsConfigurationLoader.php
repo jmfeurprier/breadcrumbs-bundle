@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Jmf\Breadcrumbs\Configuration;
 
 use Jmf\Breadcrumbs\Exception\BreadcrumbConfigurationException;
-use Jmf\Breadcrumbs\Exception\ConflictingBreadcrumbRouteDefinitionException;
+use Jmf\Breadcrumbs\Exception\BreadcrumbRouteDefinitionConflictException;
 use Jmf\Breadcrumbs\Exception\DuplicateBreadcrumbRouteDefinitionException;
 use Symfony\Component\Config\Resource\DirectoryResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -138,7 +138,7 @@ final readonly class BreadcrumbsConfigurationLoader
         $duplicates = array_intersect_key($fromPaths, $inline);
 
         if ([] !== $duplicates) {
-            throw new ConflictingBreadcrumbRouteDefinitionException(
+            throw new BreadcrumbRouteDefinitionConflictException(
                 routeNames: array_keys($duplicates),
             );
         }

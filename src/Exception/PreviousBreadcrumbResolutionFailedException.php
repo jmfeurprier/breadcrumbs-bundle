@@ -8,11 +8,27 @@ use Throwable;
 
 class PreviousBreadcrumbResolutionFailedException extends PreviousBreadcrumbResolutionException
 {
-    public function __construct(?Throwable $previous = null)
-    {
+    /**
+     * @param array<string, mixed> $context
+     */
+    public function __construct(
+        private readonly array $context,
+        ?Throwable $previous = null,
+    ) {
         parent::__construct(
-            message:  'Failed resolving previous Breadcrumb.',
+            message:  sprintf(
+                'Failed resolving previous breadcrumb. Available context entries: %s.',
+                implode(', ', array_keys($this->context)),
+            ),
             previous: $previous,
         );
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getContext(): array
+    {
+        return $this->context;
     }
 }

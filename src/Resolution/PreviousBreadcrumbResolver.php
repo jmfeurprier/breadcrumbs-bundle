@@ -23,7 +23,7 @@ readonly class PreviousBreadcrumbResolver implements PreviousBreadcrumbResolverI
         try {
             $currentBreadcrumbs = $this->currentBreadcrumbsResolver->resolve($context);
         } catch (Throwable $e) {
-            throw new PreviousBreadcrumbResolutionFailedException(previous: $e);
+            throw new PreviousBreadcrumbResolutionFailedException(context: $context, previous: $e);
         }
 
         $previousBreadcrumb = $currentBreadcrumbs->tryGetPreviousBreadcrumb();
@@ -32,6 +32,6 @@ readonly class PreviousBreadcrumbResolver implements PreviousBreadcrumbResolverI
             return $previousBreadcrumb;
         }
 
-        throw new PreviousBreadcrumbNotFoundException();
+        throw new PreviousBreadcrumbNotFoundException(context: $context);
     }
 }
