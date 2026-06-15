@@ -35,17 +35,21 @@ readonly class ParentBreadcrumbDefinitionCompiler
     /**
      * @param array<string, mixed> $parentConfig
      *
+     * @return non-empty-string
+     *
      * @throws BreadcrumbConfigurationException
      */
     private function getRouteName(array $parentConfig): string
     {
         if (!array_key_exists('route', $parentConfig)) {
-            throw new BreadcrumbConfigurationException("Missing breadcrumb parent 'route' configuration.");
+            throw new BreadcrumbConfigurationException(
+                "Missing breadcrumb parent 'route' configuration.",
+            );
         }
 
         $route = $parentConfig['route'];
 
-        Assert::string($route);
+        Assert::stringNotEmpty($route);
 
         return $route;
     }

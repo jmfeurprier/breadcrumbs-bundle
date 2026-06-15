@@ -19,7 +19,7 @@ class BreadcrumbsExtension extends AbstractExtension
     public final const string PREFIX_DEFAULT = '';
 
     public function __construct(
-        private readonly CurrentBreadcrumbsResolverInterface $currentBreadcrumbsFetcher,
+        private readonly CurrentBreadcrumbsResolverInterface $currentBreadcrumbsResolver,
         private readonly TemplateRendererInterface $templateRenderer,
         private readonly string $templatePath,
         private readonly string $prefix = self::PREFIX_DEFAULT,
@@ -86,7 +86,7 @@ class BreadcrumbsExtension extends AbstractExtension
     public function get(
         array $context,
     ): CurrentBreadcrumbs {
-        return $this->currentBreadcrumbsFetcher->resolve(
+        return $this->currentBreadcrumbsResolver->resolve(
             $context,
         );
     }
