@@ -16,10 +16,13 @@ class BreadcrumbCircularReferenceException extends BreadcrumbConfigurationExcept
     ) {
         parent::__construct(
             message: sprintf(
-                "Circular parent reference detected for breadcrumb route '%s'. Available context entries: %s.",
-                $this->routeName,
-                implode(', ', array_keys($this->context)),
-            ),
+                         "Circular parent reference detected for breadcrumb route '%s'. Available context entries: %s.",
+                         $this->routeName,
+                         implode(
+                             ', ',
+                             array_keys($this->context),
+                         ),
+                     ),
         );
     }
 

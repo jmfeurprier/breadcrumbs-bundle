@@ -14,9 +14,12 @@ class PreviousBreadcrumbNotFoundException extends PreviousBreadcrumbResolutionEx
     ) {
         parent::__construct(
             message: sprintf(
-                'Previous breadcrumb not found. Available context entries: %s.',
-                implode(', ', array_keys($this->context)),
-            ),
+                         'Previous breadcrumb not found. Available context entries: %s.',
+                         implode(
+                             ', ',
+                             array_keys($this->context),
+                         ),
+                     ),
         );
     }
 

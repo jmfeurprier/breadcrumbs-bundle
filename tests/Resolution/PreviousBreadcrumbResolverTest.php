@@ -73,7 +73,13 @@ final class PreviousBreadcrumbResolverTest extends TestCase
 
         $this->expectException(PreviousBreadcrumbNotFoundException::class);
 
-        $this->whenResolve();
+        try {
+            $this->whenResolve();
+        } catch (PreviousBreadcrumbNotFoundException $e) {
+            self::assertSame($this->context, $e->getContext());
+
+            throw $e;
+        }
     }
 
     public function testResolveThrowsExceptionWhenBreadcrumbsListIsEmpty(): void
@@ -83,7 +89,13 @@ final class PreviousBreadcrumbResolverTest extends TestCase
 
         $this->expectException(PreviousBreadcrumbNotFoundException::class);
 
-        $this->whenResolve();
+        try {
+            $this->whenResolve();
+        } catch (PreviousBreadcrumbNotFoundException $e) {
+            self::assertSame($this->context, $e->getContext());
+
+            throw $e;
+        }
     }
 
     public function testResolveThrowsExceptionWhenResolverFails(): void
@@ -97,8 +109,9 @@ final class PreviousBreadcrumbResolverTest extends TestCase
 
         try {
             $this->whenResolve();
-        } catch (PreviousBreadcrumbResolutionException $e) {
+        } catch (PreviousBreadcrumbResolutionFailedException $e) {
             self::assertSame($resolverException, $e->getPrevious());
+            self::assertSame($this->context, $e->getContext());
 
             throw $e;
         }

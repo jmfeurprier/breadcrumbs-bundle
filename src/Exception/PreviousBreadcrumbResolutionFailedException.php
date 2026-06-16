@@ -17,9 +17,12 @@ class PreviousBreadcrumbResolutionFailedException extends PreviousBreadcrumbReso
     ) {
         parent::__construct(
             message:  sprintf(
-                'Failed resolving previous breadcrumb. Available context entries: %s.',
-                implode(', ', array_keys($this->context)),
-            ),
+                          'Failed resolving previous breadcrumb. Available context entries: %s.',
+                          implode(
+                              ', ',
+                              array_keys($this->context),
+                          ),
+                      ),
             previous: $previous,
         );
     }
