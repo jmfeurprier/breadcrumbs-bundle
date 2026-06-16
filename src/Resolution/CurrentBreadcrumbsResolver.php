@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs\Resolution;
 
+use Jmf\Breadcrumbs\Definition\BreadcrumbDefinition;
+use Jmf\Breadcrumbs\Exception\BreadcrumbCircularReferenceException;
 use Jmf\Breadcrumbs\Exception\BreadcrumbContextResolutionException;
 use Jmf\Breadcrumbs\Exception\BreadcrumbLabelRenderingException;
 use Jmf\Breadcrumbs\Exception\BreadcrumbRouteParametersResolutionException;
-use Jmf\Breadcrumbs\Exception\BreadcrumbCircularReferenceException;
 use Jmf\Breadcrumbs\Exception\NoMainRequestException;
 use Jmf\Breadcrumbs\Model\Breadcrumb;
 use Jmf\Breadcrumbs\Model\CurrentBreadcrumbs;
@@ -29,13 +30,17 @@ readonly class CurrentBreadcrumbsResolver implements CurrentBreadcrumbsResolverI
     public function resolve(array $context): CurrentBreadcrumbs
     {
         return new CurrentBreadcrumbs(
-            $this->resolveChain($this->getRouteName(), $context),
+            $this->getBreadcrumbs(
+                $this->getRouteName(),
+                $context,
+            ),
         );
     }
 
     /**
-     * @param array<string, mixed>  $context
-     * @param array<string, true>   $visitedRouteNames
+     * @param non-empty-string     $routeName
+     * @param array<string, mixed> $context
+     * @param array<string, true>  $visitedRouteNames
      *
      * @return Breadcrumb[]
      *
@@ -44,20 +49,23 @@ readonly class CurrentBreadcrumbsResolver implements CurrentBreadcrumbsResolverI
      * @throws BreadcrumbRouteParametersResolutionException
      * @throws BreadcrumbCircularReferenceException
      */
-    private function resolveChain(
+    private function getBreadcrumbs(
         string $routeName,
         array $context,
         array $visitedRouteNames = [],
     ): array {
         if (isset($visitedRouteNames[$routeName])) {
-            throw new BreadcrumbCircularReferenceException(routeName: $routeName, context: $context);
+            throw new BreadcrumbCircularReferenceException(
+                routeName: $routeName,
+                context:   $context,
+            );
         }
 
         $visitedRouteNames[$routeName] = true;
 
         $breadcrumbDefinition = $this->breadcrumbDefinitionRegistry->tryGet($routeName);
 
-        if ($breadcrumbDefinition === null) {
+        if (!$breadcrumbDefinition instanceof BreadcrumbDefinition) {
             return [];
         }
 
@@ -73,7 +81,7 @@ readonly class CurrentBreadcrumbsResolver implements CurrentBreadcrumbsResolverI
 
         $parentBreadcrumbDefinition = $breadcrumbDefinition->getParentBreadcrumbDefinition();
 
-        if ($parentBreadcrumbDefinition === null) {
+        if (!$parentBreadcrumbDefinition instanceof \Jmf\Breadcrumbs\Definition\ParentBreadcrumbDefinition) {
             return [$breadcrumb];
         }
 
@@ -83,7 +91,7 @@ readonly class CurrentBreadcrumbsResolver implements CurrentBreadcrumbsResolverI
         );
 
         return [
-            ...$this->resolveChain(
+            ...$this->getBreadcrumbs(
                 $parentBreadcrumbDefinition->getRouteName(),
                 $context,
                 $visitedRouteNames,

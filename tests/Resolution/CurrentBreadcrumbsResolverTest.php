@@ -15,18 +15,18 @@ use Jmf\Breadcrumbs\Resolution\BreadcrumbCreator;
 use Jmf\Breadcrumbs\Resolution\ContextResolver;
 use Jmf\Breadcrumbs\Resolution\CurrentBreadcrumbsResolver;
 use Jmf\Breadcrumbs\Routing\CurrentRouteNameResolver;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 
 final class CurrentBreadcrumbsResolverTest extends TestCase
 {
-    private CurrentRouteNameResolver & MockObject $currentRouteNameResolver;
+    private CurrentRouteNameResolver & Stub $currentRouteNameResolver;
 
-    private BreadcrumbDefinitionRegistryInterface & MockObject $breadcrumbDefinitionRegistry;
+    private BreadcrumbDefinitionRegistryInterface & Stub $breadcrumbDefinitionRegistry;
 
-    private ContextResolver & MockObject $contextResolver;
+    private ContextResolver & Stub $contextResolver;
 
-    private BreadcrumbCreator & MockObject $breadcrumbCreator;
+    private BreadcrumbCreator & Stub $breadcrumbCreator;
 
     private CurrentBreadcrumbsResolver $currentBreadcrumbsResolver;
 
@@ -49,10 +49,10 @@ final class CurrentBreadcrumbsResolverTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->currentRouteNameResolver     = $this->createMock(CurrentRouteNameResolver::class);
-        $this->breadcrumbDefinitionRegistry = $this->createMock(BreadcrumbDefinitionRegistryInterface::class);
-        $this->contextResolver              = $this->createMock(ContextResolver::class);
-        $this->breadcrumbCreator            = $this->createMock(BreadcrumbCreator::class);
+        $this->currentRouteNameResolver     = $this->createStub(CurrentRouteNameResolver::class);
+        $this->breadcrumbDefinitionRegistry = $this->createStub(BreadcrumbDefinitionRegistryInterface::class);
+        $this->contextResolver              = $this->createStub(ContextResolver::class);
+        $this->breadcrumbCreator            = $this->createStub(BreadcrumbCreator::class);
 
         $this->currentBreadcrumbsResolver = new CurrentBreadcrumbsResolver(
             $this->currentRouteNameResolver,
@@ -93,9 +93,9 @@ final class CurrentBreadcrumbsResolverTest extends TestCase
         $this->whenResolve();
 
         $this->thenBreadcrumbs([
-            $this->breadcrumbsByRouteName['route_parent'],
-            $this->breadcrumbsByRouteName['route_child'],
-        ]);
+                                   $this->breadcrumbsByRouteName['route_parent'],
+                                   $this->breadcrumbsByRouteName['route_child'],
+                               ]);
     }
 
     public function testResolveThrowsOnCircularReference(): void
@@ -132,8 +132,14 @@ final class CurrentBreadcrumbsResolverTest extends TestCase
         ;
     }
 
-    private function givenDefinition(string $routeName, ?string $parentRouteName): void
-    {
+    /**
+     * @param non-empty-string      $routeName
+     * @param null|non-empty-string $parentRouteName
+     */
+    private function givenDefinition(
+        string $routeName,
+        ?string $parentRouteName,
+    ): void {
         $parentDefinition = $parentRouteName !== null
             ? new ParentBreadcrumbDefinition($parentRouteName, StringMap::createEmpty())
             : null;
@@ -162,14 +168,18 @@ final class CurrentBreadcrumbsResolverTest extends TestCase
         $this->breadcrumbDefinitionRegistry
             ->method('tryGet')
             ->willReturnCallback(
-                fn(string $name) => $this->definitions[$name] ?? null,
+                fn(
+                    string $name,
+                ): ?BreadcrumbDefinition => $this->definitions[$name] ?? null,
             )
         ;
 
         $this->breadcrumbCreator
             ->method('create')
             ->willReturnCallback(
-                fn(BreadcrumbDefinition $definition) => $this->breadcrumbsByRouteName[$definition->getRouteName()],
+                fn(
+                    BreadcrumbDefinition $definition,
+                ): Breadcrumb => $this->breadcrumbsByRouteName[$definition->getRouteName()],
             )
         ;
 
