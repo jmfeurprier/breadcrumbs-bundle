@@ -20,8 +20,8 @@ readonly class BreadcrumbDefinitionCollection
     /**
      * @return BreadcrumbDefinition[]
      */
-    public function all(): iterable
+    public function all(): array
     {
-        yield from $this->breadcrumbDefinitions;
+        return $this->breadcrumbDefinitions;
     }
 }

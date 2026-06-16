@@ -9,7 +9,7 @@ use Jmf\Breadcrumbs\Definition\ParentBreadcrumbDefinition;
 use Jmf\Breadcrumbs\Definition\StringMap;
 use Jmf\Breadcrumbs\Exception\BreadcrumbCircularReferenceException;
 use Jmf\Breadcrumbs\Model\Breadcrumb;
-use Jmf\Breadcrumbs\Model\CurrentBreadcrumbs;
+use Jmf\Breadcrumbs\Model\BreadcrumbCollection;
 use Jmf\Breadcrumbs\Registry\BreadcrumbDefinitionRegistryInterface;
 use Jmf\Breadcrumbs\Resolution\BreadcrumbCreator;
 use Jmf\Breadcrumbs\Resolution\ContextResolver;
@@ -45,7 +45,7 @@ final class CurrentBreadcrumbsResolverTest extends TestCase
      */
     private array $breadcrumbsByRouteName = [];
 
-    private CurrentBreadcrumbs $result;
+    private BreadcrumbCollection $result;
 
     protected function setUp(): void
     {
@@ -191,7 +191,7 @@ final class CurrentBreadcrumbsResolverTest extends TestCase
      */
     private function thenBreadcrumbs(array $expected): void
     {
-        $breadcrumbs = iterator_to_array($this->result->getBreadcrumbs());
+        $breadcrumbs = iterator_to_array($this->result->all());
 
         self::assertCount(count($expected), $breadcrumbs);
 

@@ -6,7 +6,7 @@ namespace Jmf\Breadcrumbs\Model;
 
 use Webmozart\Assert\Assert;
 
-readonly class CurrentBreadcrumbs
+readonly class BreadcrumbCollection
 {
     /**
      * @param Breadcrumb[] $breadcrumbs
@@ -20,9 +20,9 @@ readonly class CurrentBreadcrumbs
     /**
      * @return Breadcrumb[]
      */
-    public function getBreadcrumbs(): iterable
+    public function all(): array
     {
-        yield from $this->breadcrumbs;
+        return $this->breadcrumbs;
     }
 
     public function tryGetCurrentBreadcrumb(): ?Breadcrumb

@@ -11,7 +11,7 @@ use Jmf\Breadcrumbs\Exception\BreadcrumbLabelRenderingException;
 use Jmf\Breadcrumbs\Exception\BreadcrumbRouteParametersResolutionException;
 use Jmf\Breadcrumbs\Exception\NoMainRequestException;
 use Jmf\Breadcrumbs\Model\Breadcrumb;
-use Jmf\Breadcrumbs\Model\CurrentBreadcrumbs;
+use Jmf\Breadcrumbs\Model\BreadcrumbCollection;
 use Jmf\Breadcrumbs\Registry\BreadcrumbDefinitionRegistryInterface;
 use Jmf\Breadcrumbs\Routing\CurrentRouteNameResolver;
 use Override;
@@ -27,9 +27,9 @@ readonly class CurrentBreadcrumbsResolver implements CurrentBreadcrumbsResolverI
     }
 
     #[Override]
-    public function resolve(array $context): CurrentBreadcrumbs
+    public function resolve(array $context): BreadcrumbCollection
     {
-        return new CurrentBreadcrumbs(
+        return new BreadcrumbCollection(
             $this->getBreadcrumbs(
                 $this->getRouteName(),
                 $context,

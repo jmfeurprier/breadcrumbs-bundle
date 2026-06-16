@@ -9,7 +9,7 @@ use Jmf\Breadcrumbs\Exception\PreviousBreadcrumbNotFoundException;
 use Jmf\Breadcrumbs\Exception\PreviousBreadcrumbResolutionException;
 use Jmf\Breadcrumbs\Exception\PreviousBreadcrumbResolutionFailedException;
 use Jmf\Breadcrumbs\Model\Breadcrumb;
-use Jmf\Breadcrumbs\Model\CurrentBreadcrumbs;
+use Jmf\Breadcrumbs\Model\BreadcrumbCollection;
 use Jmf\Breadcrumbs\Resolution\CurrentBreadcrumbsResolverInterface;
 use Jmf\Breadcrumbs\Resolution\PreviousBreadcrumbResolver;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -165,7 +165,7 @@ final class PreviousBreadcrumbResolverTest extends TestCase
                 ->method('resolve')
                 ->with($this->context)
                 ->willReturn(
-                    new CurrentBreadcrumbs(
+                    new BreadcrumbCollection(
                         $this->currentBreadcrumbs,
                     ),
                 )

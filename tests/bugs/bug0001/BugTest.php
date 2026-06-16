@@ -8,7 +8,7 @@ use Jmf\Breadcrumbs\Compilation\BreadcrumbDefinitionCompiler;
 use Jmf\Breadcrumbs\Compilation\BreadcrumbDefinitionCollectionCompiler;
 use Jmf\Breadcrumbs\Compilation\ParentBreadcrumbDefinitionCompiler;
 use Jmf\Breadcrumbs\Model\Breadcrumb;
-use Jmf\Breadcrumbs\Model\CurrentBreadcrumbs;
+use Jmf\Breadcrumbs\Model\BreadcrumbCollection;
 use Jmf\Breadcrumbs\Registry\BreadcrumbDefinitionRegistryFactory;
 use Jmf\Breadcrumbs\Registry\BreadcrumbDefinitionRegistryInterface;
 use Jmf\Breadcrumbs\Rendering\BreadcrumbLabelRenderer;
@@ -37,7 +37,7 @@ final class BugTest extends TestCase
 
     private CurrentBreadcrumbsResolver $currentBreadcrumbsFetcher;
 
-    private CurrentBreadcrumbs $result;
+    private BreadcrumbCollection $result;
 
     /**
      * @var array<string, mixed>
@@ -156,7 +156,7 @@ final class BugTest extends TestCase
      */
     private function thenBreadcrumbs(array $expected): void
     {
-        $breadcrumbs = iterator_to_array($this->result->getBreadcrumbs());
+        $breadcrumbs = iterator_to_array($this->result->all());
 
         $this->assertCount(count($expected), $breadcrumbs);
 
