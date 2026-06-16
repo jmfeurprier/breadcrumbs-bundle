@@ -42,7 +42,6 @@ class BreadcrumbsExtension extends AbstractExtension
                 $this->prefix . 'breadcrumbs_get',
                 $this->get(...),
                 [
-                    'is_safe'       => ['html'],
                     'needs_context' => true,
                 ],
             ),

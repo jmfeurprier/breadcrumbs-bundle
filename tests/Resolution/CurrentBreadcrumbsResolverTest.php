@@ -191,7 +191,7 @@ final class CurrentBreadcrumbsResolverTest extends TestCase
      */
     private function thenBreadcrumbs(array $expected): void
     {
-        $breadcrumbs = iterator_to_array($this->result->all());
+        $breadcrumbs = $this->result->all();
 
         self::assertCount(count($expected), $breadcrumbs);
 
