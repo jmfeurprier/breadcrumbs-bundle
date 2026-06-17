@@ -48,6 +48,8 @@ readonly class BreadcrumbDefinitionCompiler
      * @param non-empty-string     $routeName
      * @param array<string, mixed> $config
      *
+     * @return non-empty-string
+     *
      * @throws MissingBreadcrumbLabelException
      */
     private function getLabel(

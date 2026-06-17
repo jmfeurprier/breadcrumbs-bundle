@@ -17,6 +17,9 @@ final class BreadcrumbLabelRendererTest extends TestCase
 {
     private BreadcrumbLabelRenderer $breadcrumbLabelRenderer;
 
+    /**
+     * @var non-empty-string
+     */
     private string $label;
 
     /**
@@ -74,6 +77,9 @@ final class BreadcrumbLabelRendererTest extends TestCase
         $this->thenResult('Article Foo & Bar');
     }
 
+    /**
+     * @param non-empty-string $label
+     */
     private function givenLabel(string $label): void
     {
         $this->label = $label;
