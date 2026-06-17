@@ -6,7 +6,9 @@ namespace Jmf\Breadcrumbs\Registry;
 
 use Jmf\Breadcrumbs\Compilation\BreadcrumbDefinitionCollectionCompiler;
 use Jmf\Breadcrumbs\Exception\BreadcrumbConfigurationException;
+use Symfony\Component\DependencyInjection\Attribute\Exclude;
 
+#[Exclude]
 readonly class BreadcrumbDefinitionRegistryFactory
 {
     /**

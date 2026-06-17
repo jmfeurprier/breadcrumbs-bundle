@@ -8,10 +8,12 @@ use Jmf\Breadcrumbs\Configuration\BreadcrumbsConfigurationLoader;
 use Jmf\Breadcrumbs\Exception\BreadcrumbConfigurationException;
 use Override;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
+use Symfony\Component\DependencyInjection\Attribute\Exclude;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
+#[Exclude]
 class JmfBreadcrumbsBundle extends AbstractBundle
 {
     protected string $extensionAlias = 'jmf_breadcrumbs';

@@ -7,7 +7,9 @@ namespace Jmf\Breadcrumbs\Registry;
 use Jmf\Breadcrumbs\Definition\BreadcrumbDefinition;
 use Jmf\Breadcrumbs\Definition\BreadcrumbDefinitionCollection;
 use Override;
+use Symfony\Component\DependencyInjection\Attribute\Exclude;
 
+#[Exclude]
 readonly class BreadcrumbDefinitionRegistry implements BreadcrumbDefinitionRegistryInterface
 {
     /**

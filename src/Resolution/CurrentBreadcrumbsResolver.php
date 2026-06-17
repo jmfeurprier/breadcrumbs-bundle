@@ -16,7 +16,9 @@ use Jmf\Breadcrumbs\Model\BreadcrumbCollection;
 use Jmf\Breadcrumbs\Registry\BreadcrumbDefinitionRegistryInterface;
 use Jmf\Breadcrumbs\Routing\CurrentRouteNameResolver;
 use Override;
+use Symfony\Component\DependencyInjection\Attribute\Exclude;
 
+#[Exclude]
 readonly class CurrentBreadcrumbsResolver implements CurrentBreadcrumbsResolverInterface
 {
     public function __construct(
