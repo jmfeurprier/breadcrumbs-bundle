@@ -15,6 +15,7 @@ use Jmf\Breadcrumbs\Rendering\BreadcrumbLabelRenderer;
 use Jmf\Breadcrumbs\Resolution\BreadcrumbCreator;
 use Jmf\Breadcrumbs\Resolution\BreadcrumbRouteParametersResolver;
 use Jmf\Breadcrumbs\Resolution\ContextResolver;
+use Jmf\Breadcrumbs\Resolution\CurrentBreadcrumbNotFoundBehavior;
 use Jmf\Breadcrumbs\Resolution\CurrentBreadcrumbsResolver;
 use Jmf\Breadcrumbs\Routing\CurrentRouteNameResolver;
 use Jmf\Breadcrumbs\Tests\bugs\bug0001\fixtures\Cost;
@@ -65,6 +66,7 @@ final class BugTest extends TestCase
                     new PropertyAccessor(),
                 ),
             ),
+            CurrentBreadcrumbNotFoundBehavior::HIDE,
         );
     }
 

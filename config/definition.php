@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Jmf\Breadcrumbs\Resolution\CurrentBreadcrumbNotFoundBehavior;
 use Jmf\Breadcrumbs\Twig\BreadcrumbsExtension;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 
@@ -50,6 +51,14 @@ return static function (DefinitionConfigurator $definitionConfigurator): void {
             ->scalarNode('twig_functions_prefix')
                 ->info('Twig functions prefix.')
                 ->defaultValue(BreadcrumbsExtension::PREFIX_DEFAULT)
+            ->end()
+            ->enumNode('current_breadcrumb_not_found_strategy')
+                ->info("Behavior when the current route's breadcrumb is not found ('fail' or 'hide').")
+                ->values(array_map(
+                    static fn (CurrentBreadcrumbNotFoundBehavior $strategy): string => $strategy->value,
+                             CurrentBreadcrumbNotFoundBehavior::cases(),
+                ))
+                ->defaultValue(CurrentBreadcrumbNotFoundBehavior::HIDE->value)
             ->end()
         ->end()
     ;

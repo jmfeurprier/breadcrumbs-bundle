@@ -8,11 +8,13 @@ use Jmf\Breadcrumbs\Definition\BreadcrumbDefinition;
 use Jmf\Breadcrumbs\Definition\ParentBreadcrumbDefinition;
 use Jmf\Breadcrumbs\Definition\StringMap;
 use Jmf\Breadcrumbs\Exception\BreadcrumbCircularReferenceException;
+use Jmf\Breadcrumbs\Exception\CurrentBreadcrumbNotFoundException;
 use Jmf\Breadcrumbs\Model\Breadcrumb;
 use Jmf\Breadcrumbs\Model\BreadcrumbCollection;
 use Jmf\Breadcrumbs\Registry\BreadcrumbDefinitionRegistryInterface;
 use Jmf\Breadcrumbs\Resolution\BreadcrumbCreator;
 use Jmf\Breadcrumbs\Resolution\ContextResolver;
+use Jmf\Breadcrumbs\Resolution\CurrentBreadcrumbNotFoundBehavior;
 use Jmf\Breadcrumbs\Resolution\CurrentBreadcrumbsResolver;
 use Jmf\Breadcrumbs\Routing\CurrentRouteNameResolver;
 use PHPUnit\Framework\MockObject\Stub;
@@ -54,12 +56,7 @@ final class CurrentBreadcrumbsResolverTest extends TestCase
         $this->contextResolver              = $this->createStub(ContextResolver::class);
         $this->breadcrumbCreator            = $this->createStub(BreadcrumbCreator::class);
 
-        $this->currentBreadcrumbsResolver = new CurrentBreadcrumbsResolver(
-            $this->currentRouteNameResolver,
-            $this->breadcrumbDefinitionRegistry,
-            $this->contextResolver,
-            $this->breadcrumbCreator,
-        );
+        $this->currentBreadcrumbsResolver = $this->makeResolver(CurrentBreadcrumbNotFoundBehavior::HIDE);
     }
 
     public function testResolveReturnsEmptyWhenRouteHasNoDefinition(): void
@@ -70,6 +67,37 @@ final class CurrentBreadcrumbsResolverTest extends TestCase
         $this->whenResolve();
 
         $this->thenBreadcrumbs([]);
+    }
+
+    public function testResolveWithFailStrategyThrowsWhenCurrentRouteHasNoDefinition(): void
+    {
+        $this->currentBreadcrumbsResolver = $this->makeResolver(CurrentBreadcrumbNotFoundBehavior::FAIL);
+
+        $this->givenCurrentRoute('route_unknown');
+        $this->givenContext(['key' => 'value']);
+
+        $this->expectException(CurrentBreadcrumbNotFoundException::class);
+
+        try {
+            $this->whenResolve();
+        } catch (CurrentBreadcrumbNotFoundException $e) {
+            self::assertSame(['key' => 'value'], $e->getContext());
+
+            throw $e;
+        }
+    }
+
+    public function testResolveWithFailStrategyDoesNotThrowWhenCurrentRouteHasDefinition(): void
+    {
+        $this->currentBreadcrumbsResolver = $this->makeResolver(CurrentBreadcrumbNotFoundBehavior::FAIL);
+
+        $this->givenCurrentRoute('route_home');
+        $this->givenContext([]);
+        $this->givenDefinition('route_home', null);
+
+        $this->whenResolve();
+
+        $this->thenBreadcrumbs([$this->breadcrumbsByRouteName['route_home']]);
     }
 
     public function testResolveReturnsSingleBreadcrumbWhenNoParent(): void
@@ -155,6 +183,18 @@ final class CurrentBreadcrumbsResolverTest extends TestCase
             label:           $routeName,
             routeName:       $routeName,
             routeParameters: [],
+        );
+    }
+
+    private function makeResolver(
+        CurrentBreadcrumbNotFoundBehavior $currentBreadcrumbNotFoundStrategy,
+    ): CurrentBreadcrumbsResolver {
+        return new CurrentBreadcrumbsResolver(
+            $this->currentRouteNameResolver,
+            $this->breadcrumbDefinitionRegistry,
+            $this->contextResolver,
+            $this->breadcrumbCreator,
+            $currentBreadcrumbNotFoundStrategy,
         );
     }
 

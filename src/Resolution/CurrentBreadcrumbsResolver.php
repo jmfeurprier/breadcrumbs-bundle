@@ -9,6 +9,7 @@ use Jmf\Breadcrumbs\Exception\BreadcrumbCircularReferenceException;
 use Jmf\Breadcrumbs\Exception\BreadcrumbContextResolutionException;
 use Jmf\Breadcrumbs\Exception\BreadcrumbLabelRenderingException;
 use Jmf\Breadcrumbs\Exception\BreadcrumbRouteParametersResolutionException;
+use Jmf\Breadcrumbs\Exception\CurrentBreadcrumbNotFoundException;
 use Jmf\Breadcrumbs\Exception\NoMainRequestException;
 use Jmf\Breadcrumbs\Model\Breadcrumb;
 use Jmf\Breadcrumbs\Model\BreadcrumbCollection;
@@ -23,9 +24,20 @@ readonly class CurrentBreadcrumbsResolver implements CurrentBreadcrumbsResolverI
         private BreadcrumbDefinitionRegistryInterface $breadcrumbDefinitionRegistry,
         private ContextResolver $contextResolver,
         private BreadcrumbCreator $breadcrumbCreator,
+        private CurrentBreadcrumbNotFoundBehavior $currentBreadcrumbNotFoundBehavior,
     ) {
     }
 
+    /**
+     * @param array<string, mixed> $context
+     *
+     * @throws BreadcrumbLabelRenderingException
+     * @throws BreadcrumbCircularReferenceException
+     * @throws BreadcrumbContextResolutionException
+     * @throws BreadcrumbRouteParametersResolutionException
+     * @throws CurrentBreadcrumbNotFoundException
+     * @throws NoMainRequestException
+     */
     #[Override]
     public function resolve(array $context): BreadcrumbCollection
     {
@@ -48,6 +60,7 @@ readonly class CurrentBreadcrumbsResolver implements CurrentBreadcrumbsResolverI
      * @throws BreadcrumbLabelRenderingException
      * @throws BreadcrumbRouteParametersResolutionException
      * @throws BreadcrumbCircularReferenceException
+     * @throws CurrentBreadcrumbNotFoundException
      */
     private function getBreadcrumbs(
         string $routeName,
@@ -61,13 +74,19 @@ readonly class CurrentBreadcrumbsResolver implements CurrentBreadcrumbsResolverI
             );
         }
 
-        $visitedRouteNames[$routeName] = true;
-
         $breadcrumbDefinition = $this->breadcrumbDefinitionRegistry->tryGet($routeName);
 
         if (!$breadcrumbDefinition instanceof BreadcrumbDefinition) {
+            if ([] === $visitedRouteNames) {
+                if (CurrentBreadcrumbNotFoundBehavior::FAIL === $this->currentBreadcrumbNotFoundBehavior) {
+                    throw new CurrentBreadcrumbNotFoundException($context);
+                }
+            }
+
             return [];
         }
+
+        $visitedRouteNames[$routeName] = true;
 
         $context = $this->contextResolver->resolve(
             $context,

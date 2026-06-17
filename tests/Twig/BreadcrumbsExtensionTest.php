@@ -64,12 +64,9 @@ final class BreadcrumbsExtensionTest extends TestCase
                 function (
                     string $path,
                     array $context,
-                ) use
-                (
-                    &
-                    $capturedPath,
-                    &
-                    $capturedContext,
+                ) use (
+                    &$capturedPath,
+                    &$capturedContext,
                 ): string {
                     $capturedPath    = $path;
                     $capturedContext = $context;
@@ -101,10 +98,8 @@ final class BreadcrumbsExtensionTest extends TestCase
                 function (
                     string $path,
                     array $context,
-                ) use
-                (
-                    &
-                    $capturedContext,
+                ) use (
+                    &$capturedContext,
                 ): string {
                     $capturedContext = $context;
 

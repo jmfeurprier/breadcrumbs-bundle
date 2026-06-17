@@ -6,6 +6,7 @@ namespace Jmf\Breadcrumbs\Twig;
 
 use Jmf\Breadcrumbs\Exception\BreadcrumbsException;
 use Jmf\Breadcrumbs\Exception\BreadcrumbsRenderingException;
+use Jmf\Breadcrumbs\Exception\CurrentBreadcrumbNotFoundException;
 use Jmf\Breadcrumbs\Model\BreadcrumbCollection;
 use Jmf\Breadcrumbs\Resolution\CurrentBreadcrumbsResolverInterface;
 use Jmf\TemplateRendering\Exception\TemplateRenderingException;
@@ -54,6 +55,7 @@ class BreadcrumbsExtension extends AbstractExtension
      *
      * @throws BreadcrumbsException
      * @throws BreadcrumbsRenderingException
+     * @throws CurrentBreadcrumbNotFoundException
      */
     public function render(
         array $context,
@@ -65,7 +67,7 @@ class BreadcrumbsExtension extends AbstractExtension
                 array_merge(
                     $templateParameters,
                     [
-                        'breadcrumbs' => $this->get($context)->all(),
+                        'breadcrumbs' => $this->doGet($context)->all(),
                     ],
                 ),
             );
@@ -81,8 +83,21 @@ class BreadcrumbsExtension extends AbstractExtension
      * @param array<string, mixed> $context
      *
      * @throws BreadcrumbsException
+     * @throws CurrentBreadcrumbNotFoundException
      */
     public function get(
+        array $context,
+    ): BreadcrumbCollection {
+        return $this->doGet($context);
+    }
+
+    /**
+     * @param array<string, mixed> $context
+     *
+     * @throws BreadcrumbsException
+     * @throws CurrentBreadcrumbNotFoundException
+     */
+    private function doGet(
         array $context,
     ): BreadcrumbCollection {
         return $this->currentBreadcrumbsResolver->resolve(

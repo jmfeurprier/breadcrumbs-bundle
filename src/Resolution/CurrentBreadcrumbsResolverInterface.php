@@ -8,6 +8,7 @@ use Jmf\Breadcrumbs\Exception\BreadcrumbCircularReferenceException;
 use Jmf\Breadcrumbs\Exception\BreadcrumbContextResolutionException;
 use Jmf\Breadcrumbs\Exception\BreadcrumbLabelRenderingException;
 use Jmf\Breadcrumbs\Exception\BreadcrumbRouteParametersResolutionException;
+use Jmf\Breadcrumbs\Exception\CurrentBreadcrumbNotFoundException;
 use Jmf\Breadcrumbs\Exception\NoMainRequestException;
 use Jmf\Breadcrumbs\Model\BreadcrumbCollection;
 
@@ -20,6 +21,7 @@ interface CurrentBreadcrumbsResolverInterface
      * @throws BreadcrumbCircularReferenceException
      * @throws BreadcrumbContextResolutionException
      * @throws BreadcrumbRouteParametersResolutionException
+     * @throws CurrentBreadcrumbNotFoundException
      * @throws NoMainRequestException
      */
     public function resolve(array $context): BreadcrumbCollection;

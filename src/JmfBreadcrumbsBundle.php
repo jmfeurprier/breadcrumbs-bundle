@@ -20,6 +20,8 @@ class JmfBreadcrumbsBundle extends AbstractBundle
         'breadcrumbs'           => 'breadcrumbs_config',
         'template_path'         => 'template_path',
         'twig_functions_prefix' => 'twig_functions_prefix',
+        'current_breadcrumb_not_found_strategy'
+            => 'current_breadcrumb_not_found_strategy',
     ];
 
     public function __construct(
