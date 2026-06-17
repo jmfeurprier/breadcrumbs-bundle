@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Jmf\Breadcrumbs\Tests\Resolution;
 
 use Jmf\Breadcrumbs\Exception\CurrentBreadcrumbNotFoundException;
+use Jmf\Breadcrumbs\Exception\InvalidCurrentBreadcrumbNotFoundBehaviorException;
 use Jmf\Breadcrumbs\Registry\BreadcrumbDefinitionRegistryInterface;
 use Jmf\Breadcrumbs\Resolution\BreadcrumbCreator;
 use Jmf\Breadcrumbs\Resolution\ContextResolver;
@@ -52,11 +53,18 @@ final class CurrentBreadcrumbsResolverFactoryTest extends TestCase
         self::assertSame([], $breadcrumbCollection->all());
     }
 
-    public function testCreateThrowsOnInvalidStrategyString(): void
+    public function testCreateThrowsOnInvalidBehaviorString(): void
     {
-        $this->expectException(\ValueError::class);
+        $this->expectException(InvalidCurrentBreadcrumbNotFoundBehaviorException::class);
 
-        $this->makeFactory('invalid')->create();
+        try {
+            $this->makeFactory('invalid')->create();
+        } catch (InvalidCurrentBreadcrumbNotFoundBehaviorException $e) {
+            self::assertSame('invalid', $e->getValue());
+            self::assertSame(['fail', 'hide'], $e->getValidValues());
+
+            throw $e;
+        }
     }
 
     private function makeFactory(

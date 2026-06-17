@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs\Resolution;
 
+use Jmf\Breadcrumbs\Exception\InvalidCurrentBreadcrumbNotFoundBehaviorException;
 use Jmf\Breadcrumbs\Registry\BreadcrumbDefinitionRegistryInterface;
 use Jmf\Breadcrumbs\Routing\CurrentRouteNameResolver;
 
@@ -18,6 +19,9 @@ readonly class CurrentBreadcrumbsResolverFactory
     ) {
     }
 
+    /**
+     * @throws InvalidCurrentBreadcrumbNotFoundBehaviorException
+     */
     public function create(): CurrentBreadcrumbsResolverInterface
     {
         return new CurrentBreadcrumbsResolver(
@@ -29,14 +33,23 @@ readonly class CurrentBreadcrumbsResolverFactory
         );
     }
 
+    /**
+     * @throws InvalidCurrentBreadcrumbNotFoundBehaviorException
+     */
     private function getBreadcrumbNotFoundBehavior(): CurrentBreadcrumbNotFoundBehavior
     {
         $behavior = CurrentBreadcrumbNotFoundBehavior::tryFrom(
             $this->currentBreadcrumbNotFoundStrategy,
         );
 
-        if (null === $behavior) {
-            // @todo Throw Exception
+        if (!$behavior instanceof CurrentBreadcrumbNotFoundBehavior) {
+            throw new InvalidCurrentBreadcrumbNotFoundBehaviorException(
+                value:       $this->currentBreadcrumbNotFoundStrategy,
+                validValues: array_map(
+                    static fn (CurrentBreadcrumbNotFoundBehavior $case): string => $case->value,
+                    CurrentBreadcrumbNotFoundBehavior::cases(),
+                ),
+            );
         }
 
         return $behavior;

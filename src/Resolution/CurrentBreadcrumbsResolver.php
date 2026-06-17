@@ -77,10 +77,8 @@ readonly class CurrentBreadcrumbsResolver implements CurrentBreadcrumbsResolverI
         $breadcrumbDefinition = $this->breadcrumbDefinitionRegistry->tryGet($routeName);
 
         if (!$breadcrumbDefinition instanceof BreadcrumbDefinition) {
-            if ([] === $visitedRouteNames) {
-                if (CurrentBreadcrumbNotFoundBehavior::FAIL === $this->currentBreadcrumbNotFoundBehavior) {
-                    throw new CurrentBreadcrumbNotFoundException($context);
-                }
+            if ([] === $visitedRouteNames && CurrentBreadcrumbNotFoundBehavior::FAIL === $this->currentBreadcrumbNotFoundBehavior) {
+                throw new CurrentBreadcrumbNotFoundException($context);
             }
 
             return [];

@@ -31,7 +31,7 @@ services:
             $currentBreadcrumbNotFoundStrategy: '%jmf_breadcrumbs.current_breadcrumb_not_found_strategy%'
 
     Jmf\Breadcrumbs\Resolution\PreviousBreadcrumbResolverInterface:
-        class: Jmf\Breadcrumbs\Resolution\PreviousBreadcrumbResolverInterface
+        class: Jmf\Breadcrumbs\Resolution\PreviousBreadcrumbResolver
 
     Jmf\Breadcrumbs\Twig\BreadcrumbsExtension:
         arguments:
