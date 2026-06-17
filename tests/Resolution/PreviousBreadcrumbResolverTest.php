@@ -36,6 +36,8 @@ final class PreviousBreadcrumbResolverTest extends TestCase
 
     private Breadcrumb $result;
 
+    private ?Breadcrumb $tryResolveResult = null;
+
     protected function setUp(): void
     {
         $this->currentBreadcrumbsResolver = $this->createMock(CurrentBreadcrumbsResolverInterface::class);
@@ -175,8 +177,87 @@ final class PreviousBreadcrumbResolverTest extends TestCase
         $this->result = $this->previousBreadcrumbResolver->resolve($this->context);
     }
 
+    public function testTryResolveReturnsPreviousBreadcrumbWhenAvailable(): void
+    {
+        $previousBreadcrumb = $this->createBreadcrumb('Previous', 'route_previous');
+
+        $this->givenContext(['key' => 'value']);
+        $this->givenBreadcrumbs(
+            [
+                $previousBreadcrumb,
+                $this->createBreadcrumb('Current', 'route_current'),
+            ],
+        );
+
+        $this->whenTryResolve();
+
+        $this->thenTryResolveResult($previousBreadcrumb);
+    }
+
+    public function testTryResolveReturnsNullWhenNoPreviousBreadcrumbExists(): void
+    {
+        $this->givenContext(['key' => 'value']);
+        $this->givenBreadcrumbs(
+            [
+                $this->createBreadcrumb('Current', 'route_current'),
+            ],
+        );
+
+        $this->whenTryResolve();
+
+        $this->thenTryResolveResultIsNull();
+    }
+
+    public function testTryResolveThrowsExceptionWhenResolverFails(): void
+    {
+        $resolverException = new \Exception('Resolver error');
+
+        $this->givenContext(['key' => 'value']);
+        $this->givenCurrentBreadcrumbCollectionResolverException($resolverException);
+
+        $this->expectException(PreviousBreadcrumbResolutionException::class);
+
+        $this->whenTryResolve();
+    }
+
     private function thenResult(Breadcrumb $breadcrumb): void
     {
         self::assertSame($breadcrumb, $this->result);
+    }
+
+    /**
+     * @throws PreviousBreadcrumbResolutionException
+     */
+    private function whenTryResolve(): void
+    {
+        if ($this->currentBreadcrumbsResolverException instanceof Throwable) {
+            $this->currentBreadcrumbsResolver->expects(self::once())
+                ->method('resolve')
+                ->with($this->context)
+                ->willThrowException($this->currentBreadcrumbsResolverException)
+            ;
+        } else {
+            $this->currentBreadcrumbsResolver->expects(self::once())
+                ->method('resolve')
+                ->with($this->context)
+                ->willReturn(
+                    new BreadcrumbCollection(
+                        $this->currentBreadcrumbs,
+                    ),
+                )
+            ;
+        }
+
+        $this->tryResolveResult = $this->previousBreadcrumbResolver->tryResolve($this->context);
+    }
+
+    private function thenTryResolveResult(Breadcrumb $breadcrumb): void
+    {
+        self::assertSame($breadcrumb, $this->tryResolveResult);
+    }
+
+    private function thenTryResolveResultIsNull(): void
+    {
+        self::assertNull($this->tryResolveResult);
     }
 }
