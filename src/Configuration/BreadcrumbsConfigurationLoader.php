@@ -11,8 +11,8 @@ use Jmf\Breadcrumbs\Exception\DuplicateBreadcrumbRouteDefinitionException;
 use Symfony\Component\Config\Resource\DirectoryResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
+use Throwable;
 use Webmozart\Assert\Assert;
 
 /**
@@ -20,10 +20,10 @@ use Webmozart\Assert\Assert;
  * `paths` (filename without extension = route name) merged with inline `breadcrumbs` config.
  * A route name defined more than once is a configuration error.
  */
-final readonly class BreadcrumbsConfigurationLoader
+readonly class BreadcrumbsConfigurationLoader
 {
     /**
-     * @param array<string, mixed> $config         resolved `jmf_breadcrumbs` config
+     * @param array<string, mixed> $config resolved `jmf_breadcrumbs` config
      * @param string               $extensionAlias used to derive the default path
      *
      * @return array<string, array<string, mixed>> breadcrumb configs keyed by route name
@@ -84,8 +84,10 @@ final readonly class BreadcrumbsConfigurationLoader
     /**
      * @param string[] $paths
      */
-    private function registerResources(array $paths, ContainerBuilder $container): void
-    {
+    private function registerResources(
+        array $paths,
+        ContainerBuilder $container,
+    ): void {
         foreach ($paths as $path) {
             if (is_dir($path)) {
                 $container->addResource(new DirectoryResource($path, '/\.yaml$/'));
@@ -121,7 +123,7 @@ final readonly class BreadcrumbsConfigurationLoader
 
                 try {
                     $parsed = Yaml::parseFile($file->getRealPath(), Yaml::PARSE_CONSTANT);
-                } catch (ParseException $e) {
+                } catch (Throwable $e) {
                     throw new BreadcrumbYamlParseException(
                         filePath: $file->getRealPath(),
                         previous: $e,
@@ -143,8 +145,10 @@ final readonly class BreadcrumbsConfigurationLoader
      *
      * @throws BreadcrumbConfigurationException
      */
-    private function detectDuplicates(array $fromPaths, array $inline): void
-    {
+    private function detectDuplicates(
+        array $fromPaths,
+        array $inline,
+    ): void {
         $duplicates = array_intersect_key($fromPaths, $inline);
 
         if ([] !== $duplicates) {

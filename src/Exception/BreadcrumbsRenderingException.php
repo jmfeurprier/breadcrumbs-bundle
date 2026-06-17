@@ -6,7 +6,7 @@ namespace Jmf\Breadcrumbs\Exception;
 
 use Throwable;
 
-final class BreadcrumbsRenderingException extends BreadcrumbsRuntimeException
+class BreadcrumbsRenderingException extends BreadcrumbsRuntimeException
 {
     public function __construct(
         private readonly string $templatePath,
