@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Jmf\Breadcrumbs\Resolution;
 
 use Jmf\Breadcrumbs\Definition\BreadcrumbDefinition;
+use Jmf\Breadcrumbs\Definition\ParentBreadcrumbDefinition;
 use Jmf\Breadcrumbs\Exception\BreadcrumbCircularReferenceException;
 use Jmf\Breadcrumbs\Exception\BreadcrumbContextResolutionException;
 use Jmf\Breadcrumbs\Exception\BreadcrumbLabelRenderingException;
@@ -100,7 +101,7 @@ readonly class CurrentBreadcrumbsResolver implements CurrentBreadcrumbsResolverI
 
         $parentBreadcrumbDefinition = $breadcrumbDefinition->getParentBreadcrumbDefinition();
 
-        if (!$parentBreadcrumbDefinition instanceof \Jmf\Breadcrumbs\Definition\ParentBreadcrumbDefinition) {
+        if (!$parentBreadcrumbDefinition instanceof ParentBreadcrumbDefinition) {
             return [$breadcrumb];
         }
 

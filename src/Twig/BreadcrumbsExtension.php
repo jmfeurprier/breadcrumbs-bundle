@@ -17,7 +17,7 @@ use Twig\TwigFunction;
 
 class BreadcrumbsExtension extends AbstractExtension
 {
-    public final const string PREFIX_DEFAULT = '';
+    public const string PREFIX_DEFAULT = '';
 
     public function __construct(
         private readonly CurrentBreadcrumbsResolverInterface $currentBreadcrumbsResolver,

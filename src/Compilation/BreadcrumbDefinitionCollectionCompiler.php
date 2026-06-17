@@ -28,6 +28,7 @@ readonly class BreadcrumbDefinitionCollectionCompiler
         $breadcrumbDefinitions = [];
 
         foreach ($config as $routeName => $breadcrumbConfig) {
+            Assert::stringNotEmpty($routeName);
             Assert::isMap($breadcrumbConfig);
 
             $breadcrumbDefinitions[] = $this->breadcrumbDefinitionCompiler->compile(

@@ -6,10 +6,12 @@ namespace Jmf\Breadcrumbs\Configuration;
 
 use Jmf\Breadcrumbs\Exception\BreadcrumbConfigurationException;
 use Jmf\Breadcrumbs\Exception\BreadcrumbRouteDefinitionConflictException;
+use Jmf\Breadcrumbs\Exception\BreadcrumbYamlParseException;
 use Jmf\Breadcrumbs\Exception\DuplicateBreadcrumbRouteDefinitionException;
 use Symfony\Component\Config\Resource\DirectoryResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 use Webmozart\Assert\Assert;
 
@@ -117,7 +119,15 @@ final readonly class BreadcrumbsConfigurationLoader
                     );
                 }
 
-                $parsed = Yaml::parseFile($file->getRealPath(), Yaml::PARSE_CONSTANT);
+                try {
+                    $parsed = Yaml::parseFile($file->getRealPath(), Yaml::PARSE_CONSTANT);
+                } catch (ParseException $e) {
+                    throw new BreadcrumbYamlParseException(
+                        filePath: $file->getRealPath(),
+                        previous: $e,
+                    );
+                }
+
                 Assert::isMap($parsed);
 
                 $breadcrumbs[$routeName] = $parsed;
