@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Jmf\Breadcrumbs\Registry;
 
 use Jmf\Breadcrumbs\Compilation\BreadcrumbDefinitionCollectionCompiler;
-use Override;
+use Jmf\Breadcrumbs\Exception\BreadcrumbConfigurationException;
 
-readonly class BreadcrumbDefinitionRegistryFactory implements BreadcrumbDefinitionRegistryFactoryInterface
+readonly class BreadcrumbDefinitionRegistryFactory
 {
     /**
      * @param array<non-empty-string, mixed> $config
@@ -18,7 +18,9 @@ readonly class BreadcrumbDefinitionRegistryFactory implements BreadcrumbDefiniti
     ) {
     }
 
-    #[Override]
+    /**
+     * @throws BreadcrumbConfigurationException
+     */
     public function create(): BreadcrumbDefinitionRegistryInterface
     {
         return new BreadcrumbDefinitionRegistry(

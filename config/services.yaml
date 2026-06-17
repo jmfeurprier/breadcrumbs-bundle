@@ -17,10 +17,9 @@ services:
             - '../src/JmfBreadcrumbsBundle.php'
 
     Jmf\Breadcrumbs\Registry\BreadcrumbDefinitionRegistryInterface:
-        factory: [ '@Jmf\Breadcrumbs\Registry\BreadcrumbDefinitionRegistryFactoryInterface', 'create' ]
+        factory: [ '@Jmf\Breadcrumbs\Registry\BreadcrumbDefinitionRegistryFactory', 'create' ]
 
-    Jmf\Breadcrumbs\Registry\BreadcrumbDefinitionRegistryFactoryInterface:
-        class: Jmf\Breadcrumbs\Registry\BreadcrumbDefinitionRegistryFactory
+    Jmf\Breadcrumbs\Registry\BreadcrumbDefinitionRegistryFactory:
         arguments:
             $config: '%jmf_breadcrumbs.breadcrumbs_config%'
 

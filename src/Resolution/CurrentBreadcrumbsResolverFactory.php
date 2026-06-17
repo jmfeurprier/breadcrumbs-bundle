@@ -6,7 +6,6 @@ namespace Jmf\Breadcrumbs\Resolution;
 
 use Jmf\Breadcrumbs\Registry\BreadcrumbDefinitionRegistryInterface;
 use Jmf\Breadcrumbs\Routing\CurrentRouteNameResolver;
-use Override;
 
 readonly class CurrentBreadcrumbsResolverFactory
 {
@@ -19,10 +18,6 @@ readonly class CurrentBreadcrumbsResolverFactory
     ) {
     }
 
-    /**
-     * @throws \ValueError
-     * @throws \TypeError
-     */
     public function create(): CurrentBreadcrumbsResolverInterface
     {
         return new CurrentBreadcrumbsResolver(
@@ -34,13 +29,16 @@ readonly class CurrentBreadcrumbsResolverFactory
         );
     }
 
-    /**
-     * @return CurrentBreadcrumbNotFoundBehavior
-     */
     private function getBreadcrumbNotFoundBehavior(): CurrentBreadcrumbNotFoundBehavior
     {
-        return CurrentBreadcrumbNotFoundBehavior::from(
+        $behavior = CurrentBreadcrumbNotFoundBehavior::tryFrom(
             $this->currentBreadcrumbNotFoundStrategy,
         );
+
+        if (null === $behavior) {
+            // @todo Throw Exception
+        }
+
+        return $behavior;
     }
 }
