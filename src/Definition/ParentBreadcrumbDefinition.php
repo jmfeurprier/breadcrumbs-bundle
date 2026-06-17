@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs\Definition;
 
+use Webmozart\Assert\Assert;
+
 readonly class ParentBreadcrumbDefinition
 {
     /**
@@ -13,6 +15,7 @@ readonly class ParentBreadcrumbDefinition
         private string $routeName,
         private StringMap $parameters,
     ) {
+        Assert::stringNotEmpty($this->routeName);
     }
 
     /**

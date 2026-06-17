@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Jmf\Breadcrumbs\Definition;
 
+use Webmozart\Assert\Assert;
+
 readonly class BreadcrumbDefinition
 {
     /**
      * @param non-empty-string $routeName
+     * @param non-empty-string $label
      */
     public function __construct(
         private string $routeName,
@@ -15,6 +18,8 @@ readonly class BreadcrumbDefinition
         private StringMap $parameters,
         private ?ParentBreadcrumbDefinition $parentBreadcrumbDefinition,
     ) {
+        Assert::stringNotEmpty($this->routeName);
+        Assert::stringNotEmpty($this->label);
     }
 
     /**
@@ -25,6 +30,9 @@ readonly class BreadcrumbDefinition
         return $this->routeName;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function getLabel(): string
     {
         return $this->label;

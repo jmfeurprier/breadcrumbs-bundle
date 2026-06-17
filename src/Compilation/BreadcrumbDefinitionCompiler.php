@@ -60,7 +60,7 @@ readonly class BreadcrumbDefinitionCompiler
 
         $label = $config['label'];
 
-        Assert::string($label);
+        Assert::stringNotEmpty($label);
 
         return $label;
     }
